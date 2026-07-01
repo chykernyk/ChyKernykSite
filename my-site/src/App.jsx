@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 // Passwords are stored as SHA-256 hashes rather than plaintext, since this is a
 // static site with no server to check credentials against — plaintext here
 // would ship straight into the public JS bundle.
-const SITE_PASSWORD_HASH = "51cf298e5ae5d081b1b74dc50cbf7810c616d3fada95d8515b171e49ab6d0f74";
+const SITE_PASSWORD_HASH = "5d7e02bb032b944f927203f1cef3781ae45eebfa0296c45cd46663ed91b081da";
 const ADMIN_USERS = [
   { email: "dom@domguinness.com", passwordHash: "3169643d17f35ef886b8131f8c9d1480ea1bd88a7db19842ca2a37db81abc858" },
   { email: "davina@davinaguinness.com", passwordHash: "3169643d17f35ef886b8131f8c9d1480ea1bd88a7db19842ca2a37db81abc858" },
