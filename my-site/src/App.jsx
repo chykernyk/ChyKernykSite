@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import portscathoFromTheAir from "./assets/images/PortscathoFromTheAir.jpg";
 
 // ─── DATA & CONSTANTS ────────────────────────────────────────────────
 // Passwords are stored as SHA-256 hashes rather than plaintext, since this is a
@@ -16,7 +17,7 @@ async function sha256Hex(text) {
 }
 
 const HERO_IMAGES = [
-  { url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=80", caption: "Portscatho from the Air" },
+  { url: portscathoFromTheAir, caption: "Portscatho from the Air" },
   { url: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600&q=80", caption: "The House" },
   { url: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600&q=80", caption: "The View towards Gull Rock" },
 ];
