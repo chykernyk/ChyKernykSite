@@ -1,5 +1,50 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import portscathoFromTheAir from "./assets/images/PortscathoFromTheAir.jpg";
+import imgBarbaraHepworthGarden from "./assets/images/BarbaraHepworthGarden.jpeg";
+import imgBarbaraHepworthStudio from "./assets/images/BarbaraHepworthStudio.jpeg";
+import imgBarbaraHepworthStudio2 from "./assets/images/BarbaraHepworthStudio2.jpeg";
+import imgCafeMylor from "./assets/images/CafeMylor.jpeg";
+import imgEdenProject from "./assets/images/EdenProject.jpeg";
+import imgFishNTrips from "./assets/images/FishNTrips.jpeg";
+import imgFishingOffRocks from "./assets/images/FishingOffRocks.jpeg";
+import imgHarbour from "./assets/images/Harbour.jpeg";
+import imgHiddenHut from "./assets/images/HiddenHut.jpeg";
+import imgHiddenHutAerial from "./assets/images/HiddenHutAerial.jpeg";
+import imgHiddenHutFeast from "./assets/images/HiddenHutFeast.jpeg";
+import imgHiddenHutFeast2 from "./assets/images/HiddenHutFeast2.jpeg";
+import imgHiddenHutfromBeach from "./assets/images/HiddenHutfromBeach.jpeg";
+import imgHouse from "./assets/images/House.jpg";
+import imgHouseEast from "./assets/images/HouseEast.jpeg";
+import imgHouseFromRoad from "./assets/images/HouseFromRoad.jpeg";
+import imgHouseNorth from "./assets/images/HouseNorth.jpeg";
+import imgJuniorRaceWeek from "./assets/images/JuniorRaceWeek.jpeg";
+import imgKitchenToBe from "./assets/images/KitchenToBe.jpeg";
+import imgNareHead from "./assets/images/NareHead.jpeg";
+import imgPorthcurnick from "./assets/images/Porthcurnick.jpeg";
+import imgPorthcurnickPortcatho from "./assets/images/PorthcurnickPortcatho.jpeg";
+import imgPorthcurnickPortcatho2 from "./assets/images/PorthcurnickPortcatho2.jpeg";
+import imgPortscathoFromTheAir from "./assets/images/PortscathoFromTheAir.jpg";
+import imgPortscathoHarbour from "./assets/images/PortscathoHarbour.jpeg";
+import imgPortscathoHarbour2 from "./assets/images/PortscathoHarbour2.jpeg";
+import imgPortscathoStores from "./assets/images/PortscathoStores.jpeg";
+import imgPortscathofromtheAir2 from "./assets/images/PortscathofromtheAir2.JPG";
+import imgPurchaseDay from "./assets/images/PurchaseDay.jpeg";
+import imgRalphs from "./assets/images/Ralphs.jpeg";
+import imgScathosScoops from "./assets/images/ScathosScoops.jpeg";
+import imgShillakabookyBeachHut from "./assets/images/ShillakabookyBeachHut.jpeg";
+import imgStIves from "./assets/images/StIves.jpeg";
+import imgStMawesHarbour from "./assets/images/StMawesHarbour.jpeg";
+import imgStMawesHarbour2 from "./assets/images/StMawesHarbour2.jpeg";
+import imgStMawesHarbourWall from "./assets/images/StMawesHarbourWall.jpeg";
+import imgStandardInnEvening from "./assets/images/StandardInnEvening.jpeg";
+import imgStandardInnGarden from "./assets/images/StandardInnGarden.jpeg";
+import imgTheStandard from "./assets/images/TheStandard.jpeg";
+import imgTowanShellPicking from "./assets/images/TowanShellPicking.jpeg";
+import imgTregew from "./assets/images/Tregew.jpeg";
+import imgTregewFish from "./assets/images/TregewFish.jpeg";
+import imgTregewFoodBarn from "./assets/images/TregewFoodBarn.jpeg";
+import imgTregewToasties from "./assets/images/TregewToasties.jpeg";
+import imgTrelissick from "./assets/images/Trelissick.jpeg";
+import imgTrelissick2 from "./assets/images/Trelissick2.jpeg";
 
 // ─── DATA & CONSTANTS ────────────────────────────────────────────────
 // Passwords are stored as SHA-256 hashes rather than plaintext, since this is a
@@ -17,8 +62,8 @@ async function sha256Hex(text) {
 }
 
 const HERO_IMAGES = [
-  { url: portscathoFromTheAir, caption: "Portscatho from the Air" },
-  { url: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600&q=80", caption: "The House" },
+  { url: imgPortscathofromtheAir2, caption: "Portscatho from the Air" },
+  { url: imgHouse, caption: "The House" },
   { url: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600&q=80", caption: "The View towards Gull Rock" },
 ];
 
@@ -31,7 +76,7 @@ const BLOG_POSTS = [
 ];
 
 const FOOD_PLACES = [
-  { id: "portscatho-stores", name: "Portscatho Stores", desc: "The heart of the village — exceptional deli, fresh bread daily, local produce, and everything you need. Their pasties are legendary.", image: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800&q=80", tags: ["deli", "groceries", "bakery"], website: "#", location: "Portscatho" },
+  { id: "portscatho-stores", name: "Portscatho Stores", desc: "The heart of the village — exceptional deli, fresh bread daily, local produce, and everything you need. Their pasties are legendary.", image: imgPortscathoStores, tags: ["deli", "groceries", "bakery"], website: "#", location: "Portscatho" },
   { id: "tregew-food-market", name: "Tregew Food Market", desc: "A beautifully curated farm shop and food market showcasing the very best of Cornish produce. Don't miss their cheese counter.", image: "https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=800&q=80", tags: ["farm shop", "local produce"], website: "#", location: "Near Froe" },
   { id: "curgurrell-farm-shop", name: "Curgurrell Farm Shop", desc: "Family-run farm shop with their own livestock and kitchen garden produce. Seasonal, honest, and utterly delicious.", image: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&q=80", tags: ["farm shop", "meat", "seasonal"], website: "#", location: "Curgurrell" },
   { id: "hidden-hut", name: "Hidden Hut", desc: "Cornwall's most famous beach café. Their feast nights are the stuff of legend — book months ahead. By day, superb cakes and coffee on Porthcurnick Beach.", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80", tags: ["restaurant", "beach", "feast nights"], website: "#", location: "Porthcurnick Beach" },
@@ -52,7 +97,7 @@ const ACTIVITIES = [
 ];
 
 const WALKS = [
-  { id: "nare", name: "Nare Head", desc: "A spectacular circular walk around Nare Head with panoramic views of the coast. Moderate difficulty with some steep sections.", length: "4.2 miles", difficulty: "Moderate", parking: "Park at Carne Beach car park (free for National Trust members). Can get busy in summer — arrive before 10am.", eating: "The Hidden Hut at Porthcurnick Beach is a perfect post-walk stop. Alternatively, head to Portscatho Stores for a takeaway pasty.", image: "https://images.unsplash.com/photo-1501554728187-ce583db33af7?w=800&q=80" },
+  { id: "nare", name: "Nare Head", desc: "A spectacular circular walk around Nare Head with panoramic views of the coast. Moderate difficulty with some steep sections.", length: "4.2 miles", difficulty: "Moderate", parking: "Park at Carne Beach car park (free for National Trust members). Can get busy in summer — arrive before 10am.", eating: "The Hidden Hut at Porthcurnick Beach is a perfect post-walk stop. Alternatively, head to Portscatho Stores for a takeaway pasty.", image: imgNareHead },
   { id: "curgurrell", name: "Curgurrell Creek", desc: "A gentle walk through ancient woodland and along the creek. Perfect for a peaceful morning stroll or a family outing with young children.", length: "2.8 miles", difficulty: "Easy", parking: "Limited roadside parking near Curgurrell Farm. Please park considerately and respect local residents.", eating: "Curgurrell Farm Shop for provisions, or continue to Portscatho for the full range of options.", image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80" },
   { id: "towan", name: "Towan Beach Circuit", desc: "A beautiful coastal and inland loop taking in Towan Beach, farmland, and quiet lanes. Wonderful wildflowers in spring and early summer.", length: "3.5 miles", difficulty: "Easy-Moderate", parking: "Towan Beach car park. Honesty box payment.", eating: "Pack a picnic from Portscatho Stores — Towan Beach is a perfect lunch spot.", image: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=800&q=80" },
   { id: "st-anthony", name: "St Anthony Head", desc: "Walk to the lighthouse at St Anthony Head with views across Falmouth Bay. One of the finest viewpoints in Cornwall.", length: "3.0 miles", difficulty: "Easy-Moderate", parking: "National Trust car park at Place. Follow signs carefully — the lanes are narrow.", eating: "The Place restaurant (seasonal) or head to St Mawes for the Tresanton or the pub on the quay.", image: "https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2?w=800&q=80" },
@@ -89,15 +134,52 @@ const REMEDIES = [
 ];
 
 const GALLERY_IMAGES = [
-  { id: 1, url: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80", caption: "The House" },
-  { id: 2, url: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80", caption: "Living Room" },
-  { id: 3, url: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80", caption: "Kitchen" },
-  { id: 4, url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80", caption: "Beach View" },
-  { id: 5, url: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80", caption: "Master Bedroom" },
-  { id: 6, url: "https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=800&q=80", caption: "Garden" },
-  { id: 7, url: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80", caption: "Countryside" },
-  { id: 8, url: "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&q=80", caption: "Bathroom" },
-  { id: 9, url: "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=800&q=80", caption: "Local Village" },
+  { id: 1, url: imgBarbaraHepworthGarden, caption: "Barbara Hepworth Garden" },
+  { id: 2, url: imgBarbaraHepworthStudio, caption: "Barbara Hepworth Studio" },
+  { id: 3, url: imgBarbaraHepworthStudio2, caption: "Barbara Hepworth Studio II" },
+  { id: 4, url: imgCafeMylor, caption: "Café Mylor" },
+  { id: 5, url: imgEdenProject, caption: "Eden Project" },
+  { id: 6, url: imgFishNTrips, caption: "Fish n Trips" },
+  { id: 7, url: imgFishingOffRocks, caption: "Fishing off the Rocks" },
+  { id: 8, url: imgHarbour, caption: "The Harbour" },
+  { id: 9, url: imgHiddenHut, caption: "The Hidden Hut" },
+  { id: 10, url: imgHiddenHutAerial, caption: "The Hidden Hut from the Air" },
+  { id: 11, url: imgHiddenHutFeast, caption: "Hidden Hut Feast Night" },
+  { id: 12, url: imgHiddenHutFeast2, caption: "Hidden Hut Feast Night II" },
+  { id: 13, url: imgHiddenHutfromBeach, caption: "The Hidden Hut from the Beach" },
+  { id: 14, url: imgHouse, caption: "The House" },
+  { id: 15, url: imgHouseEast, caption: "The House, East Side" },
+  { id: 16, url: imgHouseFromRoad, caption: "The House from the Road" },
+  { id: 17, url: imgHouseNorth, caption: "The House, North Side" },
+  { id: 18, url: imgJuniorRaceWeek, caption: "Junior Race Week" },
+  { id: 19, url: imgKitchenToBe, caption: "The Kitchen-to-Be" },
+  { id: 20, url: imgNareHead, caption: "Nare Head" },
+  { id: 21, url: imgPorthcurnick, caption: "Porthcurnick Beach" },
+  { id: 22, url: imgPorthcurnickPortcatho, caption: "Porthcurnick towards Portscatho" },
+  { id: 23, url: imgPorthcurnickPortcatho2, caption: "Porthcurnick towards Portscatho II" },
+  { id: 24, url: imgPortscathoFromTheAir, caption: "Portscatho from the Air" },
+  { id: 25, url: imgPortscathoHarbour, caption: "Portscatho Harbour" },
+  { id: 26, url: imgPortscathoHarbour2, caption: "Portscatho Harbour II" },
+  { id: 27, url: imgPortscathoStores, caption: "Portscatho Stores" },
+  { id: 28, url: imgPortscathofromtheAir2, caption: "Portscatho from the Air II" },
+  { id: 29, url: imgPurchaseDay, caption: "Purchase Day" },
+  { id: 30, url: imgRalphs, caption: "Ralph's" },
+  { id: 31, url: imgScathosScoops, caption: "Scatho's Scoops" },
+  { id: 32, url: imgShillakabookyBeachHut, caption: "Shillakabooky Beach Hut" },
+  { id: 33, url: imgStIves, caption: "St Ives" },
+  { id: 34, url: imgStMawesHarbour, caption: "St Mawes Harbour" },
+  { id: 35, url: imgStMawesHarbour2, caption: "St Mawes Harbour II" },
+  { id: 36, url: imgStMawesHarbourWall, caption: "St Mawes Harbour Wall" },
+  { id: 37, url: imgStandardInnEvening, caption: "The Standard Inn — Evening" },
+  { id: 38, url: imgStandardInnGarden, caption: "The Standard Inn — Garden" },
+  { id: 39, url: imgTheStandard, caption: "The Standard Inn" },
+  { id: 40, url: imgTowanShellPicking, caption: "Shell Picking at Towan" },
+  { id: 41, url: imgTregew, caption: "Tregew" },
+  { id: 42, url: imgTregewFish, caption: "Tregew Fish" },
+  { id: 43, url: imgTregewFoodBarn, caption: "Tregew Food Barn" },
+  { id: 44, url: imgTregewToasties, caption: "Tregew Toasties" },
+  { id: 45, url: imgTrelissick, caption: "Trelissick" },
+  { id: 46, url: imgTrelissick2, caption: "Trelissick II" },
 ];
 
 // ─── STYLES ──────────────────────────────────────────────────────────
