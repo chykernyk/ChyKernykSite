@@ -92,9 +92,9 @@ const ACTIVITIES = [
   { id: "beaches", name: "Beaches", desc: "The Roseland Peninsula boasts some of Cornwall's most beautiful and least crowded beaches. From Porthcurnick's sheltered sands to the wild beauty of Pendower.", image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80", tags: ["outdoors", "family"] },
   { id: "fish-n-trips", name: "Fish n Trips", desc: "Join local fisherman on a mackerel fishing trip from St Mawes harbour. Catch your supper and learn about Cornwall's maritime heritage.", image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80", tags: ["fishing", "boat"] },
   { id: "surfing-newquay", name: "Surfing in Newquay", desc: "An hour's drive takes you to Cornwall's surf capital. Lessons available for all ages and abilities at Fistral and Watergate Bay.", image: "https://images.unsplash.com/photo-1502680390548-bdbac40b3e1c?w=800&q=80", tags: ["surfing", "adventure"] },
-  { id: "heligan", name: "The Lost Gardens of Heligan", desc: "One of the most beloved gardens in England. Explore the jungle, the productive gardens, and the famous sleeping mud maid.", image: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800&q=80", tags: ["gardens", "history"] },
+  { id: "heligan", name: "The Lost Gardens of Heligan", desc: "One of the most beloved gardens in England. Explore the jungle, the productive gardens, and the famous sleeping mud maid.", image: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800&q=80", tags: ["gardens", "history"], category: "garden" },
   { id: "burncoose", name: "Burncoose Nurseries", desc: "One of the UK's finest nurseries set in 30 acres of woodland garden. Magnificent camellias, magnolias, and rare plants.", image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80", tags: ["gardens", "plants"] },
-  { id: "eden-project", name: "Eden Project", desc: "The iconic biomes housing the world's largest indoor rainforest. A must-visit that never disappoints, whatever the weather.", image: "https://images.unsplash.com/photo-1590274853856-f22d5ee3d228?w=800&q=80", tags: ["attraction", "family"] },
+  { id: "eden-project", name: "Eden Project", desc: "The iconic biomes housing the world's largest indoor rainforest. A must-visit that never disappoints, whatever the weather.", image: "https://images.unsplash.com/photo-1590274853856-f22d5ee3d228?w=800&q=80", tags: ["attraction", "family"], category: "garden" },
   { id: "st-ives", name: "St Ives", desc: "The jewel of the north coast. Tate St Ives, the Barbara Hepworth Museum, cobbled lanes, and some of the best light in Britain.", image: "https://images.unsplash.com/photo-1580237072617-771c3ecc4a24?w=800&q=80", tags: ["town", "art", "culture"] },
 ];
 
@@ -230,7 +230,8 @@ async function deletePinById(id) {
 // filter bar (omitted for categories that still have their own nav link).
 const PIN_TYPES = {
   "walk-detail": { label: "Walks", color: "#c8a2c8", items: WALKS, getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "walks", subPageType: "walk-detail" },
-  "activity-detail": { label: "Things to Do", color: "#f97316", items: ACTIVITIES, getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "activities", subPageType: "activity-detail" },
+  "activity-detail": { label: "Things to Do", color: "#f97316", items: ACTIVITIES.filter(a => a.category !== "garden"), getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "activities", subPageType: "activity-detail" },
+  "garden": { label: "Gardens", color: "#84cc16", items: ACTIVITIES.filter(a => a.category === "garden"), getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "gardens", subPageType: "activity-detail" },
   "eating-out": { label: "Eating Out", color: "#dc2626", items: FOOD_PLACES.filter(f => f.foodType === "eating"), getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "eating-out", subPageType: "food-detail" },
   "buying-food": { label: "Buying Food", color: "#10b981", items: FOOD_PLACES.filter(f => f.foodType === "buying"), getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "buying-food", subPageType: "food-detail" },
   "parkrun": { label: "parkrun", color: "#1e3a8a", items: PARKRUNS, getLabel: i => i.name, getId: i => i.name, getImage: () => null, getSummary: i => i.desc, page: "parkrun" },
@@ -1417,14 +1418,14 @@ function FoodDetail({ place, setPage, setSubPage }) {
 }
 
 // ACTIVITIES
-function ActivitiesPage({ setPage, setSubPage }) {
+function ActivityListPage({ setPage, setSubPage, items, linkType, title, subtitle }) {
   return (
     <>
-      <PageHeader title="Things to Do" subtitle="Adventures, gardens, culture, and coastline — there's something for everyone." setPage={setPage} />
+      <PageHeader title={title} subtitle={subtitle} setPage={setPage} />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
         <div className="ck-category-layout">
           <div className="ck-grid">
-            {ACTIVITIES.map(a => (
+            {items.map(a => (
               <div key={a.id} className="ck-card" onClick={() => { setSubPage({ type: "activity-detail", id: a.id }); window.scrollTo(0, 0); }}>
                 <div className="ck-card-img-wrap"><img className="ck-card-img" src={a.image} alt={a.name} loading="lazy" /></div>
                 <div className="ck-card-body">
@@ -1438,7 +1439,7 @@ function ActivitiesPage({ setPage, setSubPage }) {
             ))}
           </div>
           <div className="ck-category-map-wrap">
-            <CategoryMap linkType="activity-detail" setPage={setPage} setSubPage={setSubPage} />
+            <CategoryMap linkType={linkType} setPage={setPage} setSubPage={setSubPage} />
           </div>
         </div>
       </section>
@@ -1446,14 +1447,36 @@ function ActivitiesPage({ setPage, setSubPage }) {
   );
 }
 
+function ActivitiesPage({ setPage, setSubPage }) {
+  return (
+    <ActivityListPage
+      setPage={setPage} setSubPage={setSubPage}
+      items={ACTIVITIES.filter(a => a.category !== "garden")} linkType="activity-detail"
+      title="Things to Do" subtitle="Adventures, culture, and coastline — there's something for everyone."
+    />
+  );
+}
+
+function GardensPage({ setPage, setSubPage }) {
+  return (
+    <ActivityListPage
+      setPage={setPage} setSubPage={setSubPage}
+      items={ACTIVITIES.filter(a => a.category === "garden")} linkType="garden"
+      title="Gardens" subtitle="Cornwall's celebrated gardens — from lush lost valleys to otherworldly biomes."
+    />
+  );
+}
+
 function ActivityDetail({ activity, setPage, setSubPage }) {
   if (!activity) return <div className="ck-section"><p>Activity not found.</p></div>;
+  const backTo = activity.category === "garden" ? "gardens" : "activities";
+  const backLabel = activity.category === "garden" ? "Gardens" : "Things to Do";
   return (
     <>
       <img src={activity.image} alt={activity.name} className="ck-detail-hero" />
       <div className="ck-detail-content">
         <div className="ck-breadcrumb" style={{ marginBottom: "1rem" }}>
-          <button onClick={() => { setSubPage(null); setPage("activities"); window.scrollTo(0, 0); }}>Activities</button>
+          <button onClick={() => { setSubPage(null); setPage(backTo); window.scrollTo(0, 0); }}>{backLabel}</button>
           <span> / {activity.name}</span>
         </div>
         <h1 className="ck-detail-title">{activity.name}</h1>
@@ -1811,7 +1834,7 @@ function AddPinForm({ pos, onCancel, onSave }) {
     <div className="ck-modal-overlay" onClick={onCancel}>
       <div className="ck-modal" onClick={e => e.stopPropagation()}>
         <h2 className="ck-modal-title">Add a Pin</h2>
-        <p className="ck-modal-subtitle">Link this spot on the map to a walk, activity, place to eat, place to buy food, or parkrun.</p>
+        <p className="ck-modal-subtitle">Link this spot on the map to a walk, activity, garden, place to eat, place to buy food, or parkrun.</p>
         <div className="ck-form-group">
           <label className="ck-label">Category</label>
           <select className="ck-input" value={linkType} onChange={e => handleTypeChange(e.target.value)}>
@@ -2209,6 +2232,7 @@ export default function App() {
     "eating-out": <EatingOutPage setPage={setPage} setSubPage={setSubPage} />,
     "buying-food": <BuyingFoodPage setPage={setPage} setSubPage={setSubPage} />,
     activities: <ActivitiesPage setPage={setPage} setSubPage={setSubPage} />,
+    gardens: <GardensPage setPage={setPage} setSubPage={setSubPage} />,
     walks: <WalksPage setPage={setPage} setSubPage={setSubPage} />,
     around: <AroundAboutPage setPage={setPage} setSubPage={setSubPage} isAdmin={isAdmin} />,
     parkrun: <ParkrunPage setPage={setPage} setSubPage={setSubPage} />,
