@@ -182,6 +182,63 @@ const GALLERY_IMAGES = [
   { id: 46, url: imgTrelissick2, caption: "Trelissick II" },
 ];
 
+// ─── AROUND & ABOUT MAP ─────────────────────────────────────────────
+// Pins are stored in Supabase so admin-added pins are visible to every
+// visitor, not just the browser that added them (this site has no
+// server of its own to host that data).
+const SUPABASE_URL = "https://jcjhnscpunecubmcmkzr.supabase.co";
+const SUPABASE_KEY = "sb_publishable_m4KQIVk-2m3uA0dJCXJQuA_sJvh4chZ";
+const SUPABASE_HEADERS = {
+  apikey: SUPABASE_KEY,
+  Authorization: `Bearer ${SUPABASE_KEY}`,
+};
+
+async function fetchPins() {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/pins?select=*&order=created_at.asc`, {
+    headers: SUPABASE_HEADERS,
+  });
+  if (!res.ok) throw new Error("Failed to load pins");
+  return res.json();
+}
+
+async function createPin(pin) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/pins`, {
+    method: "POST",
+    headers: { ...SUPABASE_HEADERS, "Content-Type": "application/json", Prefer: "return=representation" },
+    body: JSON.stringify(pin),
+  });
+  if (!res.ok) throw new Error("Failed to save pin");
+  const rows = await res.json();
+  return rows[0];
+}
+
+async function deletePinById(id) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/pins?id=eq.${id}`, {
+    method: "DELETE",
+    headers: SUPABASE_HEADERS,
+  });
+  if (!res.ok) throw new Error("Failed to delete pin");
+}
+
+// What a pin can link to, and how each category is presented on the map.
+const PIN_TYPES = {
+  "walk-detail": { label: "Walk", color: "var(--ocean)", items: WALKS, getLabel: i => i.name },
+  "activity-detail": { label: "Thing to Do", color: "var(--coral)", items: ACTIVITIES, getLabel: i => i.name },
+  "food-detail": { label: "Food & Drink", color: "var(--gold)", items: FOOD_PLACES, getLabel: i => i.name },
+  "blog-detail": { label: "Story", color: "var(--stone)", items: BLOG_POSTS, getLabel: i => i.title },
+};
+
+// Reference points shown on the map for orientation (not clickable pins).
+const MAP_LANDMARKS = [
+  { x: 4, y: 46, label: "Helford" },
+  { x: 20, y: 34, label: "Falmouth" },
+  { x: 32, y: 52, label: "St Mawes" },
+  { x: 43, y: 58, label: "Portscatho", isHome: true },
+  { x: 53, y: 66, label: "Nare Head" },
+  { x: 67, y: 60, label: "Portloe" },
+  { x: 92, y: 52, label: "Dodman Point" },
+];
+
 // ─── STYLES ──────────────────────────────────────────────────────────
 const CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap');
@@ -697,6 +754,63 @@ const CSS = `
   .ck-contact-item a { color:var(--ocean); text-decoration:none; }
   .ck-contact-item a:hover { color:var(--gold); }
 
+  /* ── AROUND & ABOUT MAP ── */
+  .ck-map-wrap {
+    position:relative; width:100%; aspect-ratio: 2 / 1;
+    border-radius:16px; overflow:hidden;
+    border:1px solid var(--sand-dark);
+    background: linear-gradient(180deg, var(--ocean-light) 0%, var(--ocean) 100%);
+  }
+  .ck-map-wrap.ck-map-addable { cursor:crosshair; }
+  .ck-map-svg { position:absolute; inset:0; width:100%; height:100%; }
+  .ck-map-landmark {
+    position:absolute; transform:translate(-50%,-50%);
+    display:flex; flex-direction:column; align-items:center; gap:0.3rem;
+    pointer-events:none;
+  }
+  .ck-map-landmark-dot {
+    width:8px; height:8px; border-radius:50%;
+    background:var(--white); box-shadow:0 0 0 2px rgba(26,58,74,0.4);
+  }
+  .ck-map-landmark.home .ck-map-landmark-dot {
+    width:12px; height:12px; background:var(--gold); box-shadow:0 0 0 3px rgba(197,165,90,0.4);
+  }
+  .ck-map-landmark-label {
+    font-size:0.72rem; letter-spacing:0.04em; color:var(--white);
+    text-shadow:0 1px 4px rgba(0,0,0,0.5); white-space:nowrap;
+  }
+  .ck-map-pin {
+    position:absolute; transform:translate(-50%,-50%) rotate(45deg);
+    width:18px; height:18px; border-radius:3px;
+    border:2px solid var(--white);
+    box-shadow:0 2px 8px rgba(0,0,0,0.35);
+    cursor:pointer; transition: transform 0.2s;
+  }
+  .ck-map-pin:hover { transform:translate(-50%,-50%) rotate(45deg) scale(1.25); }
+  .ck-map-pin-remove {
+    position:absolute; top:-9px; right:-9px;
+    width:18px; height:18px; border-radius:50%;
+    background:#d44; color:white; border:2px solid white;
+    font-size:0.7rem; line-height:1; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; transform:rotate(-45deg);
+  }
+  .ck-map-legend {
+    display:flex; gap:1.5rem; flex-wrap:wrap; margin-top:1.5rem;
+  }
+  .ck-map-legend-item {
+    display:flex; align-items:center; gap:0.5rem;
+    font-size:0.82rem; color:var(--text-light);
+  }
+  .ck-map-legend-diamond {
+    width:12px; height:12px; border-radius:2px; transform:rotate(45deg);
+  }
+  .ck-map-admin-bar {
+    display:flex; align-items:center; gap:1rem; margin-bottom:1.25rem; flex-wrap:wrap;
+  }
+  .ck-map-hint {
+    font-size:0.85rem; color:var(--text-light); font-style:italic;
+  }
+
   /* ── AUTH MODAL ── */
   .ck-modal-overlay {
     position:fixed; inset:0; z-index:300;
@@ -893,6 +1007,7 @@ function Nav({ page, setPage, isAdmin, onLoginClick, onLogout, mobileOpen, setMo
     { id: "food", label: "Food" },
     { id: "activities", label: "Activities" },
     { id: "walks", label: "Walks" },
+    { id: "around", label: "Around and About" },
     { id: "parkrun", label: "parkrun" },
     { id: "calendar", label: "Calendar" },
     { id: "remedies", label: "Remedies" },
@@ -1343,6 +1458,196 @@ function WalkDetail({ walk, setPage, setSubPage }) {
   );
 }
 
+// AROUND & ABOUT
+const MAP_COASTLINE_PATH = "M0,0 L1000,0 L1000,200 L920,275 L780,240 L670,310 L600,260 L530,340 L500,250 L430,300 L360,230 L300,280 L240,210 L180,150 L100,190 L40,230 L0,200 Z";
+
+function AroundAboutMap({ pins, isAdmin, addMode, onMapClick, onPinClick, onPinDelete }) {
+  const wrapRef = useRef(null);
+
+  const handleClick = e => {
+    if (!addMode || !wrapRef.current) return;
+    const rect = wrapRef.current.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    onMapClick({ x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10 });
+  };
+
+  return (
+    <div
+      ref={wrapRef}
+      className={`ck-map-wrap ${addMode ? "ck-map-addable" : ""}`}
+      onClick={handleClick}
+    >
+      <svg className="ck-map-svg" viewBox="0 0 1000 500" preserveAspectRatio="none">
+        <path d={MAP_COASTLINE_PATH} fill="var(--sand)" stroke="var(--sand-dark)" strokeWidth="3" />
+      </svg>
+
+      {MAP_LANDMARKS.map(l => (
+        <div key={l.label} className={`ck-map-landmark ${l.isHome ? "home" : ""}`} style={{ left: `${l.x}%`, top: `${l.y}%` }}>
+          <div className="ck-map-landmark-dot" />
+          <span className="ck-map-landmark-label">{l.label}</span>
+        </div>
+      ))}
+
+      {pins.map(pin => {
+        const type = PIN_TYPES[pin.link_type];
+        return (
+          <div
+            key={pin.id}
+            className="ck-map-pin"
+            style={{ left: `${pin.x}%`, top: `${pin.y}%`, background: type ? type.color : "var(--stone)" }}
+            title={pin.label}
+            onClick={e => { e.stopPropagation(); if (!addMode) onPinClick(pin); }}
+          >
+            {isAdmin && (
+              <span className="ck-map-pin-remove" onClick={e => { e.stopPropagation(); onPinDelete(pin); }}>×</span>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function AddPinForm({ pos, onCancel, onSave }) {
+  const [linkType, setLinkType] = useState("walk-detail");
+  const [itemId, setItemId] = useState(PIN_TYPES["walk-detail"].items[0]?.id || "");
+  const [saving, setSaving] = useState(false);
+
+  const items = PIN_TYPES[linkType].items;
+
+  const handleTypeChange = t => {
+    setLinkType(t);
+    setItemId(PIN_TYPES[t].items[0]?.id || "");
+  };
+
+  const handleSave = async () => {
+    const item = items.find(i => i.id === itemId);
+    if (!item) return;
+    setSaving(true);
+    try {
+      await onSave({
+        x: pos.x, y: pos.y,
+        label: PIN_TYPES[linkType].getLabel(item),
+        category: PIN_TYPES[linkType].label,
+        link_type: linkType,
+        link_id: itemId,
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="ck-modal-overlay" onClick={onCancel}>
+      <div className="ck-modal" onClick={e => e.stopPropagation()}>
+        <h2 className="ck-modal-title">Add a Pin</h2>
+        <p className="ck-modal-subtitle">Link this spot on the map to a walk, activity, food listing, or blog post.</p>
+        <div className="ck-form-group">
+          <label className="ck-label">Category</label>
+          <select className="ck-input" value={linkType} onChange={e => handleTypeChange(e.target.value)}>
+            {Object.entries(PIN_TYPES).map(([key, t]) => (
+              <option key={key} value={key}>{t.label}</option>
+            ))}
+          </select>
+        </div>
+        <div className="ck-form-group">
+          <label className="ck-label">Links to</label>
+          <select className="ck-input" value={itemId} onChange={e => setItemId(e.target.value)}>
+            {items.map(i => (
+              <option key={i.id} value={i.id}>{PIN_TYPES[linkType].getLabel(i)}</option>
+            ))}
+          </select>
+        </div>
+        <div style={{ display: "flex", gap: "0.75rem", marginTop: "1.5rem" }}>
+          <button className="ck-btn ck-btn-primary" onClick={handleSave} disabled={saving || !itemId}>
+            {saving ? "Saving…" : "Save Pin"}
+          </button>
+          <button className="ck-btn ck-btn-secondary" onClick={onCancel}>Cancel</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
+  const [pins, setPins] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [addMode, setAddMode] = useState(false);
+  const [pendingPos, setPendingPos] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchPins()
+      .then(rows => { if (!cancelled) setPins(rows); })
+      .catch(() => { if (!cancelled) setError("Couldn't load pins right now."); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, []);
+
+  const handlePinClick = pin => {
+    if (!PIN_TYPES[pin.link_type]) return;
+    setSubPage({ type: pin.link_type, id: pin.link_id });
+    window.scrollTo(0, 0);
+  };
+
+  const handleSavePin = async data => {
+    const saved = await createPin(data);
+    setPins(prev => [...prev, saved]);
+    setPendingPos(null);
+  };
+
+  const handleDeletePin = async pin => {
+    if (!confirm(`Remove the "${pin.label}" pin?`)) return;
+    await deletePinById(pin.id);
+    setPins(prev => prev.filter(p => p.id !== pin.id));
+  };
+
+  return (
+    <>
+      <PageHeader title="Around and About" subtitle="An indicative map of the coast from the Helford River to Dodman Point — click a pin to explore." setPage={setPage} />
+      <section className="ck-section" style={{ paddingTop: "1rem" }}>
+        {isAdmin && (
+          <div className="ck-map-admin-bar">
+            <button className={`ck-btn ${addMode ? "ck-btn-primary" : "ck-btn-secondary"} ck-btn-sm`} onClick={() => { setAddMode(!addMode); setPendingPos(null); }}>
+              {addMode ? "Cancel Adding" : "+ Add Pin"}
+            </button>
+            {addMode && <span className="ck-map-hint">Click anywhere on the map to place a pin.</span>}
+          </div>
+        )}
+
+        {loading && <p style={{ color: "var(--text-light)" }}>Loading map…</p>}
+        {error && <p className="ck-modal-error">{error}</p>}
+
+        {!loading && (
+          <AroundAboutMap
+            pins={pins}
+            isAdmin={isAdmin}
+            addMode={addMode}
+            onMapClick={setPendingPos}
+            onPinClick={handlePinClick}
+            onPinDelete={handleDeletePin}
+          />
+        )}
+
+        <div className="ck-map-legend">
+          {Object.values(PIN_TYPES).map(t => (
+            <div key={t.label} className="ck-map-legend-item">
+              <span className="ck-map-legend-diamond" style={{ background: t.color }} />
+              {t.label}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {pendingPos && (
+        <AddPinForm pos={pendingPos} onCancel={() => setPendingPos(null)} onSave={handleSavePin} />
+      )}
+    </>
+  );
+}
+
 // PARKRUN
 function ParkrunPage({ setPage }) {
   return (
@@ -1601,6 +1906,7 @@ export default function App() {
     food: <FoodPage setPage={setPage} setSubPage={setSubPage} />,
     activities: <ActivitiesPage setPage={setPage} setSubPage={setSubPage} />,
     walks: <WalksPage setPage={setPage} setSubPage={setSubPage} />,
+    around: <AroundAboutPage setPage={setPage} setSubPage={setSubPage} isAdmin={isAdmin} />,
     parkrun: <ParkrunPage setPage={setPage} />,
     calendar: <CalendarPage setPage={setPage} isAdmin={isAdmin} />,
     remedies: <RemediesPage setPage={setPage} />,
