@@ -110,6 +110,9 @@ const PARKRUNS = [
   { name: "Trelissick", url: "https://www.parkrun.org.uk/trelissick/", desc: "A beautiful course through the National Trust grounds at Trelissick, with views over the Fal estuary. Two laps, mostly flat with one gentle climb." },
   { name: "Lanhydrock", url: "https://www.parkrun.org.uk/lanhydrock/", desc: "Set in the stunning grounds of Lanhydrock House. A single-lap course through parkland and woodland. Undulating terrain." },
   { name: "Penryn Campus", url: "https://www.parkrun.org.uk/penryncampus/", desc: "A mixed trail course around Falmouth University's Penryn Campus, taking in woodland paths and open parkland. Undulating with a friendly campus atmosphere." },
+  { name: "Lost Gardens of Heligan", url: "https://www.parkrun.org.uk/heligan/", desc: "A magical course through the famous Lost Gardens of Heligan, past the productive gardens and jungle valley. Undulating woodland trails — book garden entry in advance." },
+  { name: "Eden Project", url: "https://www.parkrun.org.uk/edenproject/", desc: "A scenic lap around the Eden Project's outer perimeter, with views down over the biomes. Hilly in places, with a fast finish downhill." },
+  { name: "Heartlands", url: "https://www.parkrun.org.uk/heartlands/", desc: "A flat, fast course through Heartlands' Cornish mining heritage park in Pool, taking in gardens, play areas, and industrial landmarks." },
 ];
 
 const REMEDIES = [
@@ -1814,7 +1817,7 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
 function ParkrunPage({ setPage }) {
   return (
     <>
-      <PageHeader title="parkrun" subtitle="Three wonderful parkruns within easy reach. Every Saturday at 9am, free, for everyone, forever." setPage={setPage} />
+      <PageHeader title="parkrun" subtitle="Wonderful parkruns within easy reach. Every Saturday at 9am, free, for everyone, forever." setPage={setPage} />
       <section className="ck-section" style={{ paddingTop: "1rem", maxWidth: 700 }}>
         {PARKRUNS.map(pr => (
           <div key={pr.name} className="ck-parkrun-card">
