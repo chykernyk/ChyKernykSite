@@ -97,7 +97,7 @@ const ACTIVITIES = [
 ];
 
 const WALKS = [
-  { id: "nare", name: "Nare Head", desc: "A spectacular circular walk around Nare Head with panoramic views of the coast. Moderate difficulty with some steep sections.", length: "4.2 miles", difficulty: "Moderate", parking: "Park at Carne Beach car park (free for National Trust members). Can get busy in summer — arrive before 10am.", eating: "The Hidden Hut at Porthcurnick Beach is a perfect post-walk stop. Alternatively, head to Portscatho Stores for a takeaway pasty.", image: imgNareHead },
+  { id: "nare", name: "Nare Head", desc: "A spectacular circular walk around Nare Head with panoramic views of the coast. Moderate difficulty with some steep sections.", length: "4.2 miles", difficulty: "Moderate", parking: "Park at Carne Beach car park (free for National Trust members). Can get busy in summer — arrive before 10am.", eating: "The Hidden Hut at Porthcurnick Beach is a perfect post-walk stop. Alternatively, head to Portscatho Stores for a takeaway pasty.", image: imgNareHead, stravaRouteId: "3507453955926855126" },
   { id: "curgurrell", name: "Curgurrell Creek", desc: "A gentle walk through ancient woodland and along the creek. Perfect for a peaceful morning stroll or a family outing with young children.", length: "2.8 miles", difficulty: "Easy", parking: "Limited roadside parking near Curgurrell Farm. Please park considerately and respect local residents.", eating: "Curgurrell Farm Shop for provisions, or continue to Portscatho for the full range of options.", image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80" },
   { id: "towan", name: "Towan Beach Circuit", desc: "A beautiful coastal and inland loop taking in Towan Beach, farmland, and quiet lanes. Wonderful wildflowers in spring and early summer.", length: "3.5 miles", difficulty: "Easy-Moderate", parking: "Towan Beach car park. Honesty box payment.", eating: "Pack a picnic from Portscatho Stores — Towan Beach is a perfect lunch spot.", image: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=800&q=80" },
   { id: "st-anthony", name: "St Anthony Head", desc: "Walk to the lighthouse at St Anthony Head with views across Falmouth Bay. One of the finest viewpoints in Cornwall.", length: "3.0 miles", difficulty: "Easy-Moderate", parking: "National Trust car park at Place. Follow signs carefully — the lanes are narrow.", eating: "The Place restaurant (seasonal) or head to St Mawes for the Tresanton or the pub on the quay.", image: "https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2?w=800&q=80" },
@@ -1265,6 +1265,29 @@ function WalksPage({ setPage, setSubPage }) {
   );
 }
 
+// Renders a Strava route using their embed widget (a placeholder div that
+// strava-embeds.com's script scans for and replaces with an iframe). The
+// script is re-appended on mount so it re-scans after client-side navigation.
+function StravaRouteEmbed({ routeId }) {
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://strava-embeds.com/embed.js";
+    script.async = true;
+    document.body.appendChild(script);
+    return () => document.body.removeChild(script);
+  }, [routeId]);
+
+  return (
+    <div
+      className="strava-embed-placeholder"
+      data-embed-type="route"
+      data-embed-id={routeId}
+      data-style="standard"
+      data-slippy="true"
+    />
+  );
+}
+
 function WalkDetail({ walk, setPage, setSubPage }) {
   if (!walk) return <div className="ck-section"><p>Walk not found.</p></div>;
   return (
@@ -1282,18 +1305,24 @@ function WalkDetail({ walk, setPage, setSubPage }) {
         </div>
         <div className="ck-detail-body"><p>{walk.desc}</p></div>
 
-        {/* Embedded Map Placeholder */}
+        {/* Trail Map */}
         <div className="ck-detail-info" style={{ marginTop: "2rem" }}>
           <h3>Trail Map</h3>
-          <div style={{ width: "100%", height: 300, borderRadius: 8, overflow: "hidden", marginTop: "1rem", background: "var(--sand-dark)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <iframe
-              title={`Map for ${walk.name}`}
-              width="100%" height="300" style={{ border: 0, borderRadius: 8 }}
-              src={`https://www.google.com/maps/embed/v1/place?key=PLACEHOLDER&q=Portscatho,Cornwall,UK`}
-              allowFullScreen loading="lazy"
-              onError={e => e.target.style.display = "none"}
-            />
-          </div>
+          {walk.stravaRouteId ? (
+            <div style={{ marginTop: "1rem" }}>
+              <StravaRouteEmbed routeId={walk.stravaRouteId} />
+            </div>
+          ) : (
+            <div style={{ width: "100%", height: 300, borderRadius: 8, overflow: "hidden", marginTop: "1rem", background: "var(--sand-dark)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <iframe
+                title={`Map for ${walk.name}`}
+                width="100%" height="300" style={{ border: 0, borderRadius: 8 }}
+                src={`https://www.google.com/maps/embed/v1/place?key=PLACEHOLDER&q=Portscatho,Cornwall,UK`}
+                allowFullScreen loading="lazy"
+                onError={e => e.target.style.display = "none"}
+              />
+            </div>
+          )}
           <div style={{ marginTop: "1rem" }}>
             <a href={`/gpx/${walk.id}.gpx`} className="ck-btn ck-btn-secondary ck-btn-sm" style={{ textDecoration: "none" }} download>
               ↓ Download GPX Route
