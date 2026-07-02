@@ -223,11 +223,14 @@ async function deletePinById(id) {
 }
 
 // What a pin can link to, and how each category is presented on the map.
+// `page` is the nav-less page it should be reachable from via the map's
+// filter bar (omitted for categories that still have their own nav link).
 const PIN_TYPES = {
-  "walk-detail": { label: "Walk", color: "var(--ocean)", items: WALKS, getLabel: i => i.name },
-  "activity-detail": { label: "Thing to Do", color: "var(--coral)", items: ACTIVITIES, getLabel: i => i.name },
-  "food-detail": { label: "Food & Drink", color: "var(--gold)", items: FOOD_PLACES, getLabel: i => i.name },
-  "blog-detail": { label: "Story", color: "var(--stone)", items: BLOG_POSTS, getLabel: i => i.title },
+  "walk-detail": { label: "Walk", color: "var(--ocean)", items: WALKS, getLabel: i => i.name, getId: i => i.id, page: "walks" },
+  "activity-detail": { label: "Thing to Do", color: "var(--coral)", items: ACTIVITIES, getLabel: i => i.name, getId: i => i.id, page: "activities" },
+  "food-detail": { label: "Food & Drink", color: "var(--gold)", items: FOOD_PLACES, getLabel: i => i.name, getId: i => i.id, page: "food" },
+  "parkrun": { label: "parkrun", color: "#3a7d5c", items: PARKRUNS, getLabel: i => i.name, getId: i => i.name, page: "parkrun" },
+  "blog-detail": { label: "Story", color: "var(--stone)", items: BLOG_POSTS, getLabel: i => i.title, getId: i => i.id },
 };
 
 // Reference points shown on the map for orientation (not clickable pins).
@@ -235,17 +238,17 @@ const MAP_LANDMARKS = [
   { lat: 50.1533, lng: -5.0708, label: "Falmouth" },
   { lat: 50.1547, lng: -5.0136, label: "St Mawes" },
   { lat: 50.1840, lng: -4.9860, label: "Portscatho", isHome: true },
-  { lat: 50.2632, lng: -5.0510, label: "Truro" },
-  { lat: 50.3128, lng: -5.2027, label: "St Agnes" },
+  { lat: 50.1875, lng: -4.9130, label: "Nare Head" },
+  { lat: 50.2211, lng: -4.8330, label: "Portloe" },
+  { lat: 50.2180, lng: -4.9130, label: "Veryan" },
+  { lat: 50.2650, lng: -4.9110, label: "Tregony" },
   { lat: 50.2213, lng: -4.7936, label: "Dodman Point" },
-  { lat: 50.3390, lng: -4.7903, label: "St Austell" },
 ];
 
-// Corners used to fit the map's initial view.
+// Corners used to fit the map's initial view — the Roseland Peninsula.
 const MAP_BOUNDS = [
-  [50.1533, -5.0708], // Falmouth
-  [50.3128, -5.2027], // St Agnes
-  [50.3390, -4.7903], // St Austell
+  [50.13, -5.06],
+  [50.28, -4.82],
 ];
 
 // ─── STYLES ──────────────────────────────────────────────────────────
@@ -772,6 +775,7 @@ const CSS = `
     background:var(--sand-dark);
   }
   .ck-map-wrap.ck-map-addable { cursor:crosshair; }
+  .ck-map-leaflet { position:absolute; inset:0; }
   .ck-map-wrap .leaflet-tooltip.ck-map-tooltip {
     background:rgba(26,58,74,0.85); color:var(--white); border:none;
     font-family:var(--font-body); font-size:0.72rem; letter-spacing:0.04em;
@@ -786,13 +790,15 @@ const CSS = `
     transform: rotate(45deg);
   }
   .ck-map-pin:hover { transform: rotate(45deg) scale(1.25); }
-  .ck-map-legend {
-    display:flex; gap:1.5rem; flex-wrap:wrap; margin-top:1.5rem;
+  .ck-map-offscreen {
+    position:absolute; transform:translate(-50%,-50%);
+    width:26px; height:26px; border-radius:50%;
+    border:2px solid var(--white); color:var(--white);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.4); z-index:1000;
   }
-  .ck-map-legend-item {
-    display:flex; align-items:center; gap:0.5rem;
-    font-size:0.82rem; color:var(--text-light);
-  }
+  .ck-map-offscreen-arrow { font-size:0.65rem; line-height:1; }
+  .ck-map-offscreen-count { font-size:0.55rem; line-height:1; margin-top:1px; }
   .ck-map-legend-diamond {
     width:12px; height:12px; border-radius:2px; transform:rotate(45deg); flex-shrink:0;
   }
@@ -802,6 +808,22 @@ const CSS = `
   .ck-map-hint {
     font-size:0.85rem; color:var(--text-light); font-style:italic;
   }
+  .ck-map-filter-bar {
+    display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:1.25rem;
+  }
+  .ck-map-filter-chip {
+    display:flex; align-items:center; gap:0.5rem;
+    padding:0.45rem 0.9rem; border-radius:20px;
+    border:1px solid var(--sand-dark); background:white;
+    font-family:var(--font-body); font-size:0.82rem; color:var(--text-light);
+    cursor:pointer; transition: all 0.2s; opacity:0.45;
+  }
+  .ck-map-filter-chip.active { opacity:1; border-color:var(--ocean); color:var(--text); }
+  .ck-map-filter-link {
+    margin-left:0.15rem; color:var(--ocean); font-size:0.9rem;
+    text-decoration:none; opacity:0.7;
+  }
+  .ck-map-filter-link:hover { opacity:1; }
   .ck-map-pin-list {
     margin-top:2rem; padding-top:1.5rem; border-top:1px solid var(--sand-dark);
   }
@@ -1008,11 +1030,7 @@ function Nav({ page, setPage, isAdmin, onLoginClick, onLogout, mobileOpen, setMo
     { id: "home", label: "Home" },
     { id: "blog", label: "Blog" },
     { id: "gallery", label: "Gallery" },
-    { id: "food", label: "Food" },
-    { id: "activities", label: "Activities" },
-    { id: "walks", label: "Walks" },
     { id: "around", label: "Around and About" },
-    { id: "parkrun", label: "parkrun" },
     { id: "calendar", label: "Calendar" },
     { id: "remedies", label: "Remedies" },
     { id: "contact", label: "Contact" },
@@ -1463,12 +1481,30 @@ function WalkDetail({ walk, setPage, setSubPage }) {
 }
 
 // AROUND & ABOUT
-function AroundAboutMap({ pins, addMode, onMapClick, onPinClick }) {
+// Groups off-screen pins into 8 compass directions and returns each
+// group's angle (0 = north, clockwise) plus the pins in it.
+function groupOffscreenPins(pins, bounds, center) {
+  const buckets = {};
+  pins.forEach(pin => {
+    if (bounds.contains([pin.lat, pin.lng])) return;
+    const dx = (pin.lng - center.lng) * Math.cos(center.lat * Math.PI / 180);
+    const dy = pin.lat - center.lat;
+    let angleDeg = Math.atan2(dx, dy) * 180 / Math.PI;
+    if (angleDeg < 0) angleDeg += 360;
+    const octant = Math.round(angleDeg / 45) % 8;
+    if (!buckets[octant]) buckets[octant] = { angle: octant * 45, pins: [] };
+    buckets[octant].pins.push(pin);
+  });
+  return Object.values(buckets);
+}
+
+function AroundAboutMap({ pins, addMode, onMapClick, onPinClick, activeTypes }) {
   const wrapRef = useRef(null);
   const mapRef = useRef(null);
   const markersRef = useRef([]);
   const clickHandlerRef = useRef(onPinClick);
   clickHandlerRef.current = onPinClick;
+  const [view, setView] = useState(null);
 
   // Initialize the map once.
   useEffect(() => {
@@ -1490,8 +1526,12 @@ function AroundAboutMap({ pins, addMode, onMapClick, onPinClick }) {
         .bindTooltip(l.label, { permanent: true, direction: "top", offset: [0, -6], className: "ck-map-tooltip" });
     });
 
+    const updateView = () => setView({ bounds: map.getBounds(), center: map.getCenter() });
+    map.on("moveend", updateView);
+    updateView();
+
     mapRef.current = map;
-    return () => { map.remove(); mapRef.current = null; };
+    return () => { map.off("moveend", updateView); map.remove(); mapRef.current = null; };
   }, []);
 
   // Toggle add-pin click handling.
@@ -1504,12 +1544,13 @@ function AroundAboutMap({ pins, addMode, onMapClick, onPinClick }) {
     return () => map.off("click", handler);
   }, [addMode, onMapClick]);
 
-  // Sync pin markers whenever the pin list changes.
+  // Sync pin markers whenever the visible pin list changes.
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
+    const visible = pins.filter(p => activeTypes[p.link_type] !== false);
     markersRef.current.forEach(m => map.removeLayer(m));
-    markersRef.current = pins.map(pin => {
+    markersRef.current = visible.map(pin => {
       const type = PIN_TYPES[pin.link_type];
       const icon = L.divIcon({
         className: "",
@@ -1521,32 +1562,67 @@ function AroundAboutMap({ pins, addMode, onMapClick, onPinClick }) {
       marker.on("click", () => clickHandlerRef.current(pin));
       return marker;
     });
-  }, [pins]);
+  }, [pins, activeTypes]);
 
-  return <div ref={wrapRef} className={`ck-map-wrap ${addMode ? "ck-map-addable" : ""}`} />;
+  const visiblePins = pins.filter(p => activeTypes[p.link_type] !== false);
+  const offscreenGroups = view ? groupOffscreenPins(visiblePins, view.bounds, view.center) : [];
+
+  return (
+    <div className={`ck-map-wrap ${addMode ? "ck-map-addable" : ""}`}>
+      <div ref={wrapRef} className="ck-map-leaflet" />
+      {offscreenGroups.map(g => {
+        const rad = g.angle * Math.PI / 180;
+        const left = 50 + Math.sin(rad) * 43;
+        const top = 50 - Math.cos(rad) * 43;
+        const colors = [...new Set(g.pins.map(p => (PIN_TYPES[p.link_type] || {}).color || "var(--stone)"))];
+        const bg = colors.length === 1 ? colors[0] : "var(--ocean)";
+        return (
+          <div
+            key={g.angle}
+            className="ck-map-offscreen"
+            style={{ left: `${left}%`, top: `${top}%`, background: bg }}
+            title={`${g.pins.length} pin${g.pins.length > 1 ? "s" : ""} this way — click to view`}
+            onClick={() => {
+              const map = mapRef.current;
+              if (!map) return;
+              map.fitBounds(L.latLngBounds(g.pins.map(p => [p.lat, p.lng])).pad(0.5));
+            }}
+          >
+            <span className="ck-map-offscreen-arrow" style={{ transform: `rotate(${g.angle}deg)` }}>▲</span>
+            <span className="ck-map-offscreen-count">{g.pins.length}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
 }
 
 function AddPinForm({ pos, onCancel, onSave }) {
   const [linkType, setLinkType] = useState("walk-detail");
-  const [itemId, setItemId] = useState(PIN_TYPES["walk-detail"].items[0]?.id || "");
+  const [itemId, setItemId] = useState(() => {
+    const t = PIN_TYPES["walk-detail"];
+    return t.items[0] ? t.getId(t.items[0]) : "";
+  });
   const [saving, setSaving] = useState(false);
 
-  const items = PIN_TYPES[linkType].items;
+  const type = PIN_TYPES[linkType];
+  const items = type.items;
 
   const handleTypeChange = t => {
     setLinkType(t);
-    setItemId(PIN_TYPES[t].items[0]?.id || "");
+    const newType = PIN_TYPES[t];
+    setItemId(newType.items[0] ? newType.getId(newType.items[0]) : "");
   };
 
   const handleSave = async () => {
-    const item = items.find(i => i.id === itemId);
+    const item = items.find(i => type.getId(i) === itemId);
     if (!item) return;
     setSaving(true);
     try {
       await onSave({
         lat: pos.lat, lng: pos.lng,
-        label: PIN_TYPES[linkType].getLabel(item),
-        category: PIN_TYPES[linkType].label,
+        label: type.getLabel(item),
+        category: type.label,
         link_type: linkType,
         link_id: itemId,
       });
@@ -1559,7 +1635,7 @@ function AddPinForm({ pos, onCancel, onSave }) {
     <div className="ck-modal-overlay" onClick={onCancel}>
       <div className="ck-modal" onClick={e => e.stopPropagation()}>
         <h2 className="ck-modal-title">Add a Pin</h2>
-        <p className="ck-modal-subtitle">Link this spot on the map to a walk, activity, food listing, or blog post.</p>
+        <p className="ck-modal-subtitle">Link this spot on the map to a walk, activity, food listing, parkrun, or blog post.</p>
         <div className="ck-form-group">
           <label className="ck-label">Category</label>
           <select className="ck-input" value={linkType} onChange={e => handleTypeChange(e.target.value)}>
@@ -1572,7 +1648,7 @@ function AddPinForm({ pos, onCancel, onSave }) {
           <label className="ck-label">Links to</label>
           <select className="ck-input" value={itemId} onChange={e => setItemId(e.target.value)}>
             {items.map(i => (
-              <option key={i.id} value={i.id}>{PIN_TYPES[linkType].getLabel(i)}</option>
+              <option key={type.getId(i)} value={type.getId(i)}>{type.getLabel(i)}</option>
             ))}
           </select>
         </div>
@@ -1593,6 +1669,9 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
   const [error, setError] = useState("");
   const [addMode, setAddMode] = useState(false);
   const [pendingPos, setPendingPos] = useState(null);
+  const [activeTypes, setActiveTypes] = useState(() =>
+    Object.fromEntries(Object.keys(PIN_TYPES).map(k => [k, true]))
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -1604,8 +1683,13 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
   }, []);
 
   const handlePinClick = pin => {
-    if (!PIN_TYPES[pin.link_type]) return;
-    setSubPage({ type: pin.link_type, id: pin.link_id });
+    const type = PIN_TYPES[pin.link_type];
+    if (!type) return;
+    if (pin.link_type === "parkrun") {
+      setPage("parkrun");
+    } else {
+      setSubPage({ type: pin.link_type, id: pin.link_id });
+    }
     window.scrollTo(0, 0);
   };
 
@@ -1623,7 +1707,7 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
 
   return (
     <>
-      <PageHeader title="Around and About" subtitle="A map of the coast from Falmouth to St Agnes to St Austell — click a pin to explore." setPage={setPage} />
+      <PageHeader title="Around and About" subtitle="A map of the Roseland Peninsula — click a pin to explore, or use the filters to browse by category." setPage={setPage} />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
         {isAdmin && (
           <div className="ck-map-admin-bar">
@@ -1634,6 +1718,26 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
           </div>
         )}
 
+        <div className="ck-map-filter-bar">
+          {Object.entries(PIN_TYPES).map(([key, t]) => (
+            <button
+              key={key}
+              className={`ck-map-filter-chip ${activeTypes[key] ? "active" : ""}`}
+              onClick={() => setActiveTypes(prev => ({ ...prev, [key]: !prev[key] }))}
+            >
+              <span className="ck-map-legend-diamond" style={{ background: t.color }} />
+              {t.label}
+              {t.page && (
+                <span
+                  className="ck-map-filter-link"
+                  title={`View all ${t.label}`}
+                  onClick={e => { e.stopPropagation(); setPage(t.page); window.scrollTo(0, 0); }}
+                >↗</span>
+              )}
+            </button>
+          ))}
+        </div>
+
         {loading && <p style={{ color: "var(--text-light)" }}>Loading map…</p>}
         {error && <p className="ck-modal-error">{error}</p>}
 
@@ -1643,17 +1747,9 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
             addMode={addMode}
             onMapClick={setPendingPos}
             onPinClick={handlePinClick}
+            activeTypes={activeTypes}
           />
         )}
-
-        <div className="ck-map-legend">
-          {Object.values(PIN_TYPES).map(t => (
-            <div key={t.label} className="ck-map-legend-item">
-              <span className="ck-map-legend-diamond" style={{ background: t.color }} />
-              {t.label}
-            </div>
-          ))}
-        </div>
 
         {isAdmin && pins.length > 0 && (
           <div className="ck-map-pin-list">
