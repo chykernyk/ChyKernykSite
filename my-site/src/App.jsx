@@ -1623,7 +1623,7 @@ function AroundAboutMap({ pins, addMode, onMapClick, onPinClick, activeTypes }) 
             onClick={() => {
               const map = mapRef.current;
               if (!map) return;
-              map.fitBounds(L.latLngBounds(g.pins.map(p => [p.lat, p.lng])).pad(0.5));
+              map.panTo(L.latLngBounds(g.pins.map(p => [p.lat, p.lng])).getCenter());
             }}
           >
             <span className="ck-map-offscreen-arrow" style={{ transform: `rotate(${g.angle}deg)` }}>▲</span>
