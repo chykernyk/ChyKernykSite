@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 import imgBarbaraHepworthGarden from "./assets/images/BarbaraHepworthGarden.jpeg";
 import imgBarbaraHepworthStudio from "./assets/images/BarbaraHepworthStudio.jpeg";
 import imgBarbaraHepworthStudio2 from "./assets/images/BarbaraHepworthStudio2.jpeg";
@@ -230,13 +232,20 @@ const PIN_TYPES = {
 
 // Reference points shown on the map for orientation (not clickable pins).
 const MAP_LANDMARKS = [
-  { x: 4, y: 46, label: "Helford" },
-  { x: 20, y: 34, label: "Falmouth" },
-  { x: 32, y: 52, label: "St Mawes" },
-  { x: 43, y: 58, label: "Portscatho", isHome: true },
-  { x: 53, y: 66, label: "Nare Head" },
-  { x: 67, y: 60, label: "Portloe" },
-  { x: 92, y: 52, label: "Dodman Point" },
+  { lat: 50.1533, lng: -5.0708, label: "Falmouth" },
+  { lat: 50.1547, lng: -5.0136, label: "St Mawes" },
+  { lat: 50.1840, lng: -4.9860, label: "Portscatho", isHome: true },
+  { lat: 50.2632, lng: -5.0510, label: "Truro" },
+  { lat: 50.3128, lng: -5.2027, label: "St Agnes" },
+  { lat: 50.2213, lng: -4.7936, label: "Dodman Point" },
+  { lat: 50.3390, lng: -4.7903, label: "St Austell" },
+];
+
+// Corners used to fit the map's initial view.
+const MAP_BOUNDS = [
+  [50.1533, -5.0708], // Falmouth
+  [50.3128, -5.2027], // St Agnes
+  [50.3390, -4.7903], // St Austell
 ];
 
 // ─── STYLES ──────────────────────────────────────────────────────────
@@ -756,44 +765,27 @@ const CSS = `
 
   /* ── AROUND & ABOUT MAP ── */
   .ck-map-wrap {
-    position:relative; width:100%; aspect-ratio: 2 / 1;
+    position:relative; z-index:0; isolation:isolate;
+    width:100%; aspect-ratio: 2 / 1;
     border-radius:16px; overflow:hidden;
     border:1px solid var(--sand-dark);
-    background: linear-gradient(180deg, var(--ocean-light) 0%, var(--ocean) 100%);
+    background:var(--sand-dark);
   }
   .ck-map-wrap.ck-map-addable { cursor:crosshair; }
-  .ck-map-svg { position:absolute; inset:0; width:100%; height:100%; }
-  .ck-map-landmark {
-    position:absolute; transform:translate(-50%,-50%);
-    display:flex; flex-direction:column; align-items:center; gap:0.3rem;
-    pointer-events:none;
+  .ck-map-wrap .leaflet-tooltip.ck-map-tooltip {
+    background:rgba(26,58,74,0.85); color:var(--white); border:none;
+    font-family:var(--font-body); font-size:0.72rem; letter-spacing:0.04em;
+    padding:0.2rem 0.5rem; box-shadow:none;
   }
-  .ck-map-landmark-dot {
-    width:8px; height:8px; border-radius:50%;
-    background:var(--white); box-shadow:0 0 0 2px rgba(26,58,74,0.4);
-  }
-  .ck-map-landmark.home .ck-map-landmark-dot {
-    width:12px; height:12px; background:var(--gold); box-shadow:0 0 0 3px rgba(197,165,90,0.4);
-  }
-  .ck-map-landmark-label {
-    font-size:0.72rem; letter-spacing:0.04em; color:var(--white);
-    text-shadow:0 1px 4px rgba(0,0,0,0.5); white-space:nowrap;
-  }
+  .ck-map-wrap .leaflet-tooltip.ck-map-tooltip::before { display:none; }
   .ck-map-pin {
-    position:absolute; transform:translate(-50%,-50%) rotate(45deg);
     width:18px; height:18px; border-radius:3px;
     border:2px solid var(--white);
     box-shadow:0 2px 8px rgba(0,0,0,0.35);
     cursor:pointer; transition: transform 0.2s;
+    transform: rotate(45deg);
   }
-  .ck-map-pin:hover { transform:translate(-50%,-50%) rotate(45deg) scale(1.25); }
-  .ck-map-pin-remove {
-    position:absolute; top:-9px; right:-9px;
-    width:18px; height:18px; border-radius:50%;
-    background:#d44; color:white; border:2px solid white;
-    font-size:0.7rem; line-height:1; display:flex; align-items:center; justify-content:center;
-    cursor:pointer; transform:rotate(-45deg);
-  }
+  .ck-map-pin:hover { transform: rotate(45deg) scale(1.25); }
   .ck-map-legend {
     display:flex; gap:1.5rem; flex-wrap:wrap; margin-top:1.5rem;
   }
@@ -802,7 +794,7 @@ const CSS = `
     font-size:0.82rem; color:var(--text-light);
   }
   .ck-map-legend-diamond {
-    width:12px; height:12px; border-radius:2px; transform:rotate(45deg);
+    width:12px; height:12px; border-radius:2px; transform:rotate(45deg); flex-shrink:0;
   }
   .ck-map-admin-bar {
     display:flex; align-items:center; gap:1rem; margin-bottom:1.25rem; flex-wrap:wrap;
@@ -810,6 +802,18 @@ const CSS = `
   .ck-map-hint {
     font-size:0.85rem; color:var(--text-light); font-style:italic;
   }
+  .ck-map-pin-list {
+    margin-top:2rem; padding-top:1.5rem; border-top:1px solid var(--sand-dark);
+  }
+  .ck-map-pin-list h3 {
+    font-family:var(--font-display); font-size:1.2rem; color:var(--ocean); margin-bottom:1rem;
+  }
+  .ck-map-pin-list-item {
+    display:flex; align-items:center; gap:0.75rem;
+    padding:0.6rem 0; border-bottom:1px solid var(--sand);
+    font-size:0.9rem;
+  }
+  .ck-map-pin-list-item > span:nth-child(2) { flex:1; }
 
   /* ── AUTH MODAL ── */
   .ck-modal-overlay {
@@ -1459,54 +1463,67 @@ function WalkDetail({ walk, setPage, setSubPage }) {
 }
 
 // AROUND & ABOUT
-const MAP_COASTLINE_PATH = "M0,0 L1000,0 L1000,200 L920,275 L780,240 L670,310 L600,260 L530,340 L500,250 L430,300 L360,230 L300,280 L240,210 L180,150 L100,190 L40,230 L0,200 Z";
-
-function AroundAboutMap({ pins, isAdmin, addMode, onMapClick, onPinClick, onPinDelete }) {
+function AroundAboutMap({ pins, addMode, onMapClick, onPinClick }) {
   const wrapRef = useRef(null);
+  const mapRef = useRef(null);
+  const markersRef = useRef([]);
+  const clickHandlerRef = useRef(onPinClick);
+  clickHandlerRef.current = onPinClick;
 
-  const handleClick = e => {
-    if (!addMode || !wrapRef.current) return;
-    const rect = wrapRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    onMapClick({ x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10 });
-  };
+  // Initialize the map once.
+  useEffect(() => {
+    const map = L.map(wrapRef.current, { scrollWheelZoom: false });
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 18,
+    }).addTo(map);
+    map.fitBounds(L.latLngBounds(MAP_BOUNDS), { padding: [24, 24] });
 
-  return (
-    <div
-      ref={wrapRef}
-      className={`ck-map-wrap ${addMode ? "ck-map-addable" : ""}`}
-      onClick={handleClick}
-    >
-      <svg className="ck-map-svg" viewBox="0 0 1000 500" preserveAspectRatio="none">
-        <path d={MAP_COASTLINE_PATH} fill="var(--sand)" stroke="var(--sand-dark)" strokeWidth="3" />
-      </svg>
+    MAP_LANDMARKS.forEach(l => {
+      L.circleMarker([l.lat, l.lng], {
+        radius: l.isHome ? 7 : 5,
+        color: "#fff", weight: 2,
+        fillColor: l.isHome ? "#c5a55a" : "#1a3a4a",
+        fillOpacity: 1,
+      })
+        .addTo(map)
+        .bindTooltip(l.label, { permanent: true, direction: "top", offset: [0, -6], className: "ck-map-tooltip" });
+    });
 
-      {MAP_LANDMARKS.map(l => (
-        <div key={l.label} className={`ck-map-landmark ${l.isHome ? "home" : ""}`} style={{ left: `${l.x}%`, top: `${l.y}%` }}>
-          <div className="ck-map-landmark-dot" />
-          <span className="ck-map-landmark-label">{l.label}</span>
-        </div>
-      ))}
+    mapRef.current = map;
+    return () => { map.remove(); mapRef.current = null; };
+  }, []);
 
-      {pins.map(pin => {
-        const type = PIN_TYPES[pin.link_type];
-        return (
-          <div
-            key={pin.id}
-            className="ck-map-pin"
-            style={{ left: `${pin.x}%`, top: `${pin.y}%`, background: type ? type.color : "var(--stone)" }}
-            title={pin.label}
-            onClick={e => { e.stopPropagation(); if (!addMode) onPinClick(pin); }}
-          >
-            {isAdmin && (
-              <span className="ck-map-pin-remove" onClick={e => { e.stopPropagation(); onPinDelete(pin); }}>×</span>
-            )}
-          </div>
-        );
-      })}
-    </div>
-  );
+  // Toggle add-pin click handling.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    const handler = e => onMapClick({ lat: e.latlng.lat, lng: e.latlng.lng });
+    if (addMode) map.on("click", handler);
+    map.getContainer().style.cursor = addMode ? "crosshair" : "";
+    return () => map.off("click", handler);
+  }, [addMode, onMapClick]);
+
+  // Sync pin markers whenever the pin list changes.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    markersRef.current.forEach(m => map.removeLayer(m));
+    markersRef.current = pins.map(pin => {
+      const type = PIN_TYPES[pin.link_type];
+      const icon = L.divIcon({
+        className: "",
+        html: `<div class="ck-map-pin" style="background:${type ? type.color : "var(--stone)"}"></div>`,
+        iconSize: [18, 18],
+        iconAnchor: [9, 9],
+      });
+      const marker = L.marker([pin.lat, pin.lng], { icon, title: pin.label }).addTo(map);
+      marker.on("click", () => clickHandlerRef.current(pin));
+      return marker;
+    });
+  }, [pins]);
+
+  return <div ref={wrapRef} className={`ck-map-wrap ${addMode ? "ck-map-addable" : ""}`} />;
 }
 
 function AddPinForm({ pos, onCancel, onSave }) {
@@ -1527,7 +1544,7 @@ function AddPinForm({ pos, onCancel, onSave }) {
     setSaving(true);
     try {
       await onSave({
-        x: pos.x, y: pos.y,
+        lat: pos.lat, lng: pos.lng,
         label: PIN_TYPES[linkType].getLabel(item),
         category: PIN_TYPES[linkType].label,
         link_type: linkType,
@@ -1606,7 +1623,7 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
 
   return (
     <>
-      <PageHeader title="Around and About" subtitle="An indicative map of the coast from the Helford River to Dodman Point — click a pin to explore." setPage={setPage} />
+      <PageHeader title="Around and About" subtitle="A map of the coast from Falmouth to St Agnes to St Austell — click a pin to explore." setPage={setPage} />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
         {isAdmin && (
           <div className="ck-map-admin-bar">
@@ -1623,11 +1640,9 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
         {!loading && (
           <AroundAboutMap
             pins={pins}
-            isAdmin={isAdmin}
             addMode={addMode}
             onMapClick={setPendingPos}
             onPinClick={handlePinClick}
-            onPinDelete={handleDeletePin}
           />
         )}
 
@@ -1639,6 +1654,22 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
             </div>
           ))}
         </div>
+
+        {isAdmin && pins.length > 0 && (
+          <div className="ck-map-pin-list">
+            <h3>Manage Pins</h3>
+            {pins.map(pin => {
+              const type = PIN_TYPES[pin.link_type];
+              return (
+                <div key={pin.id} className="ck-map-pin-list-item">
+                  <span className="ck-map-legend-diamond" style={{ background: type ? type.color : "var(--stone)" }} />
+                  <span>{pin.label} <span style={{ color: "var(--text-light)" }}>— {type ? type.label : pin.category}</span></span>
+                  <button className="ck-btn ck-btn-danger ck-btn-sm" onClick={() => handleDeletePin(pin)}>Remove</button>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </section>
 
       {pendingPos && (
