@@ -109,7 +109,7 @@ const WALKS = [
 const PARKRUNS = [
   { name: "Trelissick", url: "https://www.parkrun.org.uk/trelissick/", desc: "A beautiful course through the National Trust grounds at Trelissick, with views over the Fal estuary. Two laps, mostly flat with one gentle climb." },
   { name: "Lanhydrock", url: "https://www.parkrun.org.uk/lanhydrock/", desc: "Set in the stunning grounds of Lanhydrock House. A single-lap course through parkland and woodland. Undulating terrain." },
-  { name: "Falmouth", url: "https://www.parkrun.org.uk/falmouth/", desc: "A scenic course along the seafront and through Gyllyngvase gardens. Flat and fast with beautiful coastal views." },
+  { name: "Penryn Campus", url: "https://www.parkrun.org.uk/penryncampus/", desc: "A mixed trail course around Falmouth University's Penryn Campus, taking in woodland paths and open parkland. Undulating with a friendly campus atmosphere." },
 ];
 
 const REMEDIES = [
