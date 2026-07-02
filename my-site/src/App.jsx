@@ -226,11 +226,11 @@ async function deletePinById(id) {
 // `page` is the nav-less page it should be reachable from via the map's
 // filter bar (omitted for categories that still have their own nav link).
 const PIN_TYPES = {
-  "walk-detail": { label: "Walk", color: "var(--ocean)", items: WALKS, getLabel: i => i.name, getId: i => i.id, page: "walks" },
-  "activity-detail": { label: "Things to Do", color: "var(--coral)", items: ACTIVITIES, getLabel: i => i.name, getId: i => i.id, page: "activities" },
-  "food-detail": { label: "Food & Drink", color: "var(--gold)", items: FOOD_PLACES, getLabel: i => i.name, getId: i => i.id, page: "food" },
-  "parkrun": { label: "parkrun", color: "#3a7d5c", items: PARKRUNS, getLabel: i => i.name, getId: i => i.name, page: "parkrun" },
-  "blog-detail": { label: "Story", color: "var(--stone)", items: BLOG_POSTS, getLabel: i => i.title, getId: i => i.id },
+  "walk-detail": { label: "Walk", color: "var(--ocean)", items: WALKS, getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "walks" },
+  "activity-detail": { label: "Things to Do", color: "var(--coral)", items: ACTIVITIES, getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "activities" },
+  "food-detail": { label: "Food & Drink", color: "var(--gold)", items: FOOD_PLACES, getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "food" },
+  "parkrun": { label: "parkrun", color: "#3a7d5c", items: PARKRUNS, getLabel: i => i.name, getId: i => i.name, getImage: () => null, getSummary: i => i.desc, page: "parkrun" },
+  "blog-detail": { label: "Story", color: "var(--stone)", items: BLOG_POSTS, getLabel: i => i.title, getId: i => i.id, getImage: () => null, getSummary: i => i.excerpt },
 };
 
 // Reference points shown on the map for orientation (not clickable pins).
@@ -781,6 +781,22 @@ const CSS = `
     padding:0.2rem 0.5rem; box-shadow:none;
   }
   .ck-map-wrap .leaflet-tooltip.ck-map-tooltip::before { display:none; }
+  .ck-map-wrap .leaflet-tooltip.ck-map-pin-tooltip {
+    background:var(--white); border:none; border-radius:10px;
+    padding:0; width:200px; box-shadow:0 8px 24px rgba(0,0,0,0.25);
+    white-space:normal; overflow:hidden;
+  }
+  .ck-map-wrap .leaflet-tooltip.ck-map-pin-tooltip::before { display:none; }
+  .ck-map-pin-preview-img { width:100%; height:100px; object-fit:cover; display:block; }
+  .ck-map-pin-preview-body { padding:0.6rem 0.75rem; }
+  .ck-map-pin-preview-label {
+    font-family:var(--font-display); font-size:1rem; color:var(--ocean);
+    margin-bottom:0.2rem; line-height:1.2;
+  }
+  .ck-map-pin-preview-summary {
+    font-size:0.75rem; color:var(--text-light); line-height:1.4;
+    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+  }
   .ck-map-pin {
     width:18px; height:18px; border-radius:3px;
     border:2px solid var(--white);
@@ -1480,6 +1496,25 @@ function WalkDetail({ walk, setPage, setSubPage }) {
 }
 
 // AROUND & ABOUT
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+// Builds the hover-preview card (image + summary) shown for a pin.
+function pinPreviewHTML(pin) {
+  const type = PIN_TYPES[pin.link_type];
+  const item = type && type.items.find(i => type.getId(i) === pin.link_id);
+  const image = item && type.getImage ? type.getImage(item) : null;
+  const summary = item && type.getSummary ? type.getSummary(item) : "";
+  return `
+    ${image ? `<img class="ck-map-pin-preview-img" src="${escapeHtml(image)}" alt="" />` : ""}
+    <div class="ck-map-pin-preview-body">
+      <div class="ck-map-pin-preview-label">${escapeHtml(pin.label)}</div>
+      ${summary ? `<div class="ck-map-pin-preview-summary">${escapeHtml(summary)}</div>` : ""}
+    </div>
+  `;
+}
+
 // Groups off-screen pins into 8 compass directions and returns each
 // group's angle (0 = north, clockwise) plus the pins in it.
 function groupOffscreenPins(pins, bounds, center) {
@@ -1557,7 +1592,8 @@ function AroundAboutMap({ pins, addMode, onMapClick, onPinClick, activeTypes }) 
         iconSize: [18, 18],
         iconAnchor: [9, 9],
       });
-      const marker = L.marker([pin.lat, pin.lng], { icon, title: pin.label }).addTo(map);
+      const marker = L.marker([pin.lat, pin.lng], { icon }).addTo(map);
+      marker.bindTooltip(pinPreviewHTML(pin), { direction: "top", offset: [0, -12], className: "ck-map-pin-tooltip" });
       marker.on("click", () => clickHandlerRef.current(pin));
       return marker;
     });
