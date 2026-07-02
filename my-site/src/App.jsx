@@ -230,7 +230,7 @@ async function deletePinById(id) {
 // filter bar (omitted for categories that still have their own nav link).
 const PIN_TYPES = {
   "walk-detail": { label: "Walks", color: "#c8a2c8", items: WALKS, getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "walks" },
-  "activity-detail": { label: "Things to Do", color: "#22c55e", items: ACTIVITIES, getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "activities" },
+  "activity-detail": { label: "Things to Do", color: "#f97316", items: ACTIVITIES, getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "activities" },
   "food-detail": { label: "Food & Drink", color: "#10b981", items: FOOD_PLACES, getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "food" },
   "parkrun": { label: "parkrun", color: "#1e3a8a", items: PARKRUNS, getLabel: i => i.name, getId: i => i.name, getImage: () => null, getSummary: i => i.desc, page: "parkrun" },
 };
