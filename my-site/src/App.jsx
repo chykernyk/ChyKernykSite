@@ -775,6 +775,12 @@ const CSS = `
   }
   .ck-map-wrap.ck-map-addable { cursor:crosshair; }
   .ck-map-leaflet { position:absolute; inset:0; }
+  .ck-map-wrap .leaflet-tooltip.ck-map-tooltip {
+    background:rgba(26,58,74,0.85); color:var(--white); border:none;
+    font-family:var(--font-body); font-size:0.72rem; letter-spacing:0.04em;
+    padding:0.2rem 0.5rem; box-shadow:none;
+  }
+  .ck-map-wrap .leaflet-tooltip.ck-map-tooltip::before { display:none; }
   .ck-map-pin {
     width:18px; height:18px; border-radius:3px;
     border:2px solid var(--white);
@@ -1508,13 +1514,15 @@ function AroundAboutMap({ pins, addMode, onMapClick, onPinClick, activeTypes }) 
     }).addTo(map);
     map.fitBounds(L.latLngBounds(MAP_BOUNDS), { padding: [24, 24] });
 
-    MAP_LANDMARKS.forEach(l => {
+    MAP_LANDMARKS.filter(l => l.isHome).forEach(l => {
       L.circleMarker([l.lat, l.lng], {
-        radius: l.isHome ? 7 : 5,
+        radius: 7,
         color: "#fff", weight: 2,
-        fillColor: l.isHome ? "#c5a55a" : "#1a3a4a",
+        fillColor: "#d44",
         fillOpacity: 1,
-      }).addTo(map);
+      })
+        .addTo(map)
+        .bindTooltip(l.label, { permanent: true, direction: "top", offset: [0, -6], className: "ck-map-tooltip" });
     });
 
     const updateView = () => setView({ bounds: map.getBounds(), center: map.getCenter() });
