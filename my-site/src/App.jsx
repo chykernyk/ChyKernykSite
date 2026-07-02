@@ -229,11 +229,10 @@ async function deletePinById(id) {
 // `page` is the nav-less page it should be reachable from via the map's
 // filter bar (omitted for categories that still have their own nav link).
 const PIN_TYPES = {
-  "walk-detail": { label: "Walks", color: "var(--ocean)", items: WALKS, getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "walks" },
-  "activity-detail": { label: "Things to Do", color: "var(--coral)", items: ACTIVITIES, getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "activities" },
-  "food-detail": { label: "Food & Drink", color: "var(--gold)", items: FOOD_PLACES, getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "food" },
-  "parkrun": { label: "parkrun", color: "#3a7d5c", items: PARKRUNS, getLabel: i => i.name, getId: i => i.name, getImage: () => null, getSummary: i => i.desc, page: "parkrun" },
-  "blog-detail": { label: "Story", color: "var(--stone)", items: BLOG_POSTS, getLabel: i => i.title, getId: i => i.id, getImage: () => null, getSummary: i => i.excerpt },
+  "walk-detail": { label: "Walks", color: "#c8a2c8", items: WALKS, getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "walks" },
+  "activity-detail": { label: "Things to Do", color: "#22c55e", items: ACTIVITIES, getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "activities" },
+  "food-detail": { label: "Food & Drink", color: "#10b981", items: FOOD_PLACES, getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "food" },
+  "parkrun": { label: "parkrun", color: "#1e3a8a", items: PARKRUNS, getLabel: i => i.name, getId: i => i.name, getImage: () => null, getSummary: i => i.desc, page: "parkrun" },
 };
 
 // Reference points shown on the map for orientation (not clickable pins).
