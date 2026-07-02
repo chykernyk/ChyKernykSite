@@ -971,7 +971,7 @@ const CSS = `
 
   /* ── FOOTER ── */
   .ck-footer {
-    background:var(--ocean); color:rgba(255,255,255,0.6);
+    background:hsl(235, 61%, 45%); color:rgba(255,255,255,0.6);
     padding:3rem 2rem; text-align:center;
   }
   .ck-footer-name {
