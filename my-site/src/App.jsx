@@ -227,7 +227,7 @@ async function deletePinById(id) {
 // filter bar (omitted for categories that still have their own nav link).
 const PIN_TYPES = {
   "walk-detail": { label: "Walk", color: "var(--ocean)", items: WALKS, getLabel: i => i.name, getId: i => i.id, page: "walks" },
-  "activity-detail": { label: "Thing to Do", color: "var(--coral)", items: ACTIVITIES, getLabel: i => i.name, getId: i => i.id, page: "activities" },
+  "activity-detail": { label: "Things to Do", color: "var(--coral)", items: ACTIVITIES, getLabel: i => i.name, getId: i => i.id, page: "activities" },
   "food-detail": { label: "Food & Drink", color: "var(--gold)", items: FOOD_PLACES, getLabel: i => i.name, getId: i => i.id, page: "food" },
   "parkrun": { label: "parkrun", color: "#3a7d5c", items: PARKRUNS, getLabel: i => i.name, getId: i => i.name, page: "parkrun" },
   "blog-detail": { label: "Story", color: "var(--stone)", items: BLOG_POSTS, getLabel: i => i.title, getId: i => i.id },
@@ -297,14 +297,13 @@ const CSS = `
   }
   .ck-logo {
     font-family: var(--font-display);
-    font-size: 1.6rem; font-weight: 300;
+    font-size: 1.6rem; font-weight: 600;
     color: var(--ocean);
     letter-spacing: 0.05em;
     cursor:pointer;
     transition: opacity 0.3s;
   }
   .ck-logo:hover { opacity:0.7; }
-  .ck-logo span { font-weight: 600; }
 
   .ck-nav-links {
     display:flex; gap:0.25rem; align-items:center; flex-wrap:wrap;
