@@ -78,14 +78,14 @@ const BLOG_POSTS = [
 ];
 
 const FOOD_PLACES = [
-  { id: "portscatho-stores", name: "Portscatho Stores", desc: "The heart of the village — exceptional deli, fresh bread daily, local produce, and everything you need. Their pasties are legendary.", image: imgPortscathoStores, tags: ["deli", "groceries", "bakery"], website: "#", location: "Portscatho" },
-  { id: "tregew-food-barn", name: "Tregew Food Barn", desc: "A weekly barn full of local food produce from Bread to Veg and everything in between.", image: imgTregewFoodBarn, tags: ["farm shop", "local produce"], website: "https://www.foodbarn-tregew.co.uk/", location: "Near Froe" },
-  { id: "curgurrell-farm-shop", name: "Curgurrell Farm Shop", desc: "Family-run farm shop with their own livestock and kitchen garden produce. Seasonal, honest, and utterly delicious.", image: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&q=80", tags: ["farm shop", "meat", "seasonal"], website: "#", location: "Curgurrell" },
-  { id: "hidden-hut", name: "Hidden Hut", desc: "Cornwall's most famous beach café. Their feast nights are the stuff of legend — book months ahead. By day, superb cakes and coffee on Porthcurnick Beach.", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80", tags: ["restaurant", "beach", "feast nights"], website: "#", location: "Porthcurnick Beach" },
-  { id: "standard", name: "Standard", desc: "Contemporary dining with impeccable local sourcing. The tasting menu is a journey through Cornwall's finest ingredients.", image: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&q=80", tags: ["restaurant", "fine dining"], website: "#", location: "Falmouth" },
-  { id: "tresanton", name: "Tresanton", desc: "Olga Polizzi's celebrated hotel restaurant in St Mawes. Mediterranean-influenced cooking with stunning harbour views.", image: "https://images.unsplash.com/photo-1550966871-3ed3cdb51f3a?w=800&q=80", tags: ["restaurant", "hotel", "harbour views"], website: "#", location: "St Mawes" },
-  { id: "the-meat-counter", name: "The Meat Counter", desc: "Falmouth's finest butcher and charcuterie. Dry-aged steaks, house-made sausages, and a deli counter that demands multiple visits.", image: "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800&q=80", tags: ["butcher", "deli", "charcuterie"], website: "#", location: "Falmouth" },
-  { id: "scathos-scoops", name: "Scatho's Scoops", desc: "Artisan ice cream made in Portscatho. Clotted cream, Cornish strawberry, and salted caramel are unmissable on a warm afternoon.", image: "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=800&q=80", tags: ["ice cream", "treats"], website: "#", location: "Portscatho" },
+  { id: "portscatho-stores", name: "Portscatho Stores", desc: "The heart of the village — exceptional deli, fresh bread daily, local produce, and everything you need. Their pasties are legendary.", image: imgPortscathoStores, tags: ["deli", "groceries", "bakery"], website: "#", location: "Portscatho", foodType: "buying" },
+  { id: "tregew-food-barn", name: "Tregew Food Barn", desc: "A weekly barn full of local food produce from Bread to Veg and everything in between.", image: imgTregewFoodBarn, tags: ["farm shop", "local produce"], website: "https://www.foodbarn-tregew.co.uk/", location: "Near Froe", foodType: "buying" },
+  { id: "curgurrell-farm-shop", name: "Curgurrell Farm Shop", desc: "Family-run farm shop with their own livestock and kitchen garden produce. Seasonal, honest, and utterly delicious.", image: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&q=80", tags: ["farm shop", "meat", "seasonal"], website: "#", location: "Curgurrell", foodType: "buying" },
+  { id: "hidden-hut", name: "Hidden Hut", desc: "Cornwall's most famous beach café. Their feast nights are the stuff of legend — book months ahead. By day, superb cakes and coffee on Porthcurnick Beach.", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80", tags: ["restaurant", "beach", "feast nights"], website: "#", location: "Porthcurnick Beach", foodType: "eating" },
+  { id: "standard", name: "Standard", desc: "Contemporary dining with impeccable local sourcing. The tasting menu is a journey through Cornwall's finest ingredients.", image: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&q=80", tags: ["restaurant", "fine dining"], website: "#", location: "Falmouth", foodType: "eating" },
+  { id: "tresanton", name: "Tresanton", desc: "Olga Polizzi's celebrated hotel restaurant in St Mawes. Mediterranean-influenced cooking with stunning harbour views.", image: "https://images.unsplash.com/photo-1550966871-3ed3cdb51f3a?w=800&q=80", tags: ["restaurant", "hotel", "harbour views"], website: "#", location: "St Mawes", foodType: "eating" },
+  { id: "the-meat-counter", name: "The Meat Counter", desc: "Falmouth's finest butcher and charcuterie. Dry-aged steaks, house-made sausages, and a deli counter that demands multiple visits.", image: "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800&q=80", tags: ["butcher", "deli", "charcuterie"], website: "#", location: "Falmouth", foodType: "buying" },
+  { id: "scathos-scoops", name: "Scatho's Scoops", desc: "Artisan ice cream made in Portscatho. Clotted cream, Cornish strawberry, and salted caramel are unmissable on a warm afternoon.", image: "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=800&q=80", tags: ["ice cream", "treats"], website: "#", location: "Portscatho", foodType: "eating" },
 ];
 
 const ACTIVITIES = [
@@ -229,11 +229,25 @@ async function deletePinById(id) {
 // `page` is the nav-less page it should be reachable from via the map's
 // filter bar (omitted for categories that still have their own nav link).
 const PIN_TYPES = {
-  "walk-detail": { label: "Walks", color: "#c8a2c8", items: WALKS, getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "walks" },
-  "activity-detail": { label: "Things to Do", color: "#f97316", items: ACTIVITIES, getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "activities" },
-  "food-detail": { label: "Food & Drink", color: "#10b981", items: FOOD_PLACES, getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "food" },
+  "walk-detail": { label: "Walks", color: "#c8a2c8", items: WALKS, getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "walks", subPageType: "walk-detail" },
+  "activity-detail": { label: "Things to Do", color: "#f97316", items: ACTIVITIES, getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "activities", subPageType: "activity-detail" },
+  "eating-out": { label: "Eating Out", color: "#dc2626", items: FOOD_PLACES.filter(f => f.foodType === "eating"), getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "eating-out", subPageType: "food-detail" },
+  "buying-food": { label: "Buying Food", color: "#10b981", items: FOOD_PLACES.filter(f => f.foodType === "buying"), getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "buying-food", subPageType: "food-detail" },
   "parkrun": { label: "parkrun", color: "#1e3a8a", items: PARKRUNS, getLabel: i => i.name, getId: i => i.name, getImage: () => null, getSummary: i => i.desc, page: "parkrun" },
 };
+
+// Navigates to whatever a pin links to — a detail subpage if the category
+// has one (walks, activities, food), or straight to the list page (parkrun).
+function navigateToPin(pin, setPage, setSubPage) {
+  const type = PIN_TYPES[pin.link_type];
+  if (!type) return;
+  if (type.subPageType) {
+    setSubPage({ type: type.subPageType, id: pin.link_id });
+  } else if (type.page) {
+    setPage(type.page);
+  }
+  window.scrollTo(0, 0);
+}
 
 // Reference points shown on the map for orientation (not clickable pins).
 const MAP_LANDMARKS = [
@@ -853,6 +867,32 @@ const CSS = `
     font-size:0.9rem;
   }
   .ck-map-pin-list-item > span:nth-child(2) { flex:1; }
+  .ck-map-jump-bar {
+    display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:1.5rem;
+  }
+  .ck-map-jump-chip {
+    display:flex; align-items:center; gap:0.5rem;
+    padding:0.55rem 1rem; border-radius:20px;
+    border:1px solid var(--sand-dark); background:white;
+    font-family:var(--font-body); font-size:0.85rem; color:var(--text);
+    cursor:pointer; transition: all 0.2s;
+  }
+  .ck-map-jump-chip:hover { border-color:var(--ocean); box-shadow:0 4px 14px rgba(0,0,0,0.08); }
+
+  /* ── CATEGORY LIST + MAP LAYOUT ── */
+  .ck-category-layout {
+    display:grid; grid-template-columns: 1.3fr 1fr; gap:2.5rem; align-items:start;
+  }
+  @media(max-width:900px) { .ck-category-layout { grid-template-columns: 1fr; } }
+  .ck-category-map-wrap { position:sticky; top:100px; }
+  @media(max-width:900px) { .ck-category-map-wrap { position:static; } }
+  .ck-map-wrap-sm { aspect-ratio: 4 / 5; }
+  @media(max-width:900px) { .ck-map-wrap-sm { aspect-ratio: 16 / 10; } }
+  .ck-map-empty-note {
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    text-align:center; padding:1.5rem; pointer-events:none;
+    font-size:0.85rem; color:var(--text-light); background:rgba(254,253,251,0.6);
+  }
 
   /* ── AUTH MODAL ── */
   .ck-modal-overlay {
@@ -1299,39 +1339,67 @@ function GalleryPage({ setPage }) {
 }
 
 // FOOD
-function FoodPage({ setPage, setSubPage }) {
+function FoodListPage({ setPage, setSubPage, foodType, linkType, title, subtitle }) {
+  const places = FOOD_PLACES.filter(p => p.foodType === foodType);
   return (
     <>
-      <PageHeader title="Places to Eat" subtitle="From beach cafés to fine dining — the Roseland and beyond offer extraordinary food." setPage={setPage} />
+      <PageHeader title={title} subtitle={subtitle} setPage={setPage} />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
-        <div className="ck-grid">
-          {FOOD_PLACES.map(place => (
-            <div key={place.id} className="ck-card" onClick={() => { setSubPage({ type: "food-detail", id: place.id }); window.scrollTo(0, 0); }}>
-              <div className="ck-card-img-wrap"><img className="ck-card-img" src={place.image} alt={place.name} loading="lazy" /></div>
-              <div className="ck-card-body">
-                <p className="ck-card-meta">{place.location}</p>
-                <h3 className="ck-card-title">{place.name}</h3>
-                <p className="ck-card-text">{place.desc}</p>
-                <div className="ck-card-tags">
-                  {place.tags.map(t => <span key={t} className="ck-tag">{t}</span>)}
+        <div className="ck-category-layout">
+          <div className="ck-grid">
+            {places.map(place => (
+              <div key={place.id} className="ck-card" onClick={() => { setSubPage({ type: "food-detail", id: place.id }); window.scrollTo(0, 0); }}>
+                <div className="ck-card-img-wrap"><img className="ck-card-img" src={place.image} alt={place.name} loading="lazy" /></div>
+                <div className="ck-card-body">
+                  <p className="ck-card-meta">{place.location}</p>
+                  <h3 className="ck-card-title">{place.name}</h3>
+                  <p className="ck-card-text">{place.desc}</p>
+                  <div className="ck-card-tags">
+                    {place.tags.map(t => <span key={t} className="ck-tag">{t}</span>)}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          <div className="ck-category-map-wrap">
+            <CategoryMap linkType={linkType} setPage={setPage} setSubPage={setSubPage} />
+          </div>
         </div>
       </section>
     </>
   );
 }
 
+function EatingOutPage({ setPage, setSubPage }) {
+  return (
+    <FoodListPage
+      setPage={setPage} setSubPage={setSubPage}
+      foodType="eating" linkType="eating-out"
+      title="Eating Out" subtitle="From beach cafés to fine dining — the Roseland and beyond offer extraordinary places to eat."
+    />
+  );
+}
+
+function BuyingFoodPage({ setPage, setSubPage }) {
+  return (
+    <FoodListPage
+      setPage={setPage} setSubPage={setSubPage}
+      foodType="buying" linkType="buying-food"
+      title="Buying Food" subtitle="Farm shops, delis, and stores stocked with the very best Cornish produce."
+    />
+  );
+}
+
 function FoodDetail({ place, setPage, setSubPage }) {
   if (!place) return <div className="ck-section"><p>Place not found.</p></div>;
+  const backTo = place.foodType === "eating" ? "eating-out" : "buying-food";
+  const backLabel = place.foodType === "eating" ? "Eating Out" : "Buying Food";
   return (
     <>
       <img src={place.image} alt={place.name} className="ck-detail-hero" />
       <div className="ck-detail-content">
         <div className="ck-breadcrumb" style={{ marginBottom: "1rem" }}>
-          <button onClick={() => { setSubPage(null); setPage("food"); window.scrollTo(0, 0); }}>Food</button>
+          <button onClick={() => { setSubPage(null); setPage(backTo); window.scrollTo(0, 0); }}>{backLabel}</button>
           <span> / {place.name}</span>
         </div>
         <h1 className="ck-detail-title">{place.name}</h1>
@@ -1354,19 +1422,24 @@ function ActivitiesPage({ setPage, setSubPage }) {
     <>
       <PageHeader title="Things to Do" subtitle="Adventures, gardens, culture, and coastline — there's something for everyone." setPage={setPage} />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
-        <div className="ck-grid">
-          {ACTIVITIES.map(a => (
-            <div key={a.id} className="ck-card" onClick={() => { setSubPage({ type: "activity-detail", id: a.id }); window.scrollTo(0, 0); }}>
-              <div className="ck-card-img-wrap"><img className="ck-card-img" src={a.image} alt={a.name} loading="lazy" /></div>
-              <div className="ck-card-body">
-                <h3 className="ck-card-title">{a.name}</h3>
-                <p className="ck-card-text">{a.desc}</p>
-                <div className="ck-card-tags">
-                  {a.tags.map(t => <span key={t} className="ck-tag">{t}</span>)}
+        <div className="ck-category-layout">
+          <div className="ck-grid">
+            {ACTIVITIES.map(a => (
+              <div key={a.id} className="ck-card" onClick={() => { setSubPage({ type: "activity-detail", id: a.id }); window.scrollTo(0, 0); }}>
+                <div className="ck-card-img-wrap"><img className="ck-card-img" src={a.image} alt={a.name} loading="lazy" /></div>
+                <div className="ck-card-body">
+                  <h3 className="ck-card-title">{a.name}</h3>
+                  <p className="ck-card-text">{a.desc}</p>
+                  <div className="ck-card-tags">
+                    {a.tags.map(t => <span key={t} className="ck-tag">{t}</span>)}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          <div className="ck-category-map-wrap">
+            <CategoryMap linkType="activity-detail" setPage={setPage} setSubPage={setSubPage} />
+          </div>
         </div>
       </section>
     </>
@@ -1399,20 +1472,25 @@ function WalksPage({ setPage, setSubPage }) {
     <>
       <PageHeader title="Local Walks" subtitle="The Roseland Peninsula offers some of the finest coastal and countryside walking in Cornwall." setPage={setPage} />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
-        <div className="ck-grid">
-          {WALKS.map(w => (
-            <div key={w.id} className="ck-card" onClick={() => { setSubPage({ type: "walk-detail", id: w.id }); window.scrollTo(0, 0); }}>
-              <div className="ck-card-img-wrap"><img className="ck-card-img" src={w.image} alt={w.name} loading="lazy" /></div>
-              <div className="ck-card-body">
-                <h3 className="ck-card-title">{w.name}</h3>
-                <p className="ck-card-text">{w.desc}</p>
-                <div className="ck-card-tags">
-                  <span className="ck-tag">{w.length}</span>
-                  <span className="ck-tag">{w.difficulty}</span>
+        <div className="ck-category-layout">
+          <div className="ck-grid">
+            {WALKS.map(w => (
+              <div key={w.id} className="ck-card" onClick={() => { setSubPage({ type: "walk-detail", id: w.id }); window.scrollTo(0, 0); }}>
+                <div className="ck-card-img-wrap"><img className="ck-card-img" src={w.image} alt={w.name} loading="lazy" /></div>
+                <div className="ck-card-body">
+                  <h3 className="ck-card-title">{w.name}</h3>
+                  <p className="ck-card-text">{w.desc}</p>
+                  <div className="ck-card-tags">
+                    <span className="ck-tag">{w.length}</span>
+                    <span className="ck-tag">{w.difficulty}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          <div className="ck-category-map-wrap">
+            <CategoryMap linkType="walk-detail" setPage={setPage} setSubPage={setSubPage} />
+          </div>
         </div>
       </section>
     </>
@@ -1634,6 +1712,67 @@ function AroundAboutMap({ pins, addMode, onMapClick, onPinClick, activeTypes }) 
   );
 }
 
+// A smaller, read-only map for a single category's page (Walks, Things to
+// Do, Eating Out, Buying Food, parkrun) — shows only pins for that category.
+function CategoryMap({ linkType, setPage, setSubPage }) {
+  const wrapRef = useRef(null);
+  const mapRef = useRef(null);
+  const markersRef = useRef([]);
+  const [pins, setPins] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchPins()
+      .then(rows => { if (!cancelled) setPins(rows.filter(p => p.link_type === linkType)); })
+      .catch(() => {})
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, [linkType]);
+
+  useEffect(() => {
+    const map = L.map(wrapRef.current, { scrollWheelZoom: false });
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 18,
+    }).addTo(map);
+    map.fitBounds(L.latLngBounds(MAP_BOUNDS), { padding: [16, 16] });
+    mapRef.current = map;
+    return () => { map.remove(); mapRef.current = null; };
+  }, []);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    markersRef.current.forEach(m => map.removeLayer(m));
+    const type = PIN_TYPES[linkType];
+    markersRef.current = pins.map(pin => {
+      const icon = L.divIcon({
+        className: "",
+        html: `<div class="ck-map-pin" style="background:${type ? type.color : "var(--stone)"}"></div>`,
+        iconSize: [18, 18],
+        iconAnchor: [9, 9],
+      });
+      const marker = L.marker([pin.lat, pin.lng], { icon }).addTo(map);
+      marker.bindTooltip(pinPreviewHTML(pin), { direction: "top", offset: [0, -12], className: "ck-map-pin-tooltip" });
+      marker.on("click", () => navigateToPin(pin, setPage, setSubPage));
+      return marker;
+    });
+    if (pins.length > 0) {
+      map.fitBounds(L.latLngBounds(pins.map(p => [p.lat, p.lng])), { padding: [30, 30], maxZoom: 14 });
+    }
+  }, [pins]);
+
+  return (
+    <div className="ck-map-wrap ck-map-wrap-sm">
+      <div ref={wrapRef} className="ck-map-leaflet" />
+      {!loading && pins.length === 0 && (
+        <div className="ck-map-empty-note">No pins added for this category yet.</div>
+      )}
+    </div>
+  );
+}
+
 function AddPinForm({ pos, onCancel, onSave }) {
   const [linkType, setLinkType] = useState("walk-detail");
   const [itemId, setItemId] = useState(() => {
@@ -1672,7 +1811,7 @@ function AddPinForm({ pos, onCancel, onSave }) {
     <div className="ck-modal-overlay" onClick={onCancel}>
       <div className="ck-modal" onClick={e => e.stopPropagation()}>
         <h2 className="ck-modal-title">Add a Pin</h2>
-        <p className="ck-modal-subtitle">Link this spot on the map to a walk, activity, food listing, parkrun, or blog post.</p>
+        <p className="ck-modal-subtitle">Link this spot on the map to a walk, activity, place to eat, place to buy food, or parkrun.</p>
         <div className="ck-form-group">
           <label className="ck-label">Category</label>
           <select className="ck-input" value={linkType} onChange={e => handleTypeChange(e.target.value)}>
@@ -1719,16 +1858,7 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
     return () => { cancelled = true; };
   }, []);
 
-  const handlePinClick = pin => {
-    const type = PIN_TYPES[pin.link_type];
-    if (!type) return;
-    if (pin.link_type === "parkrun") {
-      setPage("parkrun");
-    } else {
-      setSubPage({ type: pin.link_type, id: pin.link_id });
-    }
-    window.scrollTo(0, 0);
-  };
+  const handlePinClick = pin => navigateToPin(pin, setPage, setSubPage);
 
   const handleSavePin = async data => {
     const saved = await createPin(data);
@@ -1744,7 +1874,7 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
 
   return (
     <>
-      <PageHeader title="Around and About" subtitle="A map of the Roseland Peninsula — click a pin to explore, or use the filters to browse by category." setPage={setPage} />
+      <PageHeader title="Around and About" subtitle="A map of the Roseland Peninsula — click a pin to explore, or jump straight to a category." setPage={setPage} />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
         {isAdmin && (
           <div className="ck-map-admin-bar">
@@ -1755,22 +1885,11 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
           </div>
         )}
 
-        <div className="ck-map-filter-bar">
-          {Object.entries(PIN_TYPES).map(([key, t]) => (
-            <button
-              key={key}
-              className={`ck-map-filter-chip ${activeTypes[key] ? "active" : ""}`}
-              onClick={() => setActiveTypes(prev => ({ ...prev, [key]: !prev[key] }))}
-            >
+        <div className="ck-map-jump-bar">
+          {Object.entries(PIN_TYPES).filter(([, t]) => t.page).map(([key, t]) => (
+            <button key={key} className="ck-map-jump-chip" onClick={() => { setPage(t.page); window.scrollTo(0, 0); }}>
               <span className="ck-map-legend-diamond" style={{ background: t.color }} />
               {t.label}
-              {t.page && (
-                <span
-                  className="ck-map-filter-link"
-                  title={`View all ${t.label}`}
-                  onClick={e => { e.stopPropagation(); setPage(t.page); window.scrollTo(0, 0); }}
-                >↗</span>
-              )}
             </button>
           ))}
         </div>
@@ -1787,6 +1906,19 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
             activeTypes={activeTypes}
           />
         )}
+
+        <div className="ck-map-filter-bar" style={{ marginTop: "1.5rem" }}>
+          {Object.entries(PIN_TYPES).map(([key, t]) => (
+            <button
+              key={key}
+              className={`ck-map-filter-chip ${activeTypes[key] ? "active" : ""}`}
+              onClick={() => setActiveTypes(prev => ({ ...prev, [key]: !prev[key] }))}
+            >
+              <span className="ck-map-legend-diamond" style={{ background: t.color }} />
+              {t.label}
+            </button>
+          ))}
+        </div>
 
         {isAdmin && pins.length > 0 && (
           <div className="ck-map-pin-list">
@@ -1813,17 +1945,24 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
 }
 
 // PARKRUN
-function ParkrunPage({ setPage }) {
+function ParkrunPage({ setPage, setSubPage }) {
   return (
     <>
       <PageHeader title="parkrun" subtitle="Wonderful parkruns within easy reach. Every Saturday at 9am, free, for everyone, forever." setPage={setPage} />
-      <section className="ck-section" style={{ paddingTop: "1rem", maxWidth: 700 }}>
-        {PARKRUNS.map(pr => (
-          <div key={pr.name} className="ck-parkrun-card">
-            <a href={pr.url} target="_blank" rel="noopener noreferrer" className="ck-parkrun-link">{pr.name} parkrun ↗</a>
-            <p style={{ fontSize: "0.92rem", color: "var(--text-light)", marginTop: "0.5rem", lineHeight: 1.7 }}>{pr.desc}</p>
+      <section className="ck-section" style={{ paddingTop: "1rem" }}>
+        <div className="ck-category-layout">
+          <div>
+            {PARKRUNS.map(pr => (
+              <div key={pr.name} className="ck-parkrun-card">
+                <a href={pr.url} target="_blank" rel="noopener noreferrer" className="ck-parkrun-link">{pr.name} parkrun ↗</a>
+                <p style={{ fontSize: "0.92rem", color: "var(--text-light)", marginTop: "0.5rem", lineHeight: 1.7 }}>{pr.desc}</p>
+              </div>
+            ))}
           </div>
-        ))}
+          <div className="ck-category-map-wrap">
+            <CategoryMap linkType="parkrun" setPage={setPage} setSubPage={setSubPage} />
+          </div>
+        </div>
       </section>
     </>
   );
@@ -2067,11 +2206,12 @@ export default function App() {
     home: <HomePage setPage={setPage} />,
     blog: <BlogPage setPage={setPage} posts={posts} setPosts={setPosts} isAdmin={isAdmin} setSubPage={setSubPage} />,
     gallery: <GalleryPage setPage={setPage} />,
-    food: <FoodPage setPage={setPage} setSubPage={setSubPage} />,
+    "eating-out": <EatingOutPage setPage={setPage} setSubPage={setSubPage} />,
+    "buying-food": <BuyingFoodPage setPage={setPage} setSubPage={setSubPage} />,
     activities: <ActivitiesPage setPage={setPage} setSubPage={setSubPage} />,
     walks: <WalksPage setPage={setPage} setSubPage={setSubPage} />,
     around: <AroundAboutPage setPage={setPage} setSubPage={setSubPage} isAdmin={isAdmin} />,
-    parkrun: <ParkrunPage setPage={setPage} />,
+    parkrun: <ParkrunPage setPage={setPage} setSubPage={setSubPage} />,
     calendar: <CalendarPage setPage={setPage} isAdmin={isAdmin} />,
     remedies: <RemediesPage setPage={setPage} />,
     contact: <ContactPage setPage={setPage} />,
