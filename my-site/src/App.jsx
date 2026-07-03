@@ -225,6 +225,48 @@ async function deletePinById(id) {
   if (!res.ok) throw new Error("Failed to delete pin");
 }
 
+// ─── VISITORS BOOK ───────────────────────────────────────────────────
+// Entries (and their photos) live in Supabase for the same reason pins do —
+// this is a static site with no server of its own. Photos go to a separate
+// storage bucket, not the site's bundled gallery.
+async function fetchVisitorEntries() {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/visitor_entries?select=*&order=entry_date.desc,created_at.desc`, {
+    headers: SUPABASE_HEADERS,
+  });
+  if (!res.ok) throw new Error("Failed to load visitors book entries");
+  return res.json();
+}
+
+async function createVisitorEntry(entry) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/visitor_entries`, {
+    method: "POST",
+    headers: { ...SUPABASE_HEADERS, "Content-Type": "application/json", Prefer: "return=representation" },
+    body: JSON.stringify(entry),
+  });
+  if (!res.ok) throw new Error("Failed to save entry");
+  const rows = await res.json();
+  return rows[0];
+}
+
+async function deleteVisitorEntry(id) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/visitor_entries?id=eq.${id}`, {
+    method: "DELETE",
+    headers: SUPABASE_HEADERS,
+  });
+  if (!res.ok) throw new Error("Failed to delete entry");
+}
+
+async function uploadVisitorPhoto(file) {
+  const path = `${Date.now()}-${Math.random().toString(36).slice(2)}-${file.name}`;
+  const res = await fetch(`${SUPABASE_URL}/storage/v1/object/visitor-photos/${encodeURIComponent(path)}`, {
+    method: "POST",
+    headers: { ...SUPABASE_HEADERS, "Content-Type": file.type || "application/octet-stream" },
+    body: file,
+  });
+  if (!res.ok) throw new Error("Failed to upload photo");
+  return `${SUPABASE_URL}/storage/v1/object/public/visitor-photos/${encodeURIComponent(path)}`;
+}
+
 // What a pin can link to, and how each category is presented on the map.
 // `page` is the nav-less page it should be reachable from via the map's
 // filter bar (omitted for categories that still have their own nav link).
@@ -642,6 +684,46 @@ const CSS = `
     transition: color 0.3s;
   }
   .ck-read-more:hover { color:var(--gold); }
+
+  /* ── VISITORS BOOK ── */
+  .ck-visitor-form {
+    padding:2rem; border-radius:12px; background:var(--sand);
+    margin-bottom:2.5rem;
+  }
+  .ck-visitor-form-title {
+    font-family:var(--font-display); font-size:1.3rem;
+    color:var(--ocean); margin-bottom:1.25rem;
+  }
+  .ck-visitor-form-filecount {
+    font-size:0.8rem; color:var(--text-light); margin-top:0.4rem;
+  }
+  .ck-visitor-entries { display:flex; flex-direction:column; gap:1.5rem; }
+  .ck-visitor-entry {
+    padding:1.5rem; border-radius:12px; border:1px solid var(--sand-dark);
+  }
+  .ck-visitor-entry-header {
+    display:flex; justify-content:space-between; align-items:baseline;
+    flex-wrap:wrap; gap:0.5rem; margin-bottom:0.75rem;
+  }
+  .ck-visitor-entry-name {
+    font-family:var(--font-display); font-size:1.2rem; color:var(--ocean);
+  }
+  .ck-visitor-entry-date {
+    font-size:0.78rem; color:var(--gold);
+    letter-spacing:0.08em; text-transform:uppercase;
+  }
+  .ck-visitor-entry-message {
+    font-size:0.95rem; line-height:1.7; color:var(--text); white-space:pre-wrap;
+  }
+  .ck-visitor-entry-photos {
+    display:grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap:0.5rem; margin-top:1rem;
+  }
+  .ck-visitor-entry-photos img {
+    width:100%; aspect-ratio:1; object-fit:cover; border-radius:8px; cursor:pointer;
+    transition: transform 0.3s;
+  }
+  .ck-visitor-entry-photos img:hover { transform:scale(1.05); }
 
   /* ── FORMS ── */
   .ck-form-group { margin-bottom:1.25rem; }
@@ -1088,6 +1170,7 @@ function Nav({ page, setPage, isAdmin, onLoginClick, onLogout, mobileOpen, setMo
     { id: "home", label: "Home" },
     { id: "blog", label: "Blog" },
     { id: "gallery", label: "Gallery" },
+    { id: "visitors-book", label: "Visitors Book" },
     { id: "around", label: "Around and About" },
     { id: "calendar", label: "Calendar" },
     { id: "remedies", label: "Remedies" },
@@ -1333,6 +1416,134 @@ function GalleryPage({ setPage }) {
           <button className="ck-lightbox-close" onClick={() => setLightbox(null)} aria-label="Close lightbox">×</button>
           <img src={lightbox.url} alt={lightbox.caption} />
           <div className="ck-lightbox-caption">{lightbox.caption}</div>
+        </div>
+      )}
+    </>
+  );
+}
+
+// VISITORS BOOK
+const MAX_VISITOR_PHOTOS = 6;
+
+function VisitorEntryForm({ onAdded }) {
+  const [name, setName] = useState("");
+  const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
+  const [message, setMessage] = useState("");
+  const [files, setFiles] = useState([]);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async () => {
+    if (!name.trim() || !message.trim()) return;
+    setSaving(true);
+    setError("");
+    try {
+      const photo_urls = [];
+      for (const file of files) {
+        photo_urls.push(await uploadVisitorPhoto(file));
+      }
+      const saved = await createVisitorEntry({ name: name.trim(), entry_date: date, message: message.trim(), photo_urls });
+      onAdded(saved);
+      setName("");
+      setMessage("");
+      setFiles([]);
+    } catch (err) {
+      setError("Something went wrong saving your entry — please try again.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="ck-visitor-form">
+      <h3 className="ck-visitor-form-title">Sign the Visitors Book</h3>
+      {error && <p className="ck-modal-error">{error}</p>}
+      <div className="ck-form-group">
+        <label className="ck-label">Name</label>
+        <input className="ck-input" value={name} onChange={e => setName(e.target.value)} placeholder="Your name" />
+      </div>
+      <div className="ck-form-group">
+        <label className="ck-label">Date</label>
+        <input className="ck-input" type="date" value={date} onChange={e => setDate(e.target.value)} />
+      </div>
+      <div className="ck-form-group">
+        <label className="ck-label">Message</label>
+        <textarea className="ck-textarea" value={message} onChange={e => setMessage(e.target.value)} placeholder="Share your memories from your stay…" />
+      </div>
+      <div className="ck-form-group">
+        <label className="ck-label">Photos (optional, up to {MAX_VISITOR_PHOTOS})</label>
+        <input type="file" accept="image/*" multiple onChange={e => setFiles(Array.from(e.target.files || []).slice(0, MAX_VISITOR_PHOTOS))} />
+        {files.length > 0 && <p className="ck-visitor-form-filecount">{files.length} photo{files.length > 1 ? "s" : ""} selected</p>}
+      </div>
+      <button className="ck-btn ck-btn-primary" onClick={handleSubmit} disabled={saving || !name.trim() || !message.trim()}>
+        {saving ? "Saving…" : "Add Entry"}
+      </button>
+    </div>
+  );
+}
+
+function VisitorsBookPage({ setPage, isAdmin }) {
+  const [entries, setEntries] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [lightbox, setLightbox] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchVisitorEntries()
+      .then(rows => { if (!cancelled) setEntries(rows); })
+      .catch(() => { if (!cancelled) setError("Couldn't load the visitors book right now."); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, []);
+
+  const handleDelete = async entry => {
+    if (!confirm(`Remove ${entry.name}'s entry?`)) return;
+    await deleteVisitorEntry(entry.id);
+    setEntries(prev => prev.filter(e => e.id !== entry.id));
+  };
+
+  return (
+    <>
+      <PageHeader title="Visitors Book" subtitle="A place for guests to share memories from their stay at Chy Kernyk." setPage={setPage} />
+      <section className="ck-section" style={{ paddingTop: "1rem", maxWidth: 800 }}>
+        <VisitorEntryForm onAdded={entry => setEntries(prev => [entry, ...prev])} />
+
+        {loading && <p style={{ color: "var(--text-light)" }}>Loading entries…</p>}
+        {error && <p className="ck-modal-error">{error}</p>}
+        {!loading && entries.length === 0 && (
+          <p style={{ color: "var(--text-light)", marginTop: "2rem" }}>No entries yet — be the first to sign the book!</p>
+        )}
+
+        <div className="ck-visitor-entries">
+          {entries.map(entry => (
+            <div key={entry.id} className="ck-visitor-entry">
+              <div className="ck-visitor-entry-header">
+                <span className="ck-visitor-entry-name">{entry.name}</span>
+                <span className="ck-visitor-entry-date">
+                  {new Date(entry.entry_date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
+                </span>
+              </div>
+              <p className="ck-visitor-entry-message">{entry.message}</p>
+              {entry.photo_urls && entry.photo_urls.length > 0 && (
+                <div className="ck-visitor-entry-photos">
+                  {entry.photo_urls.map((url, i) => (
+                    <img key={i} src={url} alt={`Photo ${i + 1} from ${entry.name}`} loading="lazy" onClick={() => setLightbox(url)} />
+                  ))}
+                </div>
+              )}
+              {isAdmin && (
+                <button className="ck-btn ck-btn-danger ck-btn-sm" style={{ marginTop: "1rem" }} onClick={() => handleDelete(entry)}>Remove Entry</button>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {lightbox && (
+        <div className="ck-lightbox" onClick={() => setLightbox(null)} role="dialog" aria-label="Image lightbox">
+          <button className="ck-lightbox-close" onClick={() => setLightbox(null)} aria-label="Close lightbox">×</button>
+          <img src={lightbox} alt="" />
         </div>
       )}
     </>
@@ -2229,6 +2440,7 @@ export default function App() {
     home: <HomePage setPage={setPage} />,
     blog: <BlogPage setPage={setPage} posts={posts} setPosts={setPosts} isAdmin={isAdmin} setSubPage={setSubPage} />,
     gallery: <GalleryPage setPage={setPage} />,
+    "visitors-book": <VisitorsBookPage setPage={setPage} isAdmin={isAdmin} />,
     "eating-out": <EatingOutPage setPage={setPage} setSubPage={setSubPage} />,
     "buying-food": <BuyingFoodPage setPage={setPage} setSubPage={setSubPage} />,
     activities: <ActivitiesPage setPage={setPage} setSubPage={setSubPage} />,
