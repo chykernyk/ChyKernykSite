@@ -1171,9 +1171,9 @@ function Nav({ page, setPage, isAdmin, onLoginClick, onLogout, mobileOpen, setMo
     { id: "blog", label: "Blog" },
     { id: "gallery", label: "Gallery" },
     { id: "visitors-book", label: "Visitors Book" },
-    { id: "around", label: "Around and About" },
+    { id: "around", label: "Explore" },
     { id: "calendar", label: "Calendar" },
-    { id: "remedies", label: "Remedies" },
+    { id: "remedies", label: "Info" },
     { id: "contact", label: "Contact" },
   ];
 
@@ -2108,7 +2108,7 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
 
   return (
     <>
-      <PageHeader title="Around and About" subtitle="A map of the Roseland Peninsula — click a pin to explore, or jump straight to a category." setPage={setPage} />
+      <PageHeader title="Explore" subtitle="A map of the Roseland Peninsula — click a pin to explore, or jump straight to a category." setPage={setPage} />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
         {isAdmin && (
           <div className="ck-map-admin-bar">
@@ -2206,7 +2206,7 @@ function ParkrunPage({ setPage, setSubPage }) {
 function RemediesPage({ setPage }) {
   return (
     <>
-      <PageHeader title="Useful Information" subtitle="Emergency contacts, maintenance details, and practical information for your stay." setPage={setPage} />
+      <PageHeader title="Info" subtitle="Emergency contacts, maintenance details, and practical information for your stay." setPage={setPage} />
       <section className="ck-section" style={{ paddingTop: "1rem", maxWidth: 800 }}>
         {REMEDIES.map(cat => (
           <div key={cat.category} className="ck-remedy-section">
