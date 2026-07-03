@@ -1168,12 +1168,12 @@ function Nav({ page, setPage, isAdmin, onLoginClick, onLogout, mobileOpen, setMo
 
   const links = [
     { id: "home", label: "Home" },
-    { id: "blog", label: "Blog" },
-    { id: "gallery", label: "Gallery" },
-    { id: "visitors-book", label: "Visitors Book" },
     { id: "around", label: "Explore" },
-    { id: "calendar", label: "Calendar" },
+    { id: "gallery", label: "Gallery" },
+    { id: "blog", label: "Story" },
+    { id: "visitors-book", label: "Visitors Book" },
     { id: "remedies", label: "Info" },
+    { id: "calendar", label: "Calendar" },
     { id: "contact", label: "Contact" },
   ];
 
@@ -1320,7 +1320,7 @@ function BlogPage({ setPage, posts, setPosts, isAdmin, setSubPage }) {
   if (editing) {
     return (
       <>
-        <PageHeader title={editing === "new" ? "New Post" : "Edit Post"} setPage={setPage} backTo="blog" backLabel="Blog" />
+        <PageHeader title={editing === "new" ? "New Post" : "Edit Post"} setPage={setPage} backTo="blog" backLabel="Story" />
         <section className="ck-section" style={{ maxWidth: 800, paddingTop: "2rem" }}>
           <div className="ck-form-group">
             <label className="ck-label">Title</label>
@@ -1379,7 +1379,7 @@ function BlogDetail({ post, setPage, setSubPage }) {
       <div className="ck-page-header">
         <div className="ck-page-header-inner">
           <div className="ck-breadcrumb">
-            <button onClick={() => { setSubPage(null); setPage("blog"); window.scrollTo(0, 0); }}>Blog</button>
+            <button onClick={() => { setSubPage(null); setPage("blog"); window.scrollTo(0, 0); }}>Story</button>
             <span> / {post.title}</span>
           </div>
         </div>
