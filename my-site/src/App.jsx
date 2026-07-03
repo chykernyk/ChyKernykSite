@@ -40,6 +40,7 @@ import imgStMawesHarbourWall from "./assets/images/StMawesHarbourWall.jpeg";
 import imgStandardInnEvening from "./assets/images/StandardInnEvening.jpeg";
 import imgStandardInnGarden from "./assets/images/StandardInnGarden.jpeg";
 import imgTheStandard from "./assets/images/TheStandard.jpeg";
+import imgTheStandardLevel from "./assets/images/TheStandardLevel.jpeg";
 import imgTowanShellPicking from "./assets/images/TowanShellPicking.jpeg";
 import imgTregew from "./assets/images/Tregew.jpeg";
 import imgTregewFish from "./assets/images/TregewFish.jpeg";
@@ -82,28 +83,36 @@ const FOOD_PLACES = [
   { id: "tregew-food-barn", name: "Tregew Food Barn", desc: "A weekly barn full of local food produce from Bread to Veg and everything in between.", image: imgTregewFoodBarn, tags: ["farm shop", "local produce"], website: "https://www.foodbarn-tregew.co.uk/", location: "Near Froe", foodType: "buying" },
   { id: "curgurrell-farm-shop", name: "Curgurrell Farm Shop", desc: "Family-run farm shop with their own livestock and kitchen garden produce. Seasonal, honest, and utterly delicious.", image: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&q=80", tags: ["farm shop", "meat", "seasonal"], website: "#", location: "Curgurrell", foodType: "buying" },
   { id: "hidden-hut", name: "Hidden Hut", desc: "Cornwall's most famous beach café. Their feast nights are the stuff of legend — book months ahead. By day, superb cakes and coffee on Porthcurnick Beach.", image: imgHiddenHut, tags: ["restaurant", "beach", "feast nights"], website: "#", location: "Porthcurnick Beach", foodType: "eating" },
-  { id: "standard", name: "Standard", desc: "Contemporary dining with impeccable local sourcing. The tasting menu is a journey through Cornwall's finest ingredients.", image: imgTheStandard, tags: ["restaurant", "fine dining"], website: "#", location: "Falmouth", foodType: "eating" },
+  { id: "standard", name: "The Standard", desc: "Contemporary dining with impeccable local sourcing. The tasting menu is a journey through Cornwall's finest ingredients.", image: imgTheStandardLevel, tags: ["restaurant", "fine dining"], website: "#", location: "Falmouth", foodType: "eating" },
   { id: "tresanton", name: "Tresanton", desc: "Olga Polizzi's celebrated hotel restaurant in St Mawes. Mediterranean-influenced cooking with stunning harbour views.", image: "https://images.unsplash.com/photo-1550966871-3ed3cdb51f3a?w=800&q=80", tags: ["restaurant", "hotel", "harbour views"], website: "#", location: "St Mawes", foodType: "eating" },
-  { id: "the-meat-counter", name: "The Meat Counter", desc: "Falmouth's finest butcher and charcuterie. Dry-aged steaks, house-made sausages, and a deli counter that demands multiple visits.", image: "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800&q=80", tags: ["butcher", "deli", "charcuterie"], website: "#", location: "Falmouth", foodType: "buying" },
+  { id: "the-meat-counter", name: "The Meat Counter", desc: "Falmouth's finest butcher and charcuterie. Dry-aged steaks, house-made sausages, and a deli counter that demands multiple visits.", image: "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800&q=80", tags: ["butcher", "deli", "charcuterie"], website: "#", location: "Falmouth", foodType: "eating" },
   { id: "scathos-scoops", name: "Scatho's Scoops", desc: "Artisan ice cream made in Portscatho. Clotted cream, Cornish strawberry, and salted caramel are unmissable on a warm afternoon.", image: imgScathosScoops, tags: ["ice cream", "treats"], website: "#", location: "Portscatho", foodType: "eating" },
+  { id: "shillakabooky-beach-hut", name: "Shillakabooky Beach Hut", desc: "A charming beach hut serving simple, delicious food right by the water. A perfect stop before or after a walk along the coast path.", image: imgShillakabookyBeachHut, tags: ["beach hut", "casual", "coastal"], website: "#", location: "Roseland Peninsula", foodType: "eating" },
+  { id: "cafe-mylor", name: "Café Mylor", desc: "A relaxed waterside café at Mylor Yacht Harbour, serving brunch, coffee, and light lunches with views over the boats.", image: imgCafeMylor, tags: ["cafe", "waterside", "brunch"], website: "#", location: "Mylor Harbour", foodType: "eating" },
+  { id: "waitrose", name: "Waitrose", desc: "The nearest large supermarket, well stocked for a full shop — good wine selection and a decent deli counter too.", image: "https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=800&q=80", tags: ["supermarket", "groceries"], website: "#", location: "Truro", foodType: "buying" },
 ];
 
 const ACTIVITIES = [
-  { id: "beaches", name: "Beaches", desc: "The Roseland Peninsula boasts some of Cornwall's most beautiful and least crowded beaches. From Porthcurnick's sheltered sands to the wild beauty of Pendower.", image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80", tags: ["outdoors", "family"] },
   { id: "fish-n-trips", name: "Fish n Trips", desc: "Join local fisherman on a mackerel fishing trip from St Mawes harbour. Catch your supper and learn about Cornwall's maritime heritage.", image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80", tags: ["fishing", "boat"] },
   { id: "surfing-newquay", name: "Surfing in Newquay", desc: "An hour's drive takes you to Cornwall's surf capital. Lessons available for all ages and abilities at Fistral and Watergate Bay.", image: "https://images.unsplash.com/photo-1502680390548-bdbac40b3e1c?w=800&q=80", tags: ["surfing", "adventure"] },
+  { id: "king-harry-ferry", name: "King Harry Ferry", desc: "A historic chain ferry crossing the River Fal, in operation since 1888. A scenic and surprisingly fun way to explore the Roseland and beyond.", image: "https://images.unsplash.com/photo-1544198365-f5d60b6d8190?w=800&q=80", tags: ["ferry", "river", "scenic"] },
   { id: "heligan", name: "The Lost Gardens of Heligan", desc: "One of the most beloved gardens in England. Explore the jungle, the productive gardens, and the famous sleeping mud maid.", image: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800&q=80", tags: ["gardens", "history"], category: "garden" },
   { id: "burncoose", name: "Burncoose Nurseries", desc: "One of the UK's finest nurseries set in 30 acres of woodland garden. Magnificent camellias, magnolias, and rare plants.", image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80", tags: ["gardens", "plants"] },
   { id: "eden-project", name: "Eden Project", desc: "The iconic biomes housing the world's largest indoor rainforest. A must-visit that never disappoints, whatever the weather.", image: "https://images.unsplash.com/photo-1590274853856-f22d5ee3d228?w=800&q=80", tags: ["attraction", "family"], category: "garden" },
+  { id: "caerhayes", name: "Caerhayes Castle Gardens", desc: "A spectacular woodland garden famous for its world-renowned collection of magnolias, best seen in spring. The castle itself is a Nash-designed gem.", image: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=800&q=80", tags: ["gardens", "magnolias", "castle"], category: "garden" },
+  { id: "trelissick-garden", name: "Trelissick Garden", desc: "A National Trust garden overlooking the Fal estuary, with sub-tropical planting, woodland walks, and a wonderful walled garden.", image: imgTrelissick, tags: ["gardens", "national trust", "views"], category: "garden" },
   { id: "st-ives", name: "St Ives", desc: "The jewel of the north coast. Tate St Ives, the Barbara Hepworth Museum, cobbled lanes, and some of the best light in Britain.", image: "https://images.unsplash.com/photo-1580237072617-771c3ecc4a24?w=800&q=80", tags: ["town", "art", "culture"] },
+  { id: "towan", name: "Towan Beach", desc: "A National Trust beach reached by a short walk, with rockpools, soft sand, and usually far fewer people than the popular spots.", image: imgTowanShellPicking, tags: ["beach", "rockpools", "family"], category: "beach" },
+  { id: "pendower", name: "Pendower Beach", desc: "A long, gently shelving sandy beach next to Carne, backed by dunes and countryside. Great for a proper stretch-your-legs walk.", image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&q=80", tags: ["beach", "walking", "family"], category: "beach" },
+  { id: "fistral", name: "Fistral Beach", desc: "Cornwall's most famous surf beach in Newquay. Big Atlantic swells, a lively beach scene, and plenty of surf schools for all levels.", image: "https://images.unsplash.com/photo-1533760881669-80d0a13043cb?w=800&q=80", tags: ["beach", "surfing"], category: "beach" },
 ];
 
 const WALKS = [
-  { id: "nare", name: "Nare Head", desc: "A spectacular circular walk around Nare Head with panoramic views of the coast. Moderate difficulty with some steep sections.", length: "4.2 miles", difficulty: "Moderate", parking: "Park at Carne Beach car park (free for National Trust members). Can get busy in summer — arrive before 10am.", eating: "The Hidden Hut at Porthcurnick Beach is a perfect post-walk stop. Alternatively, head to Portscatho Stores for a takeaway pasty.", image: imgNareHead, stravaRouteId: "3507453955926855126" },
-  { id: "curgurrell", name: "Curgurrell Creek", desc: "A gentle walk through ancient woodland and along the creek. Perfect for a peaceful morning stroll or a family outing with young children.", length: "2.8 miles", difficulty: "Easy", parking: "Limited roadside parking near Curgurrell Farm. Please park considerately and respect local residents.", eating: "Curgurrell Farm Shop for provisions, or continue to Portscatho for the full range of options.", image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80" },
-  { id: "towan", name: "Towan Beach Circuit", desc: "A beautiful coastal and inland loop taking in Towan Beach, farmland, and quiet lanes. Wonderful wildflowers in spring and early summer.", length: "3.5 miles", difficulty: "Easy-Moderate", parking: "Towan Beach car park. Honesty box payment.", eating: "Pack a picnic from Portscatho Stores — Towan Beach is a perfect lunch spot.", image: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=800&q=80" },
-  { id: "st-anthony", name: "St Anthony Head", desc: "Walk to the lighthouse at St Anthony Head with views across Falmouth Bay. One of the finest viewpoints in Cornwall.", length: "3.0 miles", difficulty: "Easy-Moderate", parking: "National Trust car park at Place. Follow signs carefully — the lanes are narrow.", eating: "The Place restaurant (seasonal) or head to St Mawes for the Tresanton or the pub on the quay.", image: "https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2?w=800&q=80" },
-  { id: "st-mawes", name: "St Mawes Castle Walk", desc: "A gentle walk around St Mawes taking in the castle, harbour, and stunning views of the Fal estuary and Pendennis Castle opposite.", length: "2.0 miles", difficulty: "Easy", parking: "St Mawes main car park (pay and display). Free in winter months.", eating: "Spoilt for choice — the Tresanton for something special, the Watch House for fish and chips, or the Rising Sun for a proper pub lunch.", image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80" },
+  { id: "nare", name: "Nare Head", desc: "A spectacular circular walk around Nare Head with panoramic views of the coast. Moderate difficulty with some steep sections.", length: "4.2 miles", difficulty: "Moderate", parking: "Park at Carne Beach car park (free for National Trust members). Can get busy in summer — arrive before 10am.", eating: "The Shillakabooky Beach Hut is a perfect post-walk stop for something simple and delicious right by the water.", image: imgNareHead, stravaRouteId: "3507453955926855126" },
+  { id: "curgurrell", name: "Curgurrell Creek", desc: "A gentle walk through ancient woodland and along the creek. Perfect for a peaceful morning stroll or a family outing with young children.", length: "2.8 miles", difficulty: "Easy", parking: "Limited roadside parking near Curgurrell Farm. Please park considerately and respect local residents.", eating: "Curgurrell Farm Shop for provisions, or continue to Portscatho for the full range of options.", image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80", stravaRouteId: "3508117142736593884" },
+  { id: "towan", name: "Towan Beach Circuit", desc: "A beautiful coastal and inland loop taking in Towan Beach, farmland, and quiet lanes. Wonderful wildflowers in spring and early summer.", length: "3.5 miles", difficulty: "Easy-Moderate", parking: "Towan Beach car park. Honesty box payment.", eating: "Pack a picnic from Portscatho Stores — Towan Beach is a perfect lunch spot.", image: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=800&q=80", stravaRouteId: "3508117195142270626" },
+  { id: "st-anthony", name: "St Anthony Head", desc: "Walk to the lighthouse at St Anthony Head with views across Falmouth Bay. One of the finest viewpoints in Cornwall.", length: "3.0 miles", difficulty: "Easy-Moderate", parking: "National Trust car park at Place. Follow signs carefully — the lanes are narrow.", eating: "The Place restaurant (seasonal) or head to St Mawes for the Tresanton or the pub on the quay.", image: "https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2?w=800&q=80", stravaRouteId: "3508119257673450600" },
+  { id: "st-mawes", name: "St Mawes Castle Walk", desc: "A gentle walk around St Mawes taking in the castle, harbour, and stunning views of the Fal estuary and Pendennis Castle opposite.", length: "2.0 miles", difficulty: "Easy", parking: "St Mawes main car park (pay and display). Free in winter months.", eating: "Spoilt for choice — the Tresanton for something special, the Watch House for fish and chips, or the Rising Sun for a proper pub lunch.", image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80", stravaRouteId: "3508117047959651292" },
 ];
 
 const PARKRUNS = [
@@ -272,8 +281,9 @@ async function uploadVisitorPhoto(file) {
 // filter bar (omitted for categories that still have their own nav link).
 const PIN_TYPES = {
   "walk-detail": { label: "Walks", color: "#c8a2c8", items: WALKS, getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "walks", subPageType: "walk-detail" },
-  "activity-detail": { label: "Things to Do", color: "#f97316", items: ACTIVITIES.filter(a => a.category !== "garden"), getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "activities", subPageType: "activity-detail" },
+  "activity-detail": { label: "Days Out", color: "#f97316", items: ACTIVITIES.filter(a => !a.category), getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "activities", subPageType: "activity-detail" },
   "garden": { label: "Gardens", color: "#84cc16", items: ACTIVITIES.filter(a => a.category === "garden"), getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "gardens", subPageType: "activity-detail" },
+  "beach": { label: "Beaches", color: "#eab308", items: ACTIVITIES.filter(a => a.category === "beach"), getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "beaches", subPageType: "activity-detail" },
   "eating-out": { label: "Eating Out", color: "#dc2626", items: FOOD_PLACES.filter(f => f.foodType === "eating"), getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "eating-out", subPageType: "food-detail" },
   "buying-food": { label: "Buying Food", color: "#10b981", items: FOOD_PLACES.filter(f => f.foodType === "buying"), getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "buying-food", subPageType: "food-detail" },
   "parkrun": { label: "parkrun", color: "#1e3a8a", items: PARKRUNS, getLabel: i => i.name, getId: i => i.name, getImage: () => null, getSummary: i => i.desc, page: "parkrun" },
@@ -1168,10 +1178,10 @@ function Nav({ page, setPage, isAdmin, onLoginClick, onLogout, mobileOpen, setMo
   const links = [
     { id: "home", label: "Home" },
     { id: "around", label: "Explore" },
-    { id: "gallery", label: "Gallery" },
     { id: "blog", label: "Story" },
     { id: "visitors-book", label: "Visitors Book" },
     { id: "remedies", label: "Info" },
+    { id: "gallery", label: "Gallery" },
     { id: "calendar", label: "Calendar" },
     { id: "contact", label: "Contact" },
   ];
@@ -1661,8 +1671,8 @@ function ActivitiesPage({ setPage, setSubPage }) {
   return (
     <ActivityListPage
       setPage={setPage} setSubPage={setSubPage}
-      items={ACTIVITIES.filter(a => a.category !== "garden")} linkType="activity-detail"
-      title="Things to Do" subtitle="Adventures, culture, and coastline — there's something for everyone."
+      items={ACTIVITIES.filter(a => !a.category)} linkType="activity-detail"
+      title="Days Out" subtitle="Adventures, culture, and coastline — there's something for everyone."
     />
   );
 }
@@ -1677,10 +1687,20 @@ function GardensPage({ setPage, setSubPage }) {
   );
 }
 
+function BeachesPage({ setPage, setSubPage }) {
+  return (
+    <ActivityListPage
+      setPage={setPage} setSubPage={setSubPage}
+      items={ACTIVITIES.filter(a => a.category === "beach")} linkType="beach"
+      title="Beaches" subtitle="From sheltered coves to big Atlantic surf — the best beaches near and far."
+    />
+  );
+}
+
 function ActivityDetail({ activity, setPage, setSubPage }) {
   if (!activity) return <div className="ck-section"><p>Activity not found.</p></div>;
-  const backTo = activity.category === "garden" ? "gardens" : "activities";
-  const backLabel = activity.category === "garden" ? "Gardens" : "Things to Do";
+  const backTo = activity.category === "garden" ? "gardens" : activity.category === "beach" ? "beaches" : "activities";
+  const backLabel = activity.category === "garden" ? "Gardens" : activity.category === "beach" ? "Beaches" : "Days Out";
   return (
     <>
       <img src={activity.image} alt={activity.name} className="ck-detail-hero" />
@@ -1843,6 +1863,80 @@ function groupOffscreenPins(pins, bounds, center) {
     buckets[octant].pins.push(pin);
   });
   return Object.values(buckets);
+}
+
+// Simple line-drawing icons for each map category's jump-link button.
+function CategoryIcon({ type, color }) {
+  const common = { width: 22, height: 22, viewBox: "0 0 24 24", fill: "none", stroke: color, strokeWidth: 1.5, strokeLinecap: "round", strokeLinejoin: "round" };
+  switch (type) {
+    case "walk-detail": // shoe
+      return (
+        <svg {...common}>
+          <path d="M3 18h17a1 1 0 0 0 1-1v-.6c0-.9-.6-1.7-1.5-1.9l-2.7-.7a2 2 0 0 1-1.3-1L14.4 9c-.4-.8-1.2-1.3-2.1-1.3h-1a4 4 0 0 0-4 3.7L7 13l-2.8 1.4A2 2 0 0 0 3 16.2V17a1 1 0 0 0 0 1Z" />
+          <path d="M9 14.3 12 13M12.6 12 15 10.7" />
+        </svg>
+      );
+    case "activity-detail": // car
+      return (
+        <svg {...common}>
+          <path d="M3 16v-3.2c0-.5.2-1 .6-1.3l2-1.8c.3-.3.7-.5 1.2-.6l2.3-.4c.6-.1 1.2-.1 1.8 0l2.3.4c.5.1.9.3 1.2.6l2 1.8c.4.3.6.8.6 1.3V16" />
+          <path d="M3 16h16M3 16a1.5 1.5 0 0 0 3 0M16 16a1.5 1.5 0 0 0 3 0" />
+          <path d="M6 11h10" />
+        </svg>
+      );
+    case "garden": // tree
+      return (
+        <svg {...common}>
+          <path d="M12 3 7.5 9.5H10L6.5 14H10l-3 4.5H12M12 3l4.5 6.5H14l3.5 4.5H14l3 4.5H12" />
+          <path d="M12 18.5V22" />
+        </svg>
+      );
+    case "eating-out": // menu
+      return (
+        <svg {...common}>
+          <rect x="5" y="3" width="14" height="18" rx="1.5" />
+          <path d="M8 8h8M8 11.5h8M8 15h5" />
+        </svg>
+      );
+    case "buying-food": // shopping bag
+      return (
+        <svg {...common}>
+          <path d="M6 8h12l1 12.5a1 1 0 0 1-1 1.5H6a1 1 0 0 1-1-1.5L6 8Z" />
+          <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+        </svg>
+      );
+    case "parkrun": // inverted parkrun-style tree of dots
+      return (
+        <svg {...common} fill={color} stroke="none">
+          <g transform="translate(12,12) rotate(180) translate(-12,-12)">
+            <path d="M11.3 3h1.4v6.5h-1.4z" />
+            <circle cx="12" cy="9" r="1.4" />
+            <circle cx="8.5" cy="11" r="1.2" />
+            <circle cx="15.5" cy="11" r="1.2" />
+            <circle cx="6" cy="14" r="1.1" />
+            <circle cx="18" cy="14" r="1.1" />
+            <circle cx="9.5" cy="14.5" r="1.1" />
+            <circle cx="14.5" cy="14.5" r="1.1" />
+            <circle cx="12" cy="16" r="1.2" />
+            <circle cx="4.5" cy="17.5" r="1" />
+            <circle cx="19.5" cy="17.5" r="1" />
+            <circle cx="8" cy="18" r="1" />
+            <circle cx="16" cy="18" r="1" />
+            <circle cx="12" cy="19" r="1" />
+          </g>
+        </svg>
+      );
+    case "beach": // wave on a beach
+      return (
+        <svg {...common}>
+          <path d="M2 10c1.5-1.3 3-1.3 4.5 0s3 1.3 4.5 0 3-1.3 4.5 0 3 1.3 4.5 0" />
+          <path d="M2 14.5c1.5-1.3 3-1.3 4.5 0s3 1.3 4.5 0 3-1.3 4.5 0 3 1.3 4.5 0" />
+          <path d="M2 20.5h20" strokeDasharray="0.5 3.2" />
+        </svg>
+      );
+    default:
+      return <span className="ck-map-legend-diamond" style={{ background: color }} />;
+  }
 }
 
 function AroundAboutMap({ pins, addMode, onMapClick, onPinClick, activeTypes }) {
@@ -2121,7 +2215,7 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
         <div className="ck-map-jump-bar">
           {Object.entries(PIN_TYPES).filter(([, t]) => t.page).map(([key, t]) => (
             <button key={key} className="ck-map-jump-chip" onClick={() => { setPage(t.page); window.scrollTo(0, 0); }}>
-              <span className="ck-map-legend-diamond" style={{ background: t.color }} />
+              <CategoryIcon type={key} color={t.color} />
               {t.label}
             </button>
           ))}
@@ -2446,6 +2540,7 @@ export default function App() {
     "buying-food": <BuyingFoodPage setPage={setPage} setSubPage={setSubPage} />,
     activities: <ActivitiesPage setPage={setPage} setSubPage={setSubPage} />,
     gardens: <GardensPage setPage={setPage} setSubPage={setSubPage} />,
+    beaches: <BeachesPage setPage={setPage} setSubPage={setSubPage} />,
     walks: <WalksPage setPage={setPage} setSubPage={setSubPage} />,
     around: <AroundAboutPage setPage={setPage} setSubPage={setSubPage} isAdmin={isAdmin} />,
     parkrun: <ParkrunPage setPage={setPage} setSubPage={setSubPage} />,
