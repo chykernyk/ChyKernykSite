@@ -511,7 +511,6 @@ const CSS = `
   .ck-section-desc {
     font-size:1.05rem; line-height:1.8;
     color: var(--text-light);
-    max-width:700px;
     margin-bottom:3rem;
   }
 
@@ -587,7 +586,7 @@ const CSS = `
     object-fit:cover; margin-top:60px;
   }
   .ck-detail-content {
-    max-width:800px; margin:0 auto; padding:3rem 2rem;
+    max-width:1200px; margin:0 auto; padding:3rem 2rem;
   }
   .ck-detail-title {
     font-family:var(--font-display);
@@ -1255,7 +1254,7 @@ function Hero({ setPage }) {
 function PageHeader({ title, subtitle, page, setPage, backTo, backLabel }) {
   return (
     <div className="ck-page-header">
-      <div className="ck-page-header-inner">
+      <div className="ck-page-header-inner" style={{ textAlign: "center" }}>
         {backTo && (
           <div className="ck-breadcrumb">
             <button onClick={() => { setPage(backTo); window.scrollTo(0, 0); }}>{backLabel || "Back"}</button>
@@ -1280,7 +1279,7 @@ function HomePage({ setPage }) {
       <section className="ck-section" style={{ textAlign: "center" }}>
         <h2 className="ck-section-title" style={{ marginBottom: "1rem" }}>Welcome</h2>
         <div className="ck-section-line" style={{ margin: "0 auto 2rem" }} />
-        <p style={{ maxWidth: 650, margin: "0 auto", fontSize: "1.1rem", lineHeight: 1.9, color: "var(--text-light)" }}>
+        <p style={{ fontSize: "1.1rem", lineHeight: 1.9, color: "var(--text-light)" }}>
           Perched above the beach in Portscatho, on Cornwall's beautiful Roseland Peninsula,
           Chy Kernyk offers an extraordinary coastal retreat. Wake to the sound of the sea,
           watch the light play across the water towards Gull Rock, and discover one of the
@@ -1506,7 +1505,7 @@ function VisitorsBookPage({ setPage, isAdmin }) {
   return (
     <>
       <PageHeader title="Visitors Book" subtitle="A place for guests to share memories from their stay at Chy Kernyk." setPage={setPage} />
-      <section className="ck-section" style={{ paddingTop: "1rem", maxWidth: 800 }}>
+      <section className="ck-section" style={{ paddingTop: "1rem" }}>
         <VisitorEntryForm onAdded={entry => setEntries(prev => [entry, ...prev])} />
 
         {loading && <p style={{ color: "var(--text-light)" }}>Loading entries…</p>}
@@ -2108,7 +2107,7 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
 
   return (
     <>
-      <PageHeader title="Explore" subtitle="A map of the Roseland Peninsula — click a pin to explore, or jump straight to a category." setPage={setPage} />
+      <PageHeader title="Explore" setPage={setPage} />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
         {isAdmin && (
           <div className="ck-map-admin-bar">
@@ -2153,6 +2152,8 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
             </button>
           ))}
         </div>
+
+        <p className="ck-section-desc" style={{ marginTop: "1.5rem" }}>A map of the Roseland Peninsula — click a pin to explore, or jump straight to a category.</p>
 
         {isAdmin && pins.length > 0 && (
           <div className="ck-map-pin-list">
@@ -2207,7 +2208,7 @@ function RemediesPage({ setPage }) {
   return (
     <>
       <PageHeader title="Info" subtitle="Emergency contacts, maintenance details, and practical information for your stay." setPage={setPage} />
-      <section className="ck-section" style={{ paddingTop: "1rem", maxWidth: 800 }}>
+      <section className="ck-section" style={{ paddingTop: "1rem" }}>
         {REMEDIES.map(cat => (
           <div key={cat.category} className="ck-remedy-section">
             <h2 className="ck-remedy-title">{cat.category}</h2>
