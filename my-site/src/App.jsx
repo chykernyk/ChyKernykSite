@@ -98,7 +98,7 @@ const ACTIVITIES = [
   { id: "king-harry-ferry", name: "King Harry Ferry", desc: "A historic chain ferry crossing the River Fal, in operation since 1888. A scenic and surprisingly fun way to explore the Roseland and beyond.", image: "https://images.unsplash.com/photo-1544198365-f5d60b6d8190?w=800&q=80", tags: ["ferry", "river", "scenic"] },
   { id: "heligan", name: "The Lost Gardens of Heligan", desc: "One of the most beloved gardens in England. Explore the jungle, the productive gardens, and the famous sleeping mud maid.", image: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800&q=80", tags: ["gardens", "history"], category: "garden" },
   { id: "burncoose", name: "Burncoose Nurseries", desc: "One of the UK's finest nurseries set in 30 acres of woodland garden. Magnificent camellias, magnolias, and rare plants.", image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80", tags: ["gardens", "plants"], category: "garden" },
-  { id: "eden-project", name: "Eden Project", desc: "The iconic biomes housing the world's largest indoor rainforest. A must-visit that never disappoints, whatever the weather.", image: "https://images.unsplash.com/photo-1590274853856-f22d5ee3d228?w=800&q=80", tags: ["attraction", "family"], category: "garden" },
+  { id: "eden-project", name: "Eden Project", desc: "The iconic biomes housing the world's largest indoor rainforest. A must-visit that never disappoints, whatever the weather.", image: imgEdenProject, tags: ["attraction", "family"], category: "garden" },
   { id: "caerhayes", name: "Caerhayes Castle Gardens", desc: "A spectacular woodland garden famous for its world-renowned collection of magnolias, best seen in spring. The castle itself is a Nash-designed gem.", image: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=800&q=80", tags: ["gardens", "magnolias", "castle"], category: "garden" },
   { id: "trelissick-garden", name: "Trelissick Garden", desc: "A National Trust garden overlooking the Fal estuary, with sub-tropical planting, woodland walks, and a wonderful walled garden.", image: imgTrelissick, tags: ["gardens", "national trust", "views"], category: "garden" },
   { id: "st-ives", name: "St Ives", desc: "The jewel of the north coast. Tate St Ives, the Barbara Hepworth Museum, cobbled lanes, and some of the best light in Britain.", image: "https://images.unsplash.com/photo-1580237072617-771c3ecc4a24?w=800&q=80", tags: ["town", "art", "culture"] },
@@ -110,7 +110,7 @@ const ACTIVITIES = [
 const WALKS = [
   { id: "nare", name: "Nare Head", desc: "A spectacular circular walk around Nare Head with panoramic views of the coast. Moderate difficulty with some steep sections.", length: "4.2 miles", difficulty: "Moderate", parking: "Park at Carne Beach car park (free for National Trust members). Can get busy in summer — arrive before 10am.", eating: "The Shillakabooky Beach Hut is a perfect post-walk stop for something simple and delicious right by the water.", image: imgNareHead, stravaRouteId: "3507453955926855126" },
   { id: "curgurrell", name: "Curgurrell Creek", desc: "A gentle walk through ancient woodland and along the creek. Perfect for a peaceful morning stroll or a family outing with young children.", length: "2.8 miles", difficulty: "Easy", parking: "Limited roadside parking near Curgurrell Farm. Please park considerately and respect local residents.", eating: "Curgurrell Farm Shop for provisions, or continue to Portscatho for the full range of options.", image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80", stravaRouteId: "3508117142736593884" },
-  { id: "towan", name: "Towan Beach Circuit", desc: "A beautiful coastal and inland loop taking in Towan Beach, farmland, and quiet lanes. Wonderful wildflowers in spring and early summer.", length: "3.5 miles", difficulty: "Easy-Moderate", parking: "Towan Beach car park. Honesty box payment.", eating: "Pack a picnic from Portscatho Stores — Towan Beach is a perfect lunch spot.", image: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=800&q=80", stravaRouteId: "3508117195142270626" },
+  { id: "towan", name: "Towan Beach Circuit", desc: "A beautiful coastal and inland loop taking in Towan Beach, farmland, and quiet lanes. Wonderful wildflowers in spring and early summer.", length: "3.5 miles", difficulty: "Easy-Moderate", parking: "Towan Beach car park. Honesty box payment.", eating: "Pack a picnic from Portscatho Stores — Towan Beach is a perfect lunch spot.", image: imgTowanShellPicking, stravaRouteId: "3508117195142270626" },
   { id: "st-anthony", name: "St Anthony Head", desc: "Walk to the lighthouse at St Anthony Head with views across Falmouth Bay. One of the finest viewpoints in Cornwall.", length: "3.0 miles", difficulty: "Easy-Moderate", parking: "National Trust car park at Place. Follow signs carefully — the lanes are narrow.", eating: "The Place restaurant (seasonal) or head to St Mawes for the Tresanton or the pub on the quay.", image: "https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2?w=800&q=80", stravaRouteId: "3508119257673450600" },
   { id: "st-mawes", name: "St Mawes Castle Walk", desc: "A gentle walk around St Mawes taking in the castle, harbour, and stunning views of the Fal estuary and Pendennis Castle opposite.", length: "2.0 miles", difficulty: "Easy", parking: "St Mawes main car park (pay and display). Free in winter months.", eating: "Spoilt for choice — the Tresanton for something special, the Watch House for fish and chips, or the Rising Sun for a proper pub lunch.", image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80", stravaRouteId: "3508117047959651292" },
 ];
@@ -281,7 +281,7 @@ async function uploadVisitorPhoto(file) {
 // filter bar (omitted for categories that still have their own nav link).
 const PIN_TYPES = {
   "walk-detail": { label: "Walks", color: "#c8a2c8", items: WALKS, getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "walks", subPageType: "walk-detail" },
-  "activity-detail": { label: "Days Out", color: "#f97316", items: ACTIVITIES.filter(a => !a.category), getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "activities", subPageType: "activity-detail" },
+  "activity-detail": { label: "Days Out", color: "#f97316", items: ACTIVITIES.filter(a => !a.category || a.id === "eden-project"), getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "activities", subPageType: "activity-detail" },
   "garden": { label: "Gardens", color: "#84cc16", items: ACTIVITIES.filter(a => a.category === "garden"), getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "gardens", subPageType: "activity-detail" },
   "beach": { label: "Beaches", color: "#eab308", items: ACTIVITIES.filter(a => a.category === "beach"), getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "beaches", subPageType: "activity-detail" },
   "eating-out": { label: "Eating Out", color: "#dc2626", items: FOOD_PLACES.filter(f => f.foodType === "eating"), getLabel: i => i.name, getId: i => i.id, getImage: i => i.image, getSummary: i => i.desc, page: "eating-out", subPageType: "food-detail" },
@@ -1687,7 +1687,7 @@ function ActivitiesPage({ setPage, setSubPage }) {
   return (
     <ActivityListPage
       setPage={setPage} setSubPage={setSubPage}
-      items={ACTIVITIES.filter(a => !a.category)} linkType="activity-detail"
+      items={ACTIVITIES.filter(a => !a.category || a.id === "eden-project")} linkType="activity-detail"
       title="Days Out" subtitle="Adventures, culture, and coastline — there's something for everyone."
     />
   );
@@ -2193,7 +2193,8 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
   );
 
   // Pick one random real (non-stock) photo per category, once per visit,
-  // to illustrate that category's jump button.
+  // to illustrate that category's jump button. Some categories have a
+  // fixed image instead of a random pick — set below.
   const jumpImages = useMemo(() => {
     const result = {};
     Object.entries(PIN_TYPES).forEach(([key, t]) => {
@@ -2205,6 +2206,10 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
         result[key] = candidates[Math.floor(Math.random() * candidates.length)];
       }
     });
+    result["walk-detail"] = imgNareHead;
+    result["activity-detail"] = imgEdenProject;
+    result["garden"] = imgTrelissick;
+    result["beach"] = imgTowanShellPicking;
     result["eating-out"] = imgTheStandard;
     return result;
   }, []);
