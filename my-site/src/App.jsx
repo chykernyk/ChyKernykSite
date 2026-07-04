@@ -812,6 +812,10 @@ const CSS = `
   .ck-cal-day.booked { background:#fde8e8; color:#a33; }
   .ck-cal-day.available { background:#e8f5e8; color:#3a7; }
   .ck-cal-day.owner { background:#e8f0fd; color:#36a; }
+  .ck-cal-day-star {
+    position:absolute; top:2px; right:4px;
+    font-size:0.6rem; color:var(--gold); line-height:1;
+  }
   .ck-cal-legend {
     display:flex; gap:1.5rem; margin-top:1.5rem; flex-wrap:wrap;
   }
@@ -2397,6 +2401,14 @@ function ContactPage({ setPage }) {
   );
 }
 
+// Feast Night dates from https://hiddenhut.co.uk/pages/feast-nights
+const FEAST_NIGHTS = new Set([
+  "2026-05-20", "2026-05-26",
+  "2026-06-19", "2026-06-24",
+  "2026-07-04", "2026-07-21", "2026-07-24",
+  "2026-08-14", "2026-08-21",
+]);
+
 // CALENDAR
 function CalendarPage({ setPage, isAdmin }) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -2463,14 +2475,16 @@ function CalendarPage({ setPage, isAdmin }) {
               const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
               const status = bookings[dateStr] || "";
               const isToday = dateStr === todayStr;
+              const isFeastNight = FEAST_NIGHTS.has(dateStr);
               return (
                 <div key={dateStr}
                   className={`ck-cal-day ${status} ${isToday ? "today" : ""}`}
                   onClick={() => toggleDate(dateStr)}
                   role={isAdmin ? "button" : undefined}
-                  aria-label={`${d} ${currentMonth.toLocaleDateString("en-GB", { month: "long" })} ${status || "available"}`}
+                  aria-label={`${d} ${currentMonth.toLocaleDateString("en-GB", { month: "long" })} ${status || "available"}${isFeastNight ? ", Feast Night" : ""}`}
                 >
                   {d}
+                  {isFeastNight && <span className="ck-cal-day-star" title="Feast Night">★</span>}
                 </div>
               );
             })}
@@ -2491,6 +2505,10 @@ function CalendarPage({ setPage, isAdmin }) {
             <div className="ck-cal-legend-item">
               <div className="ck-cal-legend-dot" style={{ background: "#e8f5e8" }} />
               Confirmed Available
+            </div>
+            <div className="ck-cal-legend-item">
+              <span style={{ color: "var(--gold)" }}>★</span>
+              Feast Night at The Hidden Hut
             </div>
           </div>
         </div>
