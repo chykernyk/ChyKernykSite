@@ -2201,6 +2201,7 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
         result[key] = candidates[Math.floor(Math.random() * candidates.length)];
       }
     });
+    result["eating-out"] = imgTheStandard;
     return result;
   }, []);
 
