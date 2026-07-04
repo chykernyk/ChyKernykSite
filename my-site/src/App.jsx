@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import imgBarbaraHepworthGarden from "./assets/images/BarbaraHepworthGarden.jpeg";
@@ -67,7 +67,7 @@ async function sha256Hex(text) {
 const HERO_IMAGES = [
   { url: imgPortscathofromtheAir2, caption: "Portscatho from the Air" },
   { url: imgHouse, caption: "The House" },
-  { url: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600&q=80", caption: "The View towards Gull Rock" },
+  { url: imgPorthcurnickPortcatho, caption: "Portscatho from Porthcurnick" },
 ];
 
 const BLOG_POSTS = [
@@ -97,7 +97,7 @@ const ACTIVITIES = [
   { id: "surfing-newquay", name: "Surfing in Newquay", desc: "An hour's drive takes you to Cornwall's surf capital. Lessons available for all ages and abilities at Fistral and Watergate Bay.", image: "https://images.unsplash.com/photo-1502680390548-bdbac40b3e1c?w=800&q=80", tags: ["surfing", "adventure"] },
   { id: "king-harry-ferry", name: "King Harry Ferry", desc: "A historic chain ferry crossing the River Fal, in operation since 1888. A scenic and surprisingly fun way to explore the Roseland and beyond.", image: "https://images.unsplash.com/photo-1544198365-f5d60b6d8190?w=800&q=80", tags: ["ferry", "river", "scenic"] },
   { id: "heligan", name: "The Lost Gardens of Heligan", desc: "One of the most beloved gardens in England. Explore the jungle, the productive gardens, and the famous sleeping mud maid.", image: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800&q=80", tags: ["gardens", "history"], category: "garden" },
-  { id: "burncoose", name: "Burncoose Nurseries", desc: "One of the UK's finest nurseries set in 30 acres of woodland garden. Magnificent camellias, magnolias, and rare plants.", image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80", tags: ["gardens", "plants"] },
+  { id: "burncoose", name: "Burncoose Nurseries", desc: "One of the UK's finest nurseries set in 30 acres of woodland garden. Magnificent camellias, magnolias, and rare plants.", image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80", tags: ["gardens", "plants"], category: "garden" },
   { id: "eden-project", name: "Eden Project", desc: "The iconic biomes housing the world's largest indoor rainforest. A must-visit that never disappoints, whatever the weather.", image: "https://images.unsplash.com/photo-1590274853856-f22d5ee3d228?w=800&q=80", tags: ["attraction", "family"], category: "garden" },
   { id: "caerhayes", name: "Caerhayes Castle Gardens", desc: "A spectacular woodland garden famous for its world-renowned collection of magnolias, best seen in spring. The castle itself is a Nash-designed gem.", image: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=800&q=80", tags: ["gardens", "magnolias", "castle"], category: "garden" },
   { id: "trelissick-garden", name: "Trelissick Garden", desc: "A National Trust garden overlooking the Fal estuary, with sub-tropical planting, woodland walks, and a wonderful walled garden.", image: imgTrelissick, tags: ["gardens", "national trust", "views"], category: "garden" },
@@ -518,6 +518,13 @@ const CSS = `
     background: var(--gold);
     margin-bottom: 2rem;
   }
+  .ck-back-link {
+    background:none; border:none; cursor:pointer;
+    color:var(--ocean); font-family:var(--font-body);
+    font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase;
+    margin-bottom: 2rem; padding:0;
+  }
+  .ck-back-link:hover { text-decoration:underline; color:var(--gold); }
   .ck-section-desc {
     font-size:1.05rem; line-height:1.8;
     color: var(--text-light);
@@ -960,16 +967,23 @@ const CSS = `
   }
   .ck-map-pin-list-item > span:nth-child(2) { flex:1; }
   .ck-map-jump-bar {
-    display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:1.5rem;
+    display:flex; gap:0.9rem; flex-wrap:wrap; margin-bottom:1.5rem;
   }
   .ck-map-jump-chip {
-    display:flex; align-items:center; gap:0.5rem;
-    padding:0.55rem 1rem; border-radius:20px;
-    border:1px solid var(--sand-dark); background:white;
-    font-family:var(--font-body); font-size:0.85rem; color:var(--text);
+    display:flex; flex-direction:column;
+    width:160px; height:160px; padding:0; overflow:hidden;
+    border-radius:12px; border:1px solid var(--sand-dark); background:white;
     cursor:pointer; transition: all 0.2s;
   }
-  .ck-map-jump-chip:hover { border-color:var(--ocean); box-shadow:0 4px 14px rgba(0,0,0,0.08); }
+  .ck-map-jump-chip:hover { border-color:var(--ocean); box-shadow:0 6px 16px rgba(0,0,0,0.1); transform:translateY(-2px); }
+  .ck-map-jump-chip-img {
+    width:100%; height:66.6667%; object-fit:cover; display:block; flex-shrink:0;
+  }
+  .ck-map-jump-chip-label {
+    flex:1; display:flex; align-items:center; justify-content:center; gap:0.4rem;
+    font-family:var(--font-body); font-size:0.82rem; color:var(--text);
+    padding:0.3rem 0.5rem; text-align:center; line-height:1.2;
+  }
 
   /* ── CATEGORY LIST + MAP LAYOUT ── */
   .ck-category-layout {
@@ -1265,14 +1279,12 @@ function PageHeader({ title, subtitle, page, setPage, backTo, backLabel }) {
   return (
     <div className="ck-page-header">
       <div className="ck-page-header-inner" style={{ textAlign: "center" }}>
-        {backTo && (
-          <div className="ck-breadcrumb">
-            <button onClick={() => { setPage(backTo); window.scrollTo(0, 0); }}>{backLabel || "Back"}</button>
-            <span> / {title}</span>
-          </div>
-        )}
         <h1 className="ck-section-title">{title}</h1>
-        <div className="ck-section-line" />
+        {backTo ? (
+          <button className="ck-back-link" onClick={() => { setPage(backTo); window.scrollTo(0, 0); }}>{backLabel || "Back"}</button>
+        ) : (
+          <div className="ck-section-line" />
+        )}
         {subtitle && <p className="ck-section-desc">{subtitle}</p>}
       </div>
     </div>
@@ -1354,7 +1366,7 @@ function BlogPage({ setPage, posts, setPosts, isAdmin, setSubPage }) {
 
   return (
     <>
-      <PageHeader title="Our Story" subtitle="The journey of finding, designing, and building our Cornish retreat." setPage={setPage} />
+      <PageHeader title="Our Story" subtitle="The journey of finding, designing, and building our Cornish retreat." setPage={setPage} backTo="home" />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
         {isAdmin && (
           <div className="ck-editor-actions">
@@ -1409,7 +1421,7 @@ function GalleryPage({ setPage }) {
   const [lightbox, setLightbox] = useState(null);
   return (
     <>
-      <PageHeader title="Gallery" subtitle="Explore Chy Kernyk and the surrounding Roseland Peninsula." setPage={setPage} />
+      <PageHeader title="Gallery" subtitle="Explore Chy Kernyk and the surrounding Roseland Peninsula." setPage={setPage} backTo="home" />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
         <div className="ck-gallery-grid">
           {GALLERY_IMAGES.map(img => (
@@ -1514,7 +1526,7 @@ function VisitorsBookPage({ setPage, isAdmin }) {
 
   return (
     <>
-      <PageHeader title="Visitors Book" subtitle="A place for guests to share memories from their stay at Chy Kernyk." setPage={setPage} />
+      <PageHeader title="Visitors Book" subtitle="A place for guests to share memories from their stay at Chy Kernyk." setPage={setPage} backTo="home" />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
         <VisitorEntryForm onAdded={entry => setEntries(prev => [entry, ...prev])} />
 
@@ -1564,7 +1576,7 @@ function FoodListPage({ setPage, setSubPage, foodType, linkType, title, subtitle
   const places = FOOD_PLACES.filter(p => p.foodType === foodType);
   return (
     <>
-      <PageHeader title={title} subtitle={subtitle} setPage={setPage} />
+      <PageHeader title={title} subtitle={subtitle} setPage={setPage} backTo="around" />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
         <div className="ck-category-layout">
           <div className="ck-grid">
@@ -1641,7 +1653,7 @@ function FoodDetail({ place, setPage, setSubPage }) {
 function ActivityListPage({ setPage, setSubPage, items, linkType, title, subtitle }) {
   return (
     <>
-      <PageHeader title={title} subtitle={subtitle} setPage={setPage} />
+      <PageHeader title={title} subtitle={subtitle} setPage={setPage} backTo="around" />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
         <div className="ck-category-layout">
           <div className="ck-grid">
@@ -1723,7 +1735,7 @@ function ActivityDetail({ activity, setPage, setSubPage }) {
 function WalksPage({ setPage, setSubPage }) {
   return (
     <>
-      <PageHeader title="Local Walks" subtitle="The Roseland Peninsula offers some of the finest coastal and countryside walking in Cornwall." setPage={setPage} />
+      <PageHeader title="Local Walks" subtitle="The Roseland Peninsula offers some of the finest coastal and countryside walking in Cornwall." setPage={setPage} backTo="around" />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
         <div className="ck-category-layout">
           <div className="ck-grid">
@@ -1866,8 +1878,8 @@ function groupOffscreenPins(pins, bounds, center) {
 }
 
 // Simple line-drawing icons for each map category's jump-link button.
-function CategoryIcon({ type, color }) {
-  const common = { width: 22, height: 22, viewBox: "0 0 24 24", fill: "none", stroke: color, strokeWidth: 1.5, strokeLinecap: "round", strokeLinejoin: "round" };
+function CategoryIcon({ type, color, size = 22 }) {
+  const common = { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: color, strokeWidth: 1.5, strokeLinecap: "round", strokeLinejoin: "round" };
   switch (type) {
     case "walk-detail": // shoe
       return (
@@ -2176,6 +2188,22 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
     Object.fromEntries(Object.keys(PIN_TYPES).map(k => [k, true]))
   );
 
+  // Pick one random real (non-stock) photo per category, once per visit,
+  // to illustrate that category's jump button.
+  const jumpImages = useMemo(() => {
+    const result = {};
+    Object.entries(PIN_TYPES).forEach(([key, t]) => {
+      if (!t.page) return;
+      const candidates = (t.items || [])
+        .map(i => (t.getImage ? t.getImage(i) : null))
+        .filter(img => img && !String(img).includes("images.unsplash.com"));
+      if (candidates.length > 0) {
+        result[key] = candidates[Math.floor(Math.random() * candidates.length)];
+      }
+    });
+    return result;
+  }, []);
+
   useEffect(() => {
     let cancelled = false;
     fetchPins()
@@ -2201,7 +2229,7 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
 
   return (
     <>
-      <PageHeader title="Explore" setPage={setPage} />
+      <PageHeader title="Explore" setPage={setPage} backTo="home" />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
         {isAdmin && (
           <div className="ck-map-admin-bar">
@@ -2215,8 +2243,15 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
         <div className="ck-map-jump-bar">
           {Object.entries(PIN_TYPES).filter(([, t]) => t.page).map(([key, t]) => (
             <button key={key} className="ck-map-jump-chip" onClick={() => { setPage(t.page); window.scrollTo(0, 0); }}>
-              <CategoryIcon type={key} color={t.color} />
-              {t.label}
+              {jumpImages[key] ? (
+                <img className="ck-map-jump-chip-img" src={jumpImages[key]} alt="" />
+              ) : (
+                <div className="ck-map-jump-chip-img ck-map-jump-chip-img-empty" style={{ background: t.color }} />
+              )}
+              <div className="ck-map-jump-chip-label">
+                <CategoryIcon type={key} color={t.color} size={16} />
+                {t.label}
+              </div>
             </button>
           ))}
         </div>
@@ -2277,7 +2312,7 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
 function ParkrunPage({ setPage, setSubPage }) {
   return (
     <>
-      <PageHeader title="parkrun" subtitle="Wonderful parkruns within easy reach. Every Saturday at 9am, free, for everyone, forever." setPage={setPage} />
+      <PageHeader title="parkrun" subtitle="Wonderful parkruns within easy reach. Every Saturday at 9am, free, for everyone, forever." setPage={setPage} backTo="around" />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
         <div className="ck-category-layout">
           <div>
@@ -2301,7 +2336,7 @@ function ParkrunPage({ setPage, setSubPage }) {
 function RemediesPage({ setPage }) {
   return (
     <>
-      <PageHeader title="Info" subtitle="Emergency contacts, maintenance details, and practical information for your stay." setPage={setPage} />
+      <PageHeader title="Info" subtitle="Emergency contacts, maintenance details, and practical information for your stay." setPage={setPage} backTo="home" />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
         {REMEDIES.map(cat => (
           <div key={cat.category} className="ck-remedy-section">
@@ -2326,7 +2361,7 @@ function RemediesPage({ setPage }) {
 function ContactPage({ setPage }) {
   return (
     <>
-      <PageHeader title="Contact & Location" subtitle="Find us on the Roseland Peninsula, overlooking the beach at Portscatho." setPage={setPage} />
+      <PageHeader title="Contact & Location" subtitle="Find us on the Roseland Peninsula, overlooking the beach at Portscatho." setPage={setPage} backTo="home" />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
         <div className="ck-contact-grid">
           <div className="ck-map-container">
@@ -2408,7 +2443,7 @@ function CalendarPage({ setPage, isAdmin }) {
     <>
       <PageHeader title="Availability"
         subtitle={isAdmin ? "Click on dates to cycle through: clear → booked → owner → available." : "Check when Chy Kernyk is available for your visit."}
-        setPage={setPage} />
+        setPage={setPage} backTo="home" />
       <section className="ck-section" style={{ paddingTop: "1rem", maxWidth: 700 }}>
         <div className="ck-cal">
           <div className="ck-cal-header">
