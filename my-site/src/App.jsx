@@ -1007,11 +1007,11 @@ const CSS = `
   }
   .ck-map-pin-list-item > span:nth-child(2) { flex:1; }
   .ck-map-jump-bar {
-    display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1.5rem;
+    display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:1.5rem;
   }
   .ck-map-jump-chip {
     display:flex; flex-direction:column;
-    width:92px; height:92px; padding:0; overflow:hidden;
+    width:120px; height:120px; padding:0; overflow:hidden;
     border-radius:10px; border:1px solid var(--sand-dark); background:white;
     cursor:pointer; transition: all 0.2s;
   }
@@ -1021,9 +1021,9 @@ const CSS = `
   }
   .ck-map-jump-chip-img-empty { display:flex; align-items:center; justify-content:center; }
   .ck-map-jump-chip-label {
-    flex:1; display:flex; align-items:center; justify-content:center; gap:0.25rem;
-    font-family:var(--font-body); font-size:0.62rem; color:var(--text);
-    padding:0.2rem 0.3rem; text-align:center; line-height:1.15;
+    flex:1; display:flex; align-items:center; justify-content:center; gap:0.3rem;
+    font-family:var(--font-body); font-size:0.72rem; color:var(--text);
+    padding:0.25rem 0.4rem; text-align:center; line-height:1.15;
   }
 
   /* ── CATEGORY LIST + MAP LAYOUT ── */
@@ -1349,7 +1349,6 @@ function HomePage({ setPage }) {
           most unspoilt corners of Cornwall.
         </p>
         <div style={{ display: "flex", gap: "1rem", justifyContent: "center", marginTop: "2.5rem", flexWrap: "wrap" }}>
-          <button className="ck-btn ck-btn-primary" onClick={() => { setPage("gallery"); window.scrollTo(0, 0); }}>View Gallery</button>
           <button className="ck-btn ck-btn-secondary" onClick={() => { setPage("calendar"); window.scrollTo(0, 0); }}>Check Availability</button>
         </div>
       </section>
@@ -1958,24 +1957,58 @@ function CategoryIcon({ type, color, size = 22 }) {
           <path d="M9 8V6a3 3 0 0 1 6 0v2" />
         </svg>
       );
-    case "parkrun": // inverted parkrun-style tree of dots
+    case "parkrun": // parkrun's tree-in-a-circle mark, traced from parkrun.org.uk
       return (
-        <svg {...common} fill={color} stroke="none">
-          <g transform="translate(12,12) rotate(180) translate(-12,-12)">
-            <path d="M11.3 3h1.4v6.5h-1.4z" />
-            <circle cx="12" cy="9" r="1.4" />
-            <circle cx="8.5" cy="11" r="1.2" />
-            <circle cx="15.5" cy="11" r="1.2" />
-            <circle cx="6" cy="14" r="1.1" />
-            <circle cx="18" cy="14" r="1.1" />
-            <circle cx="9.5" cy="14.5" r="1.1" />
-            <circle cx="14.5" cy="14.5" r="1.1" />
-            <circle cx="12" cy="16" r="1.2" />
-            <circle cx="4.5" cy="17.5" r="1" />
-            <circle cx="19.5" cy="17.5" r="1" />
-            <circle cx="8" cy="18" r="1" />
-            <circle cx="16" cy="18" r="1" />
-            <circle cx="12" cy="19" r="1" />
+        <svg width={size} height={size} viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(0,700) scale(0.1,-0.1)" fill={color} stroke="none">
+            <path d="M3278 6995 c-1 -1 -42 -5 -89 -9 -47 -4 -95 -8 -105 -10 -10 -2 -46
+-7 -79 -12 -33 -4 -62 -8 -65 -9 -3 0 -27 -4 -55 -9 -87 -13 -326 -73 -445
+-111 -624 -201 -1185 -575 -1611 -1075 -333 -390 -596 -898 -719 -1390 -81
+-325 -105 -527 -105 -875 0 -196 6 -309 20 -412 10 -67 14 -99 20 -148 4 -27
+10 -66 15 -85 5 -19 12 -48 14 -65 28 -156 114 -435 189 -615 219 -526 539
+-963 993 -1355 179 -154 500 -360 739 -474 217 -103 562 -223 739 -257 22 -4
+34 -6 121 -24 62 -12 95 -17 154 -26 25 -3 57 -8 71 -10 193 -30 697 -24 907
+10 21 4 52 8 68 10 47 6 195 35 240 47 22 6 50 13 63 15 73 14 461 144 487
+164 6 4 21 11 35 15 40 12 310 148 396 200 256 154 463 314 663 509 83 81 121
+122 252 270 145 165 351 486 463 721 110 231 219 541 262 750 16 75 54 300 60
+350 4 33 9 76 11 95 8 70 10 547 2 610 -4 36 -10 94 -14 130 -3 36 -8 72 -10
+80 -2 8 -7 35 -10 60 -4 25 -10 63 -15 85 -5 22 -11 55 -15 72 -40 233 -156
+566 -289 833 -176 352 -375 629 -656 911 -186 186 -203 202 -364 323 -259 197
+-521 346 -811 463 -232 94 -524 175 -750 209 -27 4 -57 9 -65 10 -8 2 -44 6
+-80 10 -36 3 -78 8 -95 11 -33 5 -531 13 -537 8z m452 -210 c58 -3 116 -8 130
+-9 102 -14 135 -19 215 -32 176 -30 475 -112 590 -163 11 -5 66 -28 123 -51
+294 -122 607 -316 861 -535 95 -82 265 -253 334 -335 40 -47 74 -87 78 -90 15
+-14 137 -181 188 -258 78 -119 129 -206 199 -347 163 -324 272 -679 318 -1030
+3 -27 8 -61 10 -75 22 -168 22 -522 -1 -715 -2 -16 -6 -50 -9 -75 -43 -372
+-190 -816 -385 -1165 -83 -149 -244 -387 -331 -489 -157 -186 -343 -369 -495
+-488 -33 -27 -65 -52 -72 -57 -25 -22 -233 -161 -298 -201 -100 -62 -343 -182
+-460 -228 -256 -101 -579 -185 -795 -208 -36 -3 -67 -8 -70 -9 -10 -6 -270
+-18 -360 -18 -143 1 -253 5 -315 13 -33 5 -82 11 -110 14 -47 5 -246 39 -290
+50 -11 2 -40 9 -65 15 -466 107 -964 363 -1360 698 -67 57 -300 290 -359 358
+-69 80 -233 303 -288 390 -50 80 -183 318 -183 328 0 3 -17 43 -39 89 -91 197
+-191 513 -226 713 -20 111 -26 147 -31 190 -3 28 -7 61 -9 75 -22 154 -22 553
+0 720 3 19 7 55 10 80 3 25 7 56 10 70 3 13 7 42 10 65 12 77 76 331 112 440
+72 220 164 429 271 615 54 94 140 230 151 240 3 3 22 28 41 55 39 57 34 50 97
+130 114 145 351 383 499 502 249 201 545 377 824 489 47 19 94 39 105 44 134
+58 520 153 713 176 26 2 58 7 72 10 14 2 81 7 150 10 69 4 126 7 127 8 4 3
+221 -3 313 -9z" />
+            <path d="M3424 5525 c-296 -53 -548 -271 -644 -556 -12 -35 -24 -77 -27 -94
+-2 -16 -6 -36 -9 -44 -3 -8 -7 -55 -11 -105 -3 -50 -8 -94 -12 -97 -3 -3 -37
+-14 -76 -23 -332 -79 -604 -324 -719 -647 -123 -345 -40 -731 217 -1016 65
+-72 210 -179 297 -220 128 -60 260 -93 392 -99 123 -5 173 11 187 61 13 48 6
+85 -23 114 -23 23 -35 25 -143 32 -65 4 -138 12 -163 18 -53 14 -131 42 -145
+51 -5 4 -35 21 -66 37 -31 17 -67 39 -80 49 -41 32 -154 147 -181 185 -48 65
+-110 197 -121 259 -4 19 -9 46 -12 60 -13 63 -8 201 11 305 37 204 176 406
+352 512 123 73 235 105 457 129 33 3 61 7 63 8 1 2 -3 27 -8 57 -44 223 -23
+384 69 526 133 206 338 317 571 308 235 -9 446 -143 548 -350 47 -95 64 -168
+67 -289 2 -61 3 -118 4 -127 1 -9 12 -28 26 -43 32 -35 101 -37 133 -3 36 38
+42 72 38 205 -3 106 -9 142 -33 218 -37 113 -88 206 -162 293 -70 82 -88 99
+-178 160 -173 118 -405 165 -619 126z" />
+            <path d="M3443 4016 c-18 -6 -41 -22 -50 -36 -17 -24 -18 -98 -18 -1325 0
+-1416 -3 -1349 57 -1378 58 -28 146 17 149 76 1 12 2 191 3 397 2 256 7 394
+15 435 50 236 240 386 546 430 139 19 213 50 216 88 0 7 2 21 4 32 8 38 -17
+84 -54 101 -50 24 -236 13 -356 -22 -122 -35 -216 -84 -316 -166 -26 -21 -48
+-38 -50 -38 -2 0 -4 287 -4 638 1 350 -3 657 -7 682 -14 78 -65 110 -135 86z" />
           </g>
         </svg>
       );
@@ -2294,11 +2327,11 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
                 <img className="ck-map-jump-chip-img" src={jumpImages[key]} alt="" />
               ) : (
                 <div className="ck-map-jump-chip-img ck-map-jump-chip-img-empty" style={{ background: t.color }}>
-                  <CategoryIcon type={key} color="#fff" size={32} />
+                  <CategoryIcon type={key} color="#fff" size={42} />
                 </div>
               )}
               <div className="ck-map-jump-chip-label">
-                <CategoryIcon type={key} color={t.color} size={12} />
+                <CategoryIcon type={key} color={t.color} size={14} />
                 {t.label}
               </div>
             </button>
