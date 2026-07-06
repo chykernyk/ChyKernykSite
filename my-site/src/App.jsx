@@ -135,19 +135,36 @@ const REMEDIES = [
     { name: "Coastguard", detail: "999 and ask for Coastguard", icon: "⚓" },
   ]},
   { category: "House Maintenance", items: [
-    { name: "Plumber", detail: "Roseland Plumbing — 01872 XXXXXX", icon: "🔧" },
-    { name: "Electrician", detail: "Portscatho Electrical — 01872 XXXXXX", icon: "⚡" },
     { name: "Stopcock Location", detail: "Under the kitchen sink, left side. Turn clockwise to close.", icon: "🚰" },
     { name: "Fusebox Location", detail: "Utility room, wall-mounted to the right of the door.", icon: "🔌" },
-    { name: "Boiler", detail: "Utility room. Instructions in the red folder on the shelf. Emergency off switch is the red button.", icon: "🌡️" },
   ]},
   { category: "Useful Numbers", items: [
-    { name: "Property Manager", detail: "Contact for any issues — 07XXX XXXXXX", icon: "🏠" },
-    { name: "WiFi Password", detail: "Network: ChyKernyk-Guest / Password: SeaView2025", icon: "📶" },
+    { name: "D & D", detail: "Contact for any issues — 07976 732303", icon: "🏠" },
+    { name: "WiFi Password", detail: "Network: ChyKernyk-Guest / Password: HiddenHut", icon: "📶" },
+    { name: "Webcam", detail: "Live view over Portscatho harbour and beach from the Harbour Club", icon: "📷", url: "https://www.theharbourclub.co.uk/webcam" },
   ]},
   { category: "House Rules", items: [
     { name: "Dogs", detail: "Well behaved dogs welcome downstairs only.", icon: "🐾" },
   ]},
+];
+
+// Tide times for the fortnight from 6 July 2026, based on Falmouth —
+// the nearest reference tide station to Portscatho.
+const TIDE_TIMES = [
+  { date: "Mon 6 Jul", tides: [["L", "4:14am"], ["H", "9:54am"], ["L", "4:26pm"], ["H", "10:17pm"]] },
+  { date: "Tue 7 Jul", tides: [["L", "4:57am"], ["H", "10:46am"], ["L", "5:10pm"], ["H", "11:11pm"]] },
+  { date: "Wed 8 Jul", tides: [["L", "5:45am"], ["H", "11:46am"], ["L", "6:03pm"]] },
+  { date: "Thu 9 Jul", tides: [["H", "12:13am"], ["L", "6:43am"], ["H", "12:52pm"], ["L", "7:07pm"]] },
+  { date: "Fri 10 Jul", tides: [["H", "1:20am"], ["L", "7:53am"], ["H", "1:59pm"], ["L", "8:27pm"]] },
+  { date: "Sat 11 Jul", tides: [["H", "2:26am"], ["L", "9:11am"], ["H", "3:01pm"], ["L", "9:48pm"]] },
+  { date: "Sun 12 Jul", tides: [["H", "3:30am"], ["L", "10:22am"], ["H", "4:01pm"], ["L", "10:56pm"]] },
+  { date: "Mon 13 Jul", tides: [["H", "4:30am"], ["L", "11:22am"], ["H", "4:58pm"], ["L", "11:54pm"]] },
+  { date: "Tue 14 Jul", tides: [["H", "5:28am"], ["L", "12:14pm"], ["H", "5:53pm"]] },
+  { date: "Wed 15 Jul", tides: [["L", "12:45am"], ["H", "6:23am"], ["L", "1:03pm"], ["H", "6:45pm"]] },
+  { date: "Thu 16 Jul", tides: [["L", "1:34am"], ["H", "7:15am"], ["L", "1:49pm"], ["H", "7:36pm"]] },
+  { date: "Fri 17 Jul", tides: [["L", "2:20am"], ["H", "8:04am"], ["L", "2:33pm"], ["H", "8:25pm"]] },
+  { date: "Sat 18 Jul", tides: [["L", "3:05am"], ["H", "8:53am"], ["L", "3:17pm"], ["H", "9:14pm"]] },
+  { date: "Sun 19 Jul", tides: [["L", "3:49am"], ["H", "9:40am"], ["L", "4:00pm"], ["H", "10:03pm"]] },
 ];
 
 const GALLERY_IMAGES = [
@@ -865,9 +882,22 @@ const CSS = `
     transition: all 0.3s;
   }
   .ck-remedy-item:hover { border-color:var(--ocean); background:var(--sand); }
+  a.ck-remedy-item { text-decoration:none; color:inherit; }
   .ck-remedy-icon { font-size:1.5rem; flex-shrink:0; }
   .ck-remedy-name { font-weight:500; color:var(--ocean); margin-bottom:0.2rem; }
   .ck-remedy-detail { font-size:0.9rem; color:var(--text-light); }
+
+  .ck-tide-table-wrap { overflow-x:auto; border:1px solid var(--sand-dark); border-radius:8px; }
+  .ck-tide-table { width:100%; border-collapse:collapse; font-size:0.88rem; white-space:nowrap; }
+  .ck-tide-table th, .ck-tide-table td { padding:0.6rem 0.9rem; text-align:left; }
+  .ck-tide-table th {
+    background:var(--ocean); color:var(--white);
+    font-family:var(--font-body); font-weight:500;
+    font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase;
+  }
+  .ck-tide-table td:first-child, .ck-tide-table th:first-child { font-weight:500; color:var(--ocean); }
+  .ck-tide-table tbody tr:nth-child(even) { background:var(--sand); }
+  .ck-tide-note { font-size:0.8rem; color:var(--text-light); margin-top:0.6rem; }
 
   /* ── CONTACT ── */
   .ck-contact-grid {
@@ -2354,18 +2384,44 @@ function RemediesPage({ setPage }) {
     <>
       <PageHeader title="Info" subtitle="Emergency contacts, maintenance details, and practical information for your stay." setPage={setPage} backTo="home" />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
+        <div className="ck-remedy-section">
+          <h2 className="ck-remedy-title">Tide Times</h2>
+          <div className="ck-tide-table-wrap">
+            <table className="ck-tide-table">
+              <thead>
+                <tr><th>Date</th><th>Tide</th><th>Tide</th><th>Tide</th><th>Tide</th></tr>
+              </thead>
+              <tbody>
+                {TIDE_TIMES.map(day => (
+                  <tr key={day.date}>
+                    <td>{day.date}</td>
+                    {[0, 1, 2, 3].map(i => {
+                      const t = day.tides[i];
+                      return <td key={i}>{t ? `${t[0]} ${t[1]}` : "—"}</td>;
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="ck-tide-note">L = Low Tide, H = High Tide. Times shown are for Falmouth, the nearest reference tide station to Portscatho.</p>
+        </div>
         {REMEDIES.map(cat => (
           <div key={cat.category} className="ck-remedy-section">
             <h2 className="ck-remedy-title">{cat.category}</h2>
-            {cat.items.map(item => (
-              <div key={item.name} className="ck-remedy-item">
-                <span className="ck-remedy-icon">{item.icon}</span>
-                <div>
-                  <div className="ck-remedy-name">{item.name}</div>
-                  <div className="ck-remedy-detail">{item.detail}</div>
-                </div>
-              </div>
-            ))}
+            {cat.items.map(item => {
+              const Tag = item.url ? "a" : "div";
+              const linkProps = item.url ? { href: item.url, target: "_blank", rel: "noopener noreferrer" } : {};
+              return (
+                <Tag key={item.name} className="ck-remedy-item" {...linkProps}>
+                  <span className="ck-remedy-icon">{item.icon}</span>
+                  <div>
+                    <div className="ck-remedy-name">{item.name}</div>
+                    <div className="ck-remedy-detail">{item.detail}</div>
+                  </div>
+                </Tag>
+              );
+            })}
           </div>
         ))}
       </section>
