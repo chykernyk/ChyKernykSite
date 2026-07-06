@@ -302,11 +302,14 @@ function navigateToPin(pin, setPage, setSubPage) {
   window.scrollTo(0, 0);
 }
 
+// The property's location — ///latches.invisible.rope
+const PROPERTY_LOCATION = { lat: 50.182204, lng: -4.976218 };
+
 // Reference points shown on the map for orientation (not clickable pins).
 const MAP_LANDMARKS = [
   { lat: 50.1533, lng: -5.0708, label: "Falmouth" },
   { lat: 50.1547, lng: -5.0136, label: "St Mawes" },
-  { lat: 50.182204, lng: -4.976218, label: "Portscatho", isHome: true },
+  { ...PROPERTY_LOCATION, label: "Portscatho", isHome: true },
   { lat: 50.1875, lng: -4.9130, label: "Nare Head" },
   { lat: 50.2211, lng: -4.8330, label: "Portloe" },
   { lat: 50.2180, lng: -4.9130, label: "Veryan" },
@@ -869,7 +872,7 @@ const CSS = `
   }
   @media(max-width:768px) { .ck-contact-grid { grid-template-columns:1fr; } }
   .ck-map-container {
-    width:100%; height:400px; border-radius:12px; overflow:hidden;
+    position:relative; width:100%; height:400px; border-radius:12px; overflow:hidden;
     border:1px solid var(--sand-dark);
   }
   .ck-contact-info { display:flex; flex-direction:column; gap:1.5rem; }
@@ -2367,6 +2370,32 @@ function RemediesPage({ setPage }) {
   );
 }
 
+// A simple Leaflet map centered on the property, with a single marker —
+// used on the Contact page instead of an embedded Google Map.
+function PropertyMap() {
+  const wrapRef = useRef(null);
+
+  useEffect(() => {
+    const map = L.map(wrapRef.current, { scrollWheelZoom: false })
+      .setView([PROPERTY_LOCATION.lat, PROPERTY_LOCATION.lng], 16);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 18,
+    }).addTo(map);
+    L.circleMarker([PROPERTY_LOCATION.lat, PROPERTY_LOCATION.lng], {
+      radius: 8,
+      color: "#fff", weight: 2,
+      fillColor: "#d44",
+      fillOpacity: 1,
+    })
+      .addTo(map)
+      .bindTooltip("Chy Kernyk", { permanent: true, direction: "top", offset: [0, -8], className: "ck-map-tooltip" });
+    return () => map.remove();
+  }, []);
+
+  return <div ref={wrapRef} className="ck-map-leaflet" />;
+}
+
 // CONTACT
 function ContactPage({ setPage }) {
   return (
@@ -2375,12 +2404,7 @@ function ContactPage({ setPage }) {
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
         <div className="ck-contact-grid">
           <div className="ck-map-container">
-            <iframe
-              title="Property location"
-              width="100%" height="100%" style={{ border: 0 }}
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2584.0!2d-4.976218!3d50.182204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTDCsDEwJzU0LjEiTiA0wrA1OCcyMC42Ilc!5e0!3m2!1sen!2suk!4v1"
-              allowFullScreen loading="lazy"
-            />
+            <PropertyMap />
           </div>
           <div className="ck-contact-info">
             <div className="ck-contact-item">
