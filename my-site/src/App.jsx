@@ -1007,22 +1007,23 @@ const CSS = `
   }
   .ck-map-pin-list-item > span:nth-child(2) { flex:1; }
   .ck-map-jump-bar {
-    display:flex; gap:0.9rem; flex-wrap:wrap; margin-bottom:1.5rem;
+    display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1.5rem;
   }
   .ck-map-jump-chip {
     display:flex; flex-direction:column;
-    width:160px; height:160px; padding:0; overflow:hidden;
-    border-radius:12px; border:1px solid var(--sand-dark); background:white;
+    width:92px; height:92px; padding:0; overflow:hidden;
+    border-radius:10px; border:1px solid var(--sand-dark); background:white;
     cursor:pointer; transition: all 0.2s;
   }
   .ck-map-jump-chip:hover { border-color:var(--ocean); box-shadow:0 6px 16px rgba(0,0,0,0.1); transform:translateY(-2px); }
   .ck-map-jump-chip-img {
-    width:100%; height:66.6667%; object-fit:cover; display:block; flex-shrink:0;
+    width:100%; height:55%; object-fit:cover; display:block; flex-shrink:0;
   }
+  .ck-map-jump-chip-img-empty { display:flex; align-items:center; justify-content:center; }
   .ck-map-jump-chip-label {
-    flex:1; display:flex; align-items:center; justify-content:center; gap:0.4rem;
-    font-family:var(--font-body); font-size:0.82rem; color:var(--text);
-    padding:0.3rem 0.5rem; text-align:center; line-height:1.2;
+    flex:1; display:flex; align-items:center; justify-content:center; gap:0.25rem;
+    font-family:var(--font-body); font-size:0.62rem; color:var(--text);
+    padding:0.2rem 0.3rem; text-align:center; line-height:1.15;
   }
 
   /* ── CATEGORY LIST + MAP LAYOUT ── */
@@ -2292,10 +2293,12 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
               {jumpImages[key] ? (
                 <img className="ck-map-jump-chip-img" src={jumpImages[key]} alt="" />
               ) : (
-                <div className="ck-map-jump-chip-img ck-map-jump-chip-img-empty" style={{ background: t.color }} />
+                <div className="ck-map-jump-chip-img ck-map-jump-chip-img-empty" style={{ background: t.color }}>
+                  <CategoryIcon type={key} color="#fff" size={32} />
+                </div>
               )}
               <div className="ck-map-jump-chip-label">
-                <CategoryIcon type={key} color={t.color} size={16} />
+                <CategoryIcon type={key} color={t.color} size={12} />
                 {t.label}
               </div>
             </button>
