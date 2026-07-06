@@ -145,6 +145,9 @@ const REMEDIES = [
     { name: "Property Manager", detail: "Contact for any issues — 07XXX XXXXXX", icon: "🏠" },
     { name: "WiFi Password", detail: "Network: ChyKernyk-Guest / Password: SeaView2025", icon: "📶" },
   ]},
+  { category: "House Rules", items: [
+    { name: "Dogs", detail: "Well behaved dogs welcome downstairs only.", icon: "🐾" },
+  ]},
 ];
 
 const GALLERY_IMAGES = [
@@ -2422,6 +2425,7 @@ function ContactPage({ setPage }) {
             <div className="ck-contact-item">
               <h3>Getting Here</h3>
               <p>From the A390, take the A3078 towards St Mawes. Turn left at Trewithian towards Portscatho. The property is on the coastal road overlooking the beach.</p>
+              <p style={{ marginTop: "0.5rem" }}>By public transport, catch a train to Truro and pick up the 50 bus. <a href="https://www.transportforcornwall.co.uk/services/TFCN/50" target="_blank" rel="noopener noreferrer">Timetable here</a>.</p>
             </div>
           </div>
         </div>
