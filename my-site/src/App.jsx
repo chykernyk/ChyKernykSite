@@ -306,7 +306,7 @@ function navigateToPin(pin, setPage, setSubPage) {
 const MAP_LANDMARKS = [
   { lat: 50.1533, lng: -5.0708, label: "Falmouth" },
   { lat: 50.1547, lng: -5.0136, label: "St Mawes" },
-  { lat: 50.1840, lng: -4.9860, label: "Portscatho", isHome: true },
+  { lat: 50.182204, lng: -4.976218, label: "Portscatho", isHome: true },
   { lat: 50.1875, lng: -4.9130, label: "Nare Head" },
   { lat: 50.2211, lng: -4.8330, label: "Portloe" },
   { lat: 50.2180, lng: -4.9130, label: "Veryan" },
@@ -2378,7 +2378,7 @@ function ContactPage({ setPage }) {
             <iframe
               title="Property location"
               width="100%" height="100%" style={{ border: 0 }}
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2584.0!2d-4.9724!3d50.1817!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTDCsDEwJzU0LjEiTiA0wrA1OCcyMC42Ilc!5e0!3m2!1sen!2suk!4v1"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2584.0!2d-4.976218!3d50.182204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTDCsDEwJzU0LjEiTiA0wrA1OCcyMC42Ilc!5e0!3m2!1sen!2suk!4v1"
               allowFullScreen loading="lazy"
             />
           </div>
