@@ -12,6 +12,7 @@ import imgCurgurrellWalk from "./assets/images/CurgurrellWalk.jpg";
 import imgEdenProject from "./assets/images/EdenProject.jpeg";
 import imgFishNTrips from "./assets/images/FishNTrips.jpeg";
 import imgFishingOffRocks from "./assets/images/FishingOffRocks.jpeg";
+import imgFistralBeach from "./assets/images/FistralBeach.jpg";
 import imgHarbour from "./assets/images/Harbour.jpeg";
 import imgHeligan from "./assets/images/Heligan.png";
 import imgHiddenHut from "./assets/images/HiddenHut.jpeg";
@@ -30,6 +31,7 @@ import imgMaritimeMuseum from "./assets/images/MaritimeMuseum.jpg";
 import imgMeatCounter from "./assets/images/MeatCounter.webp";
 import imgMevagissey from "./assets/images/Mevagissey.jpg";
 import imgNareHead from "./assets/images/NareHead.jpeg";
+import imgNativeGrain from "./assets/images/NativeGrain.jpg";
 import imgPendowerFarmShop from "./assets/images/PendowerFarmShop.webp";
 import imgPorthcurnick from "./assets/images/Porthcurnick.jpeg";
 import imgPorthcurnickPortcatho from "./assets/images/PorthcurnickPortcatho.jpeg";
@@ -52,6 +54,7 @@ import imgStMawesHarbour2 from "./assets/images/StMawesHarbour2.jpeg";
 import imgStMawesHarbourWall from "./assets/images/StMawesHarbourWall.jpeg";
 import imgStandardInnEvening from "./assets/images/StandardInnEvening.jpeg";
 import imgStandardInnGarden from "./assets/images/StandardInnGarden.jpeg";
+import imgTeacupTearoom from "./assets/images/TeacupTearoom.jpg";
 import imgTheStandard from "./assets/images/TheStandard.jpeg";
 import imgTheStandardLevel from "./assets/images/TheStandardLevel.jpeg";
 import imgTowanShellPicking from "./assets/images/TowanShellPicking.jpeg";
@@ -62,6 +65,7 @@ import imgTregewToasties from "./assets/images/TregewToasties.jpeg";
 import imgTrelissick from "./assets/images/Trelissick.jpeg";
 import imgTrelissick2 from "./assets/images/Trelissick2.jpeg";
 import imgTresanton from "./assets/images/Tresanton.webp";
+import imgWaitroseTruro from "./assets/images/WaitroseTruro.webp";
 
 // ─── DATA & CONSTANTS ────────────────────────────────────────────────
 // Passwords are stored as SHA-256 hashes rather than plaintext, since this is a
@@ -103,14 +107,16 @@ const FOOD_PLACES = [
   { id: "scathos-scoops", name: "Scatho's Scoops", desc: "Artisan ice cream made in Portscatho. Clotted cream, Cornish strawberry, and salted caramel are unmissable on a warm afternoon.", image: imgScathosScoops, tags: ["ice cream", "treats"], website: "#", location: "Portscatho", foodType: "eating" },
   { id: "shillakabooky-beach-hut", name: "Shillakabooky Beach Hut", desc: "A charming beach hut serving simple, delicious food right by the water. A perfect stop before or after a walk along the coast path.", image: imgShillakabookyBeachHut, tags: ["beach hut", "casual", "coastal"], website: "#", location: "Roseland Peninsula", foodType: "eating" },
   { id: "cafe-mylor", name: "Café Mylor", desc: "A relaxed waterside café at Mylor Yacht Harbour, serving brunch, coffee, and light lunches with views over the boats.", image: imgCafeMylor, tags: ["cafe", "waterside", "brunch"], website: "#", location: "Mylor Harbour", foodType: "eating" },
-  { id: "waitrose", name: "Waitrose", desc: "The nearest large supermarket, well stocked for a full shop — good wine selection and a decent deli counter too.", image: "https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=800&q=80", tags: ["supermarket", "groceries"], website: "#", location: "Truro", foodType: "buying" },
+  { id: "teacup-tearoom", name: "Teacup Tearoom", desc: "A quaint tearoom on the Mevagissey harbourside, serving homemade cakes, cream teas, and proper loose-leaf tea.", image: imgTeacupTearoom, tags: ["tearoom", "cake", "cream tea"], website: "#", location: "Mevagissey", foodType: "eating" },
+  { id: "waitrose", name: "Waitrose", desc: "The nearest large supermarket, well stocked for a full shop — good wine selection and a decent deli counter too.", image: imgWaitroseTruro, tags: ["supermarket", "groceries"], website: "#", location: "Truro", foodType: "buying" },
+  { id: "native-grain-bakers", name: "Native Grain Bakers", desc: "A Truro bakery turning out beautiful sourdough pastries and viennoiserie — the Chelsea buns and laminated bakes are worth the trip alone.", image: imgNativeGrain, tags: ["bakery", "pastries"], website: "#", location: "Truro", foodType: "buying" },
 ];
 
 const ACTIVITIES = [
   { id: "fish-n-trips", name: "Fish n Trips", desc: "Join local fisherman on a mackerel fishing trip from St Mawes harbour. Catch your supper and learn about Cornwall's maritime heritage.", image: imgFishNTrips, tags: ["fishing", "boat"] },
   { id: "mevagissey", name: "Mevagissey", desc: "A classic working Cornish fishing village with a bustling harbour, narrow winding streets, and some of the best fish and chips on the coast.", tags: ["harbour", "village", "fishing"], image: imgMevagissey },
   { id: "maritime-museum", name: "National Maritime Museum", desc: "Falmouth's award-winning museum telling the story of small boats and Britain's seafaring history, with a striking harbourside building and a lookout tower with panoramic views.", tags: ["museum", "history", "family"], image: imgMaritimeMuseum },
-  { id: "surfing-newquay", name: "Surfing in Newquay", desc: "An hour's drive takes you to Cornwall's surf capital. Lessons available for all ages and abilities at Fistral and Watergate Bay.", image: "https://images.unsplash.com/photo-1502680390548-bdbac40b3e1c?w=800&q=80", tags: ["surfing", "adventure"] },
+  { id: "surfing-newquay", name: "Surfing in Newquay", desc: "An hour's drive takes you to Cornwall's surf capital. Lessons available for all ages and abilities at Fistral and Watergate Bay.", image: imgFistralBeach, tags: ["surfing", "adventure"] },
   { id: "king-harry-ferry", name: "King Harry Ferry", desc: "A historic chain ferry crossing the River Fal, in operation since 1888. A scenic and surprisingly fun way to explore the Roseland and beyond.", image: imgKingHarryFerry, tags: ["ferry", "river", "scenic"] },
   { id: "heligan", name: "The Lost Gardens of Heligan", desc: "One of the most beloved gardens in England. Explore the jungle, the productive gardens, and the famous sleeping mud maid.", image: imgHeligan, tags: ["gardens", "history"], category: "garden" },
   { id: "burncoose", name: "Burncoose Nurseries", desc: "One of the UK's finest nurseries set in 30 acres of woodland garden. Magnificent camellias, magnolias, and rare plants.", image: imgBurncooseGoldMedal, tags: ["gardens", "plants"], category: "garden" },
@@ -120,7 +126,7 @@ const ACTIVITIES = [
   { id: "st-ives", name: "St Ives", desc: "The jewel of the north coast. Tate St Ives, the Barbara Hepworth Museum, cobbled lanes, and some of the best light in Britain.", image: imgBarbaraHepworthGarden, tags: ["town", "art", "culture"] },
   { id: "towan", name: "Towan Beach", desc: "A National Trust beach reached by a short walk, with rockpools, soft sand, and usually far fewer people than the popular spots.", image: imgTowanShellPicking, tags: ["beach", "rockpools", "family"], category: "beach" },
   { id: "pendower", name: "Pendower Beach", desc: "A long, gently shelving sandy beach next to Carne, backed by dunes and countryside. Great for a proper stretch-your-legs walk.", image: imgCarneBeach, tags: ["beach", "walking", "family"], category: "beach" },
-  { id: "fistral", name: "Fistral Beach", desc: "Cornwall's most famous surf beach in Newquay. Big Atlantic swells, a lively beach scene, and plenty of surf schools for all levels.", image: "https://images.unsplash.com/photo-1533760881669-80d0a13043cb?w=800&q=80", tags: ["beach", "surfing"], category: "beach" },
+  { id: "fistral", name: "Fistral Beach", desc: "Cornwall's most famous surf beach in Newquay. Big Atlantic swells, a lively beach scene, and plenty of surf schools for all levels.", image: imgFistralBeach, tags: ["beach", "surfing"], category: "beach" },
 ];
 
 const WALKS = [
@@ -150,6 +156,9 @@ const REMEDIES = [
     { name: "Emergency", detail: "999 — Police, Fire, Ambulance, Coastguard", icon: "🆘" },
     { name: "Coastguard", detail: "999 and ask for Coastguard", icon: "⚓" },
   ]},
+  { category: "Amenities", items: [
+    { name: "Amenities", detail: "Washing machine, tumble dryer & WiFi", icon: "🧺" },
+  ]},
   { category: "House Maintenance", items: [
     { name: "Stopcock Location", detail: "Under the kitchen sink, left side. Turn clockwise to close.", icon: "🚰" },
     { name: "Fusebox Location", detail: "Utility room, wall-mounted to the right of the door.", icon: "🔌" },
@@ -162,25 +171,6 @@ const REMEDIES = [
   { category: "House Rules", items: [
     { name: "Dogs", detail: "Well behaved dogs welcome downstairs only.", icon: "🐾" },
   ]},
-];
-
-// Tide times for the fortnight from 6 July 2026, based on Falmouth —
-// the nearest reference tide station to Portscatho.
-const TIDE_TIMES = [
-  { date: "Mon 6 Jul", tides: [["L", "4:14am"], ["H", "9:54am"], ["L", "4:26pm"], ["H", "10:17pm"]] },
-  { date: "Tue 7 Jul", tides: [["L", "4:57am"], ["H", "10:46am"], ["L", "5:10pm"], ["H", "11:11pm"]] },
-  { date: "Wed 8 Jul", tides: [["L", "5:45am"], ["H", "11:46am"], ["L", "6:03pm"]] },
-  { date: "Thu 9 Jul", tides: [["H", "12:13am"], ["L", "6:43am"], ["H", "12:52pm"], ["L", "7:07pm"]] },
-  { date: "Fri 10 Jul", tides: [["H", "1:20am"], ["L", "7:53am"], ["H", "1:59pm"], ["L", "8:27pm"]] },
-  { date: "Sat 11 Jul", tides: [["H", "2:26am"], ["L", "9:11am"], ["H", "3:01pm"], ["L", "9:48pm"]] },
-  { date: "Sun 12 Jul", tides: [["H", "3:30am"], ["L", "10:22am"], ["H", "4:01pm"], ["L", "10:56pm"]] },
-  { date: "Mon 13 Jul", tides: [["H", "4:30am"], ["L", "11:22am"], ["H", "4:58pm"], ["L", "11:54pm"]] },
-  { date: "Tue 14 Jul", tides: [["H", "5:28am"], ["L", "12:14pm"], ["H", "5:53pm"]] },
-  { date: "Wed 15 Jul", tides: [["L", "12:45am"], ["H", "6:23am"], ["L", "1:03pm"], ["H", "6:45pm"]] },
-  { date: "Thu 16 Jul", tides: [["L", "1:34am"], ["H", "7:15am"], ["L", "1:49pm"], ["H", "7:36pm"]] },
-  { date: "Fri 17 Jul", tides: [["L", "2:20am"], ["H", "8:04am"], ["L", "2:33pm"], ["H", "8:25pm"]] },
-  { date: "Sat 18 Jul", tides: [["L", "3:05am"], ["H", "8:53am"], ["L", "3:17pm"], ["H", "9:14pm"]] },
-  { date: "Sun 19 Jul", tides: [["L", "3:49am"], ["H", "9:40am"], ["L", "4:00pm"], ["H", "10:03pm"]] },
 ];
 
 const GALLERY_IMAGES = [
@@ -902,18 +892,6 @@ const CSS = `
   .ck-remedy-icon { font-size:1.5rem; flex-shrink:0; }
   .ck-remedy-name { font-weight:500; color:var(--ocean); margin-bottom:0.2rem; }
   .ck-remedy-detail { font-size:0.9rem; color:var(--text-light); }
-
-  .ck-tide-table-wrap { overflow-x:auto; border:1px solid var(--sand-dark); border-radius:8px; }
-  .ck-tide-table { width:100%; border-collapse:collapse; font-size:0.88rem; white-space:nowrap; }
-  .ck-tide-table th, .ck-tide-table td { padding:0.6rem 0.9rem; text-align:left; }
-  .ck-tide-table th {
-    background:var(--ocean); color:var(--white);
-    font-family:var(--font-body); font-weight:500;
-    font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase;
-  }
-  .ck-tide-table td:first-child, .ck-tide-table th:first-child { font-weight:500; color:var(--ocean); }
-  .ck-tide-table tbody tr:nth-child(even) { background:var(--sand); }
-  .ck-tide-note { font-size:0.8rem; color:var(--text-light); margin-top:0.6rem; }
 
   /* ── CONTACT ── */
   .ck-contact-grid {
@@ -2436,28 +2414,6 @@ function RemediesPage({ setPage }) {
     <>
       <PageHeader title="Info" subtitle="Emergency contacts, maintenance details, and practical information for your stay." setPage={setPage} backTo="home" />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
-        <div className="ck-remedy-section">
-          <h2 className="ck-remedy-title">Tide Times</h2>
-          <div className="ck-tide-table-wrap">
-            <table className="ck-tide-table">
-              <thead>
-                <tr><th>Date</th><th>Tide</th><th>Tide</th><th>Tide</th><th>Tide</th></tr>
-              </thead>
-              <tbody>
-                {TIDE_TIMES.map(day => (
-                  <tr key={day.date}>
-                    <td>{day.date}</td>
-                    {[0, 1, 2, 3].map(i => {
-                      const t = day.tides[i];
-                      return <td key={i}>{t ? `${t[0]} ${t[1]}` : "—"}</td>;
-                    })}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <p className="ck-tide-note">L = Low Tide, H = High Tide. Times shown are for Falmouth, the nearest reference tide station to Portscatho.</p>
-        </div>
         {REMEDIES.map(cat => (
           <div key={cat.category} className="ck-remedy-section">
             <h2 className="ck-remedy-title">{cat.category}</h2>
