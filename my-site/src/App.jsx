@@ -21,6 +21,7 @@ import imgHouseNorth from "./assets/images/HouseNorth.jpeg";
 import imgJuniorRaceWeek from "./assets/images/JuniorRaceWeek.jpeg";
 import imgKitchenToBe from "./assets/images/KitchenToBe.jpeg";
 import imgNareHead from "./assets/images/NareHead.jpeg";
+import imgPendowerFarmShop from "./assets/images/PendowerFarmShop.webp";
 import imgPorthcurnick from "./assets/images/Porthcurnick.jpeg";
 import imgPorthcurnickPortcatho from "./assets/images/PorthcurnickPortcatho.jpeg";
 import imgPorthcurnickPortcatho2 from "./assets/images/PorthcurnickPortcatho2.jpeg";
@@ -48,6 +49,7 @@ import imgTregewFoodBarn from "./assets/images/TregewFoodBarn.jpeg";
 import imgTregewToasties from "./assets/images/TregewToasties.jpeg";
 import imgTrelissick from "./assets/images/Trelissick.jpeg";
 import imgTrelissick2 from "./assets/images/Trelissick2.jpeg";
+import imgTresanton from "./assets/images/Tresanton.webp";
 
 // ─── DATA & CONSTANTS ────────────────────────────────────────────────
 // Passwords are stored as SHA-256 hashes rather than plaintext, since this is a
@@ -81,10 +83,10 @@ const BLOG_POSTS = [
 const FOOD_PLACES = [
   { id: "portscatho-stores", name: "Portscatho Stores", desc: "The heart of the village — exceptional deli, fresh bread daily, local produce, and everything you need. Their pasties are legendary.", image: imgPortscathoStores, tags: ["deli", "groceries", "bakery"], website: "#", location: "Portscatho", foodType: "buying" },
   { id: "tregew-food-barn", name: "Tregew Food Barn", desc: "A weekly barn full of local food produce from Bread to Veg and everything in between.", image: imgTregewFoodBarn, tags: ["farm shop", "local produce"], website: "https://www.foodbarn-tregew.co.uk/", location: "Near Froe", foodType: "buying" },
-  { id: "curgurrell-farm-shop", name: "Curgurrell Farm Shop", desc: "Family-run farm shop with their own livestock and kitchen garden produce. Seasonal, honest, and utterly delicious.", image: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&q=80", tags: ["farm shop", "meat", "seasonal"], website: "#", location: "Curgurrell", foodType: "buying" },
+  { id: "curgurrell-farm-shop", name: "Pendower Farm Shop", desc: "Family-run farm shop with their own livestock and kitchen garden produce. Seasonal, honest, and utterly delicious.", image: imgPendowerFarmShop, tags: ["farm shop", "meat", "seasonal"], website: "https://www.pendowerfarmshop.com/", location: "Pendower", foodType: "buying" },
   { id: "hidden-hut", name: "Hidden Hut", desc: "Cornwall's most famous beach café. Their feast nights are the stuff of legend — book months ahead. By day, superb cakes and coffee on Porthcurnick Beach.", image: imgHiddenHut, tags: ["restaurant", "beach", "feast nights"], website: "#", location: "Porthcurnick Beach", foodType: "eating" },
   { id: "standard", name: "The Standard", desc: "Contemporary dining with impeccable local sourcing. The tasting menu is a journey through Cornwall's finest ingredients.", image: imgTheStandardLevel, tags: ["restaurant", "fine dining"], website: "#", location: "Falmouth", foodType: "eating" },
-  { id: "tresanton", name: "Tresanton", desc: "Olga Polizzi's celebrated hotel restaurant in St Mawes. Mediterranean-influenced cooking with stunning harbour views.", image: "https://images.unsplash.com/photo-1550966871-3ed3cdb51f3a?w=800&q=80", tags: ["restaurant", "hotel", "harbour views"], website: "#", location: "St Mawes", foodType: "eating" },
+  { id: "tresanton", name: "Hotel Tresanton", desc: "Olga Polizzi's celebrated hotel restaurant in St Mawes. Mediterranean-influenced cooking with stunning harbour views.", image: imgTresanton, tags: ["restaurant", "hotel", "harbour views"], website: "#", location: "St Mawes", foodType: "eating" },
   { id: "the-meat-counter", name: "The Meat Counter", desc: "Falmouth's finest butcher and charcuterie. Dry-aged steaks, house-made sausages, and a deli counter that demands multiple visits.", image: "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800&q=80", tags: ["butcher", "deli", "charcuterie"], website: "#", location: "Falmouth", foodType: "eating" },
   { id: "scathos-scoops", name: "Scatho's Scoops", desc: "Artisan ice cream made in Portscatho. Clotted cream, Cornish strawberry, and salted caramel are unmissable on a warm afternoon.", image: imgScathosScoops, tags: ["ice cream", "treats"], website: "#", location: "Portscatho", foodType: "eating" },
   { id: "shillakabooky-beach-hut", name: "Shillakabooky Beach Hut", desc: "A charming beach hut serving simple, delicious food right by the water. A perfect stop before or after a walk along the coast path.", image: imgShillakabookyBeachHut, tags: ["beach hut", "casual", "coastal"], website: "#", location: "Roseland Peninsula", foodType: "eating" },
