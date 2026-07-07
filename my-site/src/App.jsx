@@ -13,6 +13,7 @@ import imgEdenProject from "./assets/images/EdenProject.jpeg";
 import imgFishNTrips from "./assets/images/FishNTrips.jpeg";
 import imgFishingOffRocks from "./assets/images/FishingOffRocks.jpeg";
 import imgHarbour from "./assets/images/Harbour.jpeg";
+import imgHeligan from "./assets/images/Heligan.png";
 import imgHiddenHut from "./assets/images/HiddenHut.jpeg";
 import imgHiddenHutAerial from "./assets/images/HiddenHutAerial.jpeg";
 import imgHiddenHutFeast from "./assets/images/HiddenHutFeast.jpeg";
@@ -107,7 +108,7 @@ const ACTIVITIES = [
   { id: "fish-n-trips", name: "Fish n Trips", desc: "Join local fisherman on a mackerel fishing trip from St Mawes harbour. Catch your supper and learn about Cornwall's maritime heritage.", image: imgFishNTrips, tags: ["fishing", "boat"] },
   { id: "surfing-newquay", name: "Surfing in Newquay", desc: "An hour's drive takes you to Cornwall's surf capital. Lessons available for all ages and abilities at Fistral and Watergate Bay.", image: "https://images.unsplash.com/photo-1502680390548-bdbac40b3e1c?w=800&q=80", tags: ["surfing", "adventure"] },
   { id: "king-harry-ferry", name: "King Harry Ferry", desc: "A historic chain ferry crossing the River Fal, in operation since 1888. A scenic and surprisingly fun way to explore the Roseland and beyond.", image: imgKingHarryFerry, tags: ["ferry", "river", "scenic"] },
-  { id: "heligan", name: "The Lost Gardens of Heligan", desc: "One of the most beloved gardens in England. Explore the jungle, the productive gardens, and the famous sleeping mud maid.", image: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800&q=80", tags: ["gardens", "history"], category: "garden" },
+  { id: "heligan", name: "The Lost Gardens of Heligan", desc: "One of the most beloved gardens in England. Explore the jungle, the productive gardens, and the famous sleeping mud maid.", image: imgHeligan, tags: ["gardens", "history"], category: "garden" },
   { id: "burncoose", name: "Burncoose Nurseries", desc: "One of the UK's finest nurseries set in 30 acres of woodland garden. Magnificent camellias, magnolias, and rare plants.", image: imgBurncooseGoldMedal, tags: ["gardens", "plants"], category: "garden" },
   { id: "eden-project", name: "Eden Project", desc: "The iconic biomes housing the world's largest indoor rainforest. A must-visit that never disappoints, whatever the weather.", image: imgEdenProject, tags: ["attraction", "family"], category: "garden" },
   { id: "caerhayes", name: "Caerhayes Castle Gardens", desc: "A spectacular woodland garden famous for its world-renowned collection of magnolias, best seen in spring. The castle itself is a Nash-designed gem.", image: imgCaerhayes, tags: ["gardens", "magnolias", "castle"], category: "garden" },
