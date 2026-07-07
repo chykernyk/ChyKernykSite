@@ -1008,7 +1008,7 @@ const CSS = `
   }
   .ck-map-pin-list-item > span:nth-child(2) { flex:1; }
   .ck-map-jump-bar {
-    display:grid; grid-template-columns:repeat(auto-fit, minmax(100px, 1fr));
+    display:grid; grid-template-columns:repeat(7, 1fr);
     gap:0.6rem; margin-bottom:1.5rem;
   }
   .ck-map-jump-chip {
@@ -1026,6 +1026,10 @@ const CSS = `
     flex:1; display:flex; align-items:center; justify-content:center; gap:0.3rem;
     font-family:var(--font-body); font-size:0.72rem; color:var(--text);
     padding:0.25rem 0.4rem; text-align:center; line-height:1.15;
+  }
+  @media(max-width:560px) {
+    .ck-map-jump-chip-label-text { display:none; }
+    .ck-map-jump-chip-label svg { width:20px; height:20px; }
   }
 
   /* ── CATEGORY LIST + MAP LAYOUT ── */
@@ -2335,7 +2339,7 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
               )}
               <div className="ck-map-jump-chip-label">
                 <CategoryIcon type={key} color={t.color} size={14} />
-                {t.label}
+                <span className="ck-map-jump-chip-label-text">{t.label}</span>
               </div>
             </button>
           ))}
