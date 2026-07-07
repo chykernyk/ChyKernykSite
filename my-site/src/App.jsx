@@ -65,9 +65,9 @@ async function sha256Hex(text) {
 }
 
 const HERO_IMAGES = [
-  { url: imgPortscathofromtheAir2, caption: "Portscatho from the Air" },
+  { url: imgPortscathofromtheAir2, caption: "Portscatho from the Air", position: "center 20%" },
   { url: imgHouse, caption: "The House" },
-  { url: imgPorthcurnickPortcatho, caption: "Portscatho from Porthcurnick" },
+  { url: imgPorthcurnickPortcatho, caption: "Portscatho from Porthcurnick", position: "center 15%" },
 ];
 
 const BLOG_POSTS = [
@@ -1298,7 +1298,7 @@ function Hero({ setPage }) {
     <section className="ck-hero" aria-label="Hero carousel">
       {HERO_IMAGES.map((img, i) => (
         <div key={i} className={`ck-hero-slide ${i === current ? "active" : ""}`}
-          style={{ backgroundImage: `url(${img.url})` }} role="img" aria-label={img.caption} />
+          style={{ backgroundImage: `url(${img.url})`, backgroundPosition: img.position || "center" }} role="img" aria-label={img.caption} />
       ))}
       <div className="ck-hero-content">
         <h1 className="ck-hero-title ck-animate">Chy Kernyk</h1>
