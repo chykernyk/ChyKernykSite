@@ -48,6 +48,7 @@ import imgScathosScoops from "./assets/images/ScathosScoops.jpeg";
 import imgShillakabookyBeachHut from "./assets/images/ShillakabookyBeachHut.jpeg";
 import imgStAnthony from "./assets/images/StAnthony.webp";
 import imgStIves from "./assets/images/StIves.jpeg";
+import imgStJustInRoseland from "./assets/images/StJustInRoseland.jpg";
 import imgStMawesCastle from "./assets/images/StMawesCastle.webp";
 import imgStMawesHarbour from "./assets/images/StMawesHarbour.jpeg";
 import imgStMawesHarbour2 from "./assets/images/StMawesHarbour2.jpeg";
@@ -116,6 +117,7 @@ const ACTIVITIES = [
   { id: "fish-n-trips", name: "Fish n Trips", desc: "Join local fisherman on a mackerel fishing trip from St Mawes harbour. Catch your supper and learn about Cornwall's maritime heritage.", image: imgFishNTrips, tags: ["fishing", "boat"] },
   { id: "mevagissey", name: "Mevagissey", desc: "A classic working Cornish fishing village with a bustling harbour, narrow winding streets, and some of the best fish and chips on the coast.", tags: ["harbour", "village", "fishing"], image: imgMevagissey },
   { id: "maritime-museum", name: "National Maritime Museum", desc: "Falmouth's award-winning museum telling the story of small boats and Britain's seafaring history, with a striking harbourside building and a lookout tower with panoramic views.", tags: ["museum", "history", "family"], image: imgMaritimeMuseum },
+  { id: "st-just-in-roseland", name: "St Just in Roseland Church", desc: "One of the most beautiful churchyards in England, with subtropical planting tumbling down to the edge of a tidal creek. A peaceful spot, and a favourite of poet John Betjeman.", tags: ["church", "gardens", "creek"], image: imgStJustInRoseland },
   { id: "surfing-newquay", name: "Surfing in Newquay", desc: "An hour's drive takes you to Cornwall's surf capital. Lessons available for all ages and abilities at Fistral and Watergate Bay.", image: imgFistralBeach, tags: ["surfing", "adventure"] },
   { id: "king-harry-ferry", name: "King Harry Ferry", desc: "A historic chain ferry crossing the River Fal, in operation since 1888. A scenic and surprisingly fun way to explore the Roseland and beyond.", image: imgKingHarryFerry, tags: ["ferry", "river", "scenic"] },
   { id: "heligan", name: "The Lost Gardens of Heligan", desc: "One of the most beloved gardens in England. Explore the jungle, the productive gardens, and the famous sleeping mud maid.", image: imgHeligan, tags: ["gardens", "history"], category: "garden" },
