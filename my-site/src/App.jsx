@@ -1008,11 +1008,12 @@ const CSS = `
   }
   .ck-map-pin-list-item > span:nth-child(2) { flex:1; }
   .ck-map-jump-bar {
-    display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:1.5rem;
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(100px, 1fr));
+    gap:0.6rem; margin-bottom:1.5rem;
   }
   .ck-map-jump-chip {
     display:flex; flex-direction:column;
-    width:120px; height:120px; padding:0; overflow:hidden;
+    width:100%; aspect-ratio:1; min-width:0; padding:0; overflow:hidden;
     border-radius:10px; border:1px solid var(--sand-dark); background:white;
     cursor:pointer; transition: all 0.2s;
   }
@@ -2312,7 +2313,7 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
   return (
     <>
       <PageHeader title="Explore" setPage={setPage} backTo="home" />
-      <section className="ck-section" style={{ paddingTop: "1rem" }}>
+      <section className="ck-section" style={{ paddingTop: 0, marginTop: "-4rem" }}>
         {isAdmin && (
           <div className="ck-map-admin-bar">
             <button className={`ck-btn ${addMode ? "ck-btn-primary" : "ck-btn-secondary"} ck-btn-sm`} onClick={() => { setAddMode(!addMode); setPendingPos(null); }}>
