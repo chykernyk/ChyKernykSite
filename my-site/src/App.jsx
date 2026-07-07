@@ -893,6 +893,13 @@ const CSS = `
   .ck-remedy-name { font-weight:500; color:var(--ocean); margin-bottom:0.2rem; }
   .ck-remedy-detail { font-size:0.9rem; color:var(--text-light); }
 
+  /* ── TIDES ── */
+  .ck-tides-embed {
+    width:100%; height:85vh; min-height:800px;
+    border-radius:12px; overflow:hidden; border:1px solid var(--sand-dark);
+  }
+  .ck-tides-embed iframe { width:100%; height:100%; border:0; }
+
   /* ── CONTACT ── */
   .ck-contact-grid {
     display:grid; grid-template-columns:1fr 1fr; gap:3rem;
@@ -1230,6 +1237,7 @@ function Nav({ page, setPage, isAdmin, onLoginClick, onLogout, mobileOpen, setMo
     { id: "blog", label: "Story" },
     { id: "visitors-book", label: "Visitors Book" },
     { id: "remedies", label: "Info" },
+    { id: "tides", label: "Tides" },
     { id: "gallery", label: "Gallery" },
     { id: "calendar", label: "Calendar" },
     { id: "contact", label: "Contact" },
@@ -2463,6 +2471,20 @@ function PropertyMap() {
   return <div ref={wrapRef} className="ck-map-leaflet" />;
 }
 
+// TIDES
+function TidesPage({ setPage }) {
+  return (
+    <>
+      <PageHeader title="Tides" subtitle="Live tide times and heights for Portscatho — always current, refreshed automatically." setPage={setPage} backTo="home" />
+      <section className="ck-section" style={{ paddingTop: "1rem" }}>
+        <div className="ck-tides-embed">
+          <iframe title="Tide times" src="https://tides.willyweather.co.uk/sw/cornwall/portscatho.html" loading="lazy" />
+        </div>
+      </section>
+    </>
+  );
+}
+
 // CONTACT
 function ContactPage({ setPage }) {
   return (
@@ -2697,6 +2719,7 @@ export default function App() {
     parkrun: <ParkrunPage setPage={setPage} setSubPage={setSubPage} />,
     calendar: <CalendarPage setPage={setPage} isAdmin={isAdmin} />,
     remedies: <RemediesPage setPage={setPage} />,
+    tides: <TidesPage setPage={setPage} />,
     contact: <ContactPage setPage={setPage} />,
   };
 
