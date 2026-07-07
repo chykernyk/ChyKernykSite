@@ -4,7 +4,11 @@ import "leaflet/dist/leaflet.css";
 import imgBarbaraHepworthGarden from "./assets/images/BarbaraHepworthGarden.jpeg";
 import imgBarbaraHepworthStudio from "./assets/images/BarbaraHepworthStudio.jpeg";
 import imgBarbaraHepworthStudio2 from "./assets/images/BarbaraHepworthStudio2.jpeg";
+import imgBurncooseGoldMedal from "./assets/images/BurncooseGoldMedal.jpg";
+import imgCaerhayes from "./assets/images/Caerhayes.webp";
 import imgCafeMylor from "./assets/images/CafeMylor.jpeg";
+import imgCarneBeach from "./assets/images/CarneBeach.jpg";
+import imgCurgurrellWalk from "./assets/images/CurgurrellWalk.jpg";
 import imgEdenProject from "./assets/images/EdenProject.jpeg";
 import imgFishNTrips from "./assets/images/FishNTrips.jpeg";
 import imgFishingOffRocks from "./assets/images/FishingOffRocks.jpeg";
@@ -19,7 +23,9 @@ import imgHouseEast from "./assets/images/HouseEast.jpeg";
 import imgHouseFromRoad from "./assets/images/HouseFromRoad.jpeg";
 import imgHouseNorth from "./assets/images/HouseNorth.jpeg";
 import imgJuniorRaceWeek from "./assets/images/JuniorRaceWeek.jpeg";
+import imgKingHarryFerry from "./assets/images/KingHarryFerry.jpg";
 import imgKitchenToBe from "./assets/images/KitchenToBe.jpeg";
+import imgMeatCounter from "./assets/images/MeatCounter.webp";
 import imgNareHead from "./assets/images/NareHead.jpeg";
 import imgPendowerFarmShop from "./assets/images/PendowerFarmShop.webp";
 import imgPorthcurnick from "./assets/images/Porthcurnick.jpeg";
@@ -29,12 +35,15 @@ import imgPortscathoFromTheAir from "./assets/images/PortscathoFromTheAir.jpg";
 import imgPortscathoHarbour from "./assets/images/PortscathoHarbour.jpeg";
 import imgPortscathoHarbour2 from "./assets/images/PortscathoHarbour2.jpeg";
 import imgPortscathoStores from "./assets/images/PortscathoStores.jpeg";
+import imgPortscathoStoresLevel from "./assets/images/PortscathoStoresLevel.jpeg";
 import imgPortscathofromtheAir2 from "./assets/images/PortscathofromtheAir2.JPG";
 import imgPurchaseDay from "./assets/images/PurchaseDay.jpeg";
 import imgRalphs from "./assets/images/Ralphs.jpeg";
 import imgScathosScoops from "./assets/images/ScathosScoops.jpeg";
 import imgShillakabookyBeachHut from "./assets/images/ShillakabookyBeachHut.jpeg";
+import imgStAnthony from "./assets/images/StAnthony.webp";
 import imgStIves from "./assets/images/StIves.jpeg";
+import imgStMawesCastle from "./assets/images/StMawesCastle.webp";
 import imgStMawesHarbour from "./assets/images/StMawesHarbour.jpeg";
 import imgStMawesHarbour2 from "./assets/images/StMawesHarbour2.jpeg";
 import imgStMawesHarbourWall from "./assets/images/StMawesHarbourWall.jpeg";
@@ -81,13 +90,13 @@ const BLOG_POSTS = [
 ];
 
 const FOOD_PLACES = [
-  { id: "portscatho-stores", name: "Portscatho Stores", desc: "The heart of the village — exceptional deli, fresh bread daily, local produce, and everything you need. Their pasties are legendary.", image: imgPortscathoStores, tags: ["deli", "groceries", "bakery"], website: "#", location: "Portscatho", foodType: "buying" },
+  { id: "portscatho-stores", name: "Portscatho Stores", desc: "The heart of the village — exceptional deli, fresh bread daily, local produce, and everything you need. Their pasties are legendary.", image: imgPortscathoStoresLevel, tags: ["deli", "groceries", "bakery"], website: "#", location: "Portscatho", foodType: "buying" },
   { id: "tregew-food-barn", name: "Tregew Food Barn", desc: "A weekly barn full of local food produce from Bread to Veg and everything in between.", image: imgTregewFoodBarn, tags: ["farm shop", "local produce"], website: "https://www.foodbarn-tregew.co.uk/", location: "Near Froe", foodType: "buying" },
   { id: "curgurrell-farm-shop", name: "Pendower Farm Shop", desc: "Family-run farm shop with their own livestock and kitchen garden produce. Seasonal, honest, and utterly delicious.", image: imgPendowerFarmShop, tags: ["farm shop", "meat", "seasonal"], website: "https://www.pendowerfarmshop.com/", location: "Pendower", foodType: "buying" },
   { id: "hidden-hut", name: "Hidden Hut", desc: "Cornwall's most famous beach café. Their feast nights are the stuff of legend — book months ahead. By day, superb cakes and coffee on Porthcurnick Beach.", image: imgHiddenHut, tags: ["restaurant", "beach", "feast nights"], website: "#", location: "Porthcurnick Beach", foodType: "eating" },
   { id: "standard", name: "The Standard", desc: "Contemporary dining with impeccable local sourcing. The tasting menu is a journey through Cornwall's finest ingredients.", image: imgTheStandardLevel, tags: ["restaurant", "fine dining"], website: "#", location: "Falmouth", foodType: "eating" },
   { id: "tresanton", name: "Hotel Tresanton", desc: "Olga Polizzi's celebrated hotel restaurant in St Mawes. Mediterranean-influenced cooking with stunning harbour views.", image: imgTresanton, tags: ["restaurant", "hotel", "harbour views"], website: "#", location: "St Mawes", foodType: "eating" },
-  { id: "the-meat-counter", name: "The Meat Counter", desc: "Falmouth's finest butcher and charcuterie. Dry-aged steaks, house-made sausages, and a deli counter that demands multiple visits.", image: "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800&q=80", tags: ["butcher", "deli", "charcuterie"], website: "#", location: "Falmouth", foodType: "eating" },
+  { id: "the-meat-counter", name: "The Meat Counter", desc: "Falmouth's finest butcher and charcuterie. Dry-aged steaks, house-made sausages, and a deli counter that demands multiple visits.", image: imgMeatCounter, tags: ["butcher", "deli", "charcuterie"], website: "#", location: "Falmouth", foodType: "eating" },
   { id: "scathos-scoops", name: "Scatho's Scoops", desc: "Artisan ice cream made in Portscatho. Clotted cream, Cornish strawberry, and salted caramel are unmissable on a warm afternoon.", image: imgScathosScoops, tags: ["ice cream", "treats"], website: "#", location: "Portscatho", foodType: "eating" },
   { id: "shillakabooky-beach-hut", name: "Shillakabooky Beach Hut", desc: "A charming beach hut serving simple, delicious food right by the water. A perfect stop before or after a walk along the coast path.", image: imgShillakabookyBeachHut, tags: ["beach hut", "casual", "coastal"], website: "#", location: "Roseland Peninsula", foodType: "eating" },
   { id: "cafe-mylor", name: "Café Mylor", desc: "A relaxed waterside café at Mylor Yacht Harbour, serving brunch, coffee, and light lunches with views over the boats.", image: imgCafeMylor, tags: ["cafe", "waterside", "brunch"], website: "#", location: "Mylor Harbour", foodType: "eating" },
@@ -95,26 +104,26 @@ const FOOD_PLACES = [
 ];
 
 const ACTIVITIES = [
-  { id: "fish-n-trips", name: "Fish n Trips", desc: "Join local fisherman on a mackerel fishing trip from St Mawes harbour. Catch your supper and learn about Cornwall's maritime heritage.", image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80", tags: ["fishing", "boat"] },
+  { id: "fish-n-trips", name: "Fish n Trips", desc: "Join local fisherman on a mackerel fishing trip from St Mawes harbour. Catch your supper and learn about Cornwall's maritime heritage.", image: imgFishNTrips, tags: ["fishing", "boat"] },
   { id: "surfing-newquay", name: "Surfing in Newquay", desc: "An hour's drive takes you to Cornwall's surf capital. Lessons available for all ages and abilities at Fistral and Watergate Bay.", image: "https://images.unsplash.com/photo-1502680390548-bdbac40b3e1c?w=800&q=80", tags: ["surfing", "adventure"] },
-  { id: "king-harry-ferry", name: "King Harry Ferry", desc: "A historic chain ferry crossing the River Fal, in operation since 1888. A scenic and surprisingly fun way to explore the Roseland and beyond.", image: "https://images.unsplash.com/photo-1544198365-f5d60b6d8190?w=800&q=80", tags: ["ferry", "river", "scenic"] },
+  { id: "king-harry-ferry", name: "King Harry Ferry", desc: "A historic chain ferry crossing the River Fal, in operation since 1888. A scenic and surprisingly fun way to explore the Roseland and beyond.", image: imgKingHarryFerry, tags: ["ferry", "river", "scenic"] },
   { id: "heligan", name: "The Lost Gardens of Heligan", desc: "One of the most beloved gardens in England. Explore the jungle, the productive gardens, and the famous sleeping mud maid.", image: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800&q=80", tags: ["gardens", "history"], category: "garden" },
-  { id: "burncoose", name: "Burncoose Nurseries", desc: "One of the UK's finest nurseries set in 30 acres of woodland garden. Magnificent camellias, magnolias, and rare plants.", image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80", tags: ["gardens", "plants"], category: "garden" },
+  { id: "burncoose", name: "Burncoose Nurseries", desc: "One of the UK's finest nurseries set in 30 acres of woodland garden. Magnificent camellias, magnolias, and rare plants.", image: imgBurncooseGoldMedal, tags: ["gardens", "plants"], category: "garden" },
   { id: "eden-project", name: "Eden Project", desc: "The iconic biomes housing the world's largest indoor rainforest. A must-visit that never disappoints, whatever the weather.", image: imgEdenProject, tags: ["attraction", "family"], category: "garden" },
-  { id: "caerhayes", name: "Caerhayes Castle Gardens", desc: "A spectacular woodland garden famous for its world-renowned collection of magnolias, best seen in spring. The castle itself is a Nash-designed gem.", image: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=800&q=80", tags: ["gardens", "magnolias", "castle"], category: "garden" },
+  { id: "caerhayes", name: "Caerhayes Castle Gardens", desc: "A spectacular woodland garden famous for its world-renowned collection of magnolias, best seen in spring. The castle itself is a Nash-designed gem.", image: imgCaerhayes, tags: ["gardens", "magnolias", "castle"], category: "garden" },
   { id: "trelissick-garden", name: "Trelissick Garden", desc: "A National Trust garden overlooking the Fal estuary, with sub-tropical planting, woodland walks, and a wonderful walled garden.", image: imgTrelissick, tags: ["gardens", "national trust", "views"], category: "garden" },
-  { id: "st-ives", name: "St Ives", desc: "The jewel of the north coast. Tate St Ives, the Barbara Hepworth Museum, cobbled lanes, and some of the best light in Britain.", image: "https://images.unsplash.com/photo-1580237072617-771c3ecc4a24?w=800&q=80", tags: ["town", "art", "culture"] },
+  { id: "st-ives", name: "St Ives", desc: "The jewel of the north coast. Tate St Ives, the Barbara Hepworth Museum, cobbled lanes, and some of the best light in Britain.", image: imgBarbaraHepworthGarden, tags: ["town", "art", "culture"] },
   { id: "towan", name: "Towan Beach", desc: "A National Trust beach reached by a short walk, with rockpools, soft sand, and usually far fewer people than the popular spots.", image: imgTowanShellPicking, tags: ["beach", "rockpools", "family"], category: "beach" },
-  { id: "pendower", name: "Pendower Beach", desc: "A long, gently shelving sandy beach next to Carne, backed by dunes and countryside. Great for a proper stretch-your-legs walk.", image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&q=80", tags: ["beach", "walking", "family"], category: "beach" },
+  { id: "pendower", name: "Pendower Beach", desc: "A long, gently shelving sandy beach next to Carne, backed by dunes and countryside. Great for a proper stretch-your-legs walk.", image: imgCarneBeach, tags: ["beach", "walking", "family"], category: "beach" },
   { id: "fistral", name: "Fistral Beach", desc: "Cornwall's most famous surf beach in Newquay. Big Atlantic swells, a lively beach scene, and plenty of surf schools for all levels.", image: "https://images.unsplash.com/photo-1533760881669-80d0a13043cb?w=800&q=80", tags: ["beach", "surfing"], category: "beach" },
 ];
 
 const WALKS = [
   { id: "nare", name: "Nare Head", desc: "A spectacular circular walk around Nare Head with panoramic views of the coast. Moderate difficulty with some steep sections.", length: "4.2 miles", difficulty: "Moderate", parking: "Park at Carne Beach car park (free for National Trust members). Can get busy in summer — arrive before 10am.", eating: "The Shillakabooky Beach Hut is a perfect post-walk stop for something simple and delicious right by the water.", image: imgNareHead, stravaRouteId: "3507453955926855126" },
-  { id: "curgurrell", name: "Curgurrell Creek", desc: "A gentle walk through ancient woodland and along the creek. Perfect for a peaceful morning stroll or a family outing with young children.", length: "2.8 miles", difficulty: "Easy", parking: "Limited roadside parking near Curgurrell Farm. Please park considerately and respect local residents.", eating: "Curgurrell Farm Shop for provisions, or continue to Portscatho for the full range of options.", image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80", stravaRouteId: "3508117142736593884" },
+  { id: "curgurrell", name: "Curgurrell Creek", desc: "A gentle walk through ancient woodland and along the creek. Perfect for a peaceful morning stroll or a family outing with young children.", length: "2.8 miles", difficulty: "Easy", parking: "Limited roadside parking near Curgurrell Farm. Please park considerately and respect local residents.", eating: "Curgurrell Farm Shop for provisions, or continue to Portscatho for the full range of options.", image: imgCurgurrellWalk, stravaRouteId: "3508117142736593884" },
   { id: "towan", name: "Towan Beach Circuit", desc: "A beautiful coastal and inland loop taking in Towan Beach, farmland, and quiet lanes. Wonderful wildflowers in spring and early summer.", length: "3.5 miles", difficulty: "Easy-Moderate", parking: "Towan Beach car park. Honesty box payment.", eating: "Pack a picnic from Portscatho Stores — Towan Beach is a perfect lunch spot.", image: imgTowanShellPicking, stravaRouteId: "3508117195142270626" },
-  { id: "st-anthony", name: "St Anthony Head", desc: "Walk to the lighthouse at St Anthony Head with views across Falmouth Bay. One of the finest viewpoints in Cornwall.", length: "3.0 miles", difficulty: "Easy-Moderate", parking: "National Trust car park at Place. Follow signs carefully — the lanes are narrow.", eating: "The Place restaurant (seasonal) or head to St Mawes for the Tresanton or the pub on the quay.", image: "https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2?w=800&q=80", stravaRouteId: "3508119257673450600" },
-  { id: "st-mawes", name: "St Mawes Castle Walk", desc: "A gentle walk around St Mawes taking in the castle, harbour, and stunning views of the Fal estuary and Pendennis Castle opposite.", length: "2.0 miles", difficulty: "Easy", parking: "St Mawes main car park (pay and display). Free in winter months.", eating: "Spoilt for choice — the Tresanton for something special, the Watch House for fish and chips, or the Rising Sun for a proper pub lunch.", image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80", stravaRouteId: "3508117047959651292" },
+  { id: "st-anthony", name: "St Anthony Head", desc: "Walk to the lighthouse at St Anthony Head with views across Falmouth Bay. One of the finest viewpoints in Cornwall.", length: "3.0 miles", difficulty: "Easy-Moderate", parking: "National Trust car park at Place. Follow signs carefully — the lanes are narrow.", eating: "The Place restaurant (seasonal) or head to St Mawes for the Tresanton or the pub on the quay.", image: imgStAnthony, stravaRouteId: "3508119257673450600" },
+  { id: "st-mawes", name: "St Mawes Castle Walk", desc: "A gentle walk around St Mawes taking in the castle, harbour, and stunning views of the Fal estuary and Pendennis Castle opposite.", length: "2.0 miles", difficulty: "Easy", parking: "St Mawes main car park (pay and display). Free in winter months.", eating: "Spoilt for choice — the Tresanton for something special, the Watch House for fish and chips, or the Rising Sun for a proper pub lunch.", image: imgStMawesCastle, stravaRouteId: "3508117047959651292" },
 ];
 
 const PARKRUNS = [
