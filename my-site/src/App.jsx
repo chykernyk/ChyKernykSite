@@ -26,7 +26,9 @@ import imgHouseNorth from "./assets/images/HouseNorth.jpeg";
 import imgJuniorRaceWeek from "./assets/images/JuniorRaceWeek.jpeg";
 import imgKingHarryFerry from "./assets/images/KingHarryFerry.jpg";
 import imgKitchenToBe from "./assets/images/KitchenToBe.jpeg";
+import imgMaritimeMuseum from "./assets/images/MaritimeMuseum.jpg";
 import imgMeatCounter from "./assets/images/MeatCounter.webp";
+import imgMevagissey from "./assets/images/Mevagissey.jpg";
 import imgNareHead from "./assets/images/NareHead.jpeg";
 import imgPendowerFarmShop from "./assets/images/PendowerFarmShop.webp";
 import imgPorthcurnick from "./assets/images/Porthcurnick.jpeg";
@@ -106,6 +108,8 @@ const FOOD_PLACES = [
 
 const ACTIVITIES = [
   { id: "fish-n-trips", name: "Fish n Trips", desc: "Join local fisherman on a mackerel fishing trip from St Mawes harbour. Catch your supper and learn about Cornwall's maritime heritage.", image: imgFishNTrips, tags: ["fishing", "boat"] },
+  { id: "mevagissey", name: "Mevagissey", desc: "A classic working Cornish fishing village with a bustling harbour, narrow winding streets, and some of the best fish and chips on the coast.", tags: ["harbour", "village", "fishing"], image: imgMevagissey },
+  { id: "maritime-museum", name: "National Maritime Museum", desc: "Falmouth's award-winning museum telling the story of small boats and Britain's seafaring history, with a striking harbourside building and a lookout tower with panoramic views.", tags: ["museum", "history", "family"], image: imgMaritimeMuseum },
   { id: "surfing-newquay", name: "Surfing in Newquay", desc: "An hour's drive takes you to Cornwall's surf capital. Lessons available for all ages and abilities at Fistral and Watergate Bay.", image: "https://images.unsplash.com/photo-1502680390548-bdbac40b3e1c?w=800&q=80", tags: ["surfing", "adventure"] },
   { id: "king-harry-ferry", name: "King Harry Ferry", desc: "A historic chain ferry crossing the River Fal, in operation since 1888. A scenic and surprisingly fun way to explore the Roseland and beyond.", image: imgKingHarryFerry, tags: ["ferry", "river", "scenic"] },
   { id: "heligan", name: "The Lost Gardens of Heligan", desc: "One of the most beloved gardens in England. Explore the jungle, the productive gardens, and the famous sleeping mud maid.", image: imgHeligan, tags: ["gardens", "history"], category: "garden" },
