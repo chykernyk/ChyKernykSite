@@ -66,7 +66,7 @@ import imgTregewToasties from "./assets/images/TregewToasties.jpeg";
 import imgTrelissick from "./assets/images/Trelissick.jpeg";
 import imgTrelissick2 from "./assets/images/Trelissick2.jpeg";
 import imgTresanton from "./assets/images/Tresanton.webp";
-import imgWaitroseTruro from "./assets/images/WaitroseTruro.webp";
+import imgWaitrose2 from "./assets/images/Waitrose2.jpg";
 
 // ─── DATA & CONSTANTS ────────────────────────────────────────────────
 // Passwords are stored as SHA-256 hashes rather than plaintext, since this is a
@@ -109,7 +109,7 @@ const FOOD_PLACES = [
   { id: "shillakabooky-beach-hut", name: "Shillakabooky Beach Hut", desc: "A charming beach hut serving simple, delicious food right by the water. A perfect stop before or after a walk along the coast path.", image: imgShillakabookyBeachHut, tags: ["beach hut", "casual", "coastal"], website: "#", location: "Roseland Peninsula", foodType: "eating" },
   { id: "cafe-mylor", name: "Café Mylor", desc: "A relaxed waterside café at Mylor Yacht Harbour, serving brunch, coffee, and light lunches with views over the boats.", image: imgCafeMylor, tags: ["cafe", "waterside", "brunch"], website: "#", location: "Mylor Harbour", foodType: "eating" },
   { id: "teacup-tearoom", name: "Teacup Tearoom", desc: "A quaint tearoom on the Mevagissey harbourside, serving homemade cakes, cream teas, and proper loose-leaf tea.", image: imgTeacupTearoom, tags: ["tearoom", "cake", "cream tea"], website: "#", location: "Mevagissey", foodType: "eating" },
-  { id: "waitrose", name: "Waitrose", desc: "The nearest large supermarket, well stocked for a full shop — good wine selection and a decent deli counter too.", image: imgWaitroseTruro, tags: ["supermarket", "groceries"], website: "#", location: "Truro", foodType: "buying" },
+  { id: "waitrose", name: "Waitrose", desc: "The nearest large supermarket, well stocked for a full shop — good wine selection and a decent deli counter too.", image: imgWaitrose2, tags: ["supermarket", "groceries"], website: "#", location: "Truro", foodType: "buying" },
   { id: "native-grain-bakers", name: "Native Grain Bakers", desc: "A Truro bakery turning out beautiful sourdough pastries and viennoiserie — the Chelsea buns and laminated bakes are worth the trip alone.", image: imgNativeGrain, tags: ["bakery", "pastries"], website: "#", location: "Truro", foodType: "buying" },
 ];
 
@@ -168,7 +168,6 @@ const REMEDIES = [
   { category: "Useful Numbers", items: [
     { name: "D & D", detail: "Contact for any issues — 07976 732303", icon: "🏠" },
     { name: "WiFi Password", detail: "Network: ChyKernyk-Guest / Password: HiddenHut", icon: "📶" },
-    { name: "Webcam", detail: "Live view over Portscatho harbour and beach from the Harbour Club", icon: "📷", url: "https://www.theharbourclub.co.uk/webcam" },
   ]},
   { category: "House Rules", items: [
     { name: "Dogs", detail: "Well behaved dogs welcome downstairs only.", icon: "🐾" },
@@ -896,6 +895,20 @@ const CSS = `
   .ck-remedy-detail { font-size:0.9rem; color:var(--text-light); }
 
   /* ── TIDES ── */
+  .ck-webcam-grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-bottom:2rem;
+  }
+  @media(max-width:768px) { .ck-webcam-grid { grid-template-columns:1fr; } }
+  .ck-webcam-title {
+    font-family:var(--font-display); font-size:1.1rem; color:var(--ocean);
+    margin-bottom:0.6rem; font-weight:500;
+  }
+  .ck-webcam-frame {
+    width:100%; aspect-ratio:16/9;
+    border-radius:12px; overflow:hidden; border:1px solid var(--sand-dark);
+    background:var(--sand-dark);
+  }
+  .ck-webcam-frame iframe { width:100%; height:100%; border:0; }
   .ck-tides-embed {
     width:100%; height:85vh; min-height:800px;
     border-radius:12px; overflow:hidden; border:1px solid var(--sand-dark);
@@ -2484,6 +2497,20 @@ function TidesPage({ setPage }) {
     <>
       <PageHeader title="Tides" subtitle="Live tide times and heights for Portscatho — always current, refreshed automatically." setPage={setPage} backTo="home" />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
+        <div className="ck-webcam-grid">
+          <div className="ck-webcam-tile">
+            <h3 className="ck-webcam-title">Portscatho Harbour Webcam</h3>
+            <div className="ck-webcam-frame">
+              <iframe title="Portscatho Harbour webcam" src="https://camsecure.uk/httpswebcam/truro/truro.html" loading="lazy" allowFullScreen />
+            </div>
+          </div>
+          <div className="ck-webcam-tile">
+            <h3 className="ck-webcam-title">St Mawes Harbour Webcam</h3>
+            <div className="ck-webcam-frame">
+              <iframe title="St Mawes Harbour webcam" src="https://camsecure.co/httpswebcam/cornwallferries/cornwallferries2.html" loading="lazy" allowFullScreen />
+            </div>
+          </div>
+        </div>
         <div className="ck-tides-embed">
           <iframe title="Tide times" src="https://tides.willyweather.co.uk/sw/cornwall/portscatho.html" loading="lazy" />
         </div>
@@ -2536,17 +2563,26 @@ const FEAST_NIGHTS = new Set([
 ]);
 
 // CALENDAR
+// Every date from today until this cutoff is marked booked/unavailable.
+const UNAVAILABLE_UNTIL = new Date(2027, 1, 1); // 1 Feb 2027
+
+function buildInitialBookings() {
+  const bookings = {
+    "2026-04-25": "owner", "2026-04-26": "owner", "2026-04-27": "owner",
+  };
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  while (d < UNAVAILABLE_UNTIL) {
+    const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    bookings[dateStr] = "booked";
+    d.setDate(d.getDate() + 1);
+  }
+  return bookings;
+}
+
 function CalendarPage({ setPage, isAdmin }) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [bookings, setBookings] = useState({
-    "2026-04-10": "booked", "2026-04-11": "booked", "2026-04-12": "booked",
-    "2026-04-13": "booked", "2026-04-14": "booked",
-    "2026-04-25": "owner", "2026-04-26": "owner", "2026-04-27": "owner",
-    "2026-07-01": "booked", "2026-07-02": "booked", "2026-07-03": "booked",
-    "2026-07-04": "booked", "2026-07-05": "booked", "2026-07-06": "booked", "2026-07-07": "booked",
-    "2026-08-15": "booked", "2026-08-16": "booked", "2026-08-17": "booked",
-    "2026-08-18": "booked", "2026-08-19": "booked", "2026-08-20": "booked", "2026-08-21": "booked", "2026-08-22": "booked",
-  });
+  const [bookings, setBookings] = useState(buildInitialBookings);
 
   const year = currentMonth.getFullYear();
   const month = currentMonth.getMonth();
