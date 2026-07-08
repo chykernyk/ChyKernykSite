@@ -910,10 +910,13 @@ const CSS = `
   }
   .ck-webcam-frame iframe { position:absolute; inset:0; width:100%; height:100%; display:block; border:0; }
   .ck-tides-embed {
-    width:100%; height:85vh; min-height:800px;
-    border-radius:12px; overflow:hidden; border:1px solid var(--sand-dark);
+    width:100%; border-radius:12px; overflow:hidden; border:1px solid var(--sand-dark);
+    display:flex; flex-direction:column;
   }
-  .ck-tides-embed iframe { width:100%; height:100%; border:0; }
+  .ck-tides-crop-header { width:100%; height:150px; overflow:hidden; flex-shrink:0; }
+  .ck-tides-crop-header iframe { width:100%; height:150px; border:0; display:block; }
+  .ck-tides-crop-body { width:100%; height:900px; overflow:hidden; position:relative; }
+  .ck-tides-crop-body iframe { width:100%; height:1332px; border:0; display:block; margin-top:-432px; }
 
   /* ── CONTACT ── */
   .ck-contact-grid {
@@ -2499,7 +2502,7 @@ function TidesPage({ setPage }) {
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
         <div className="ck-webcam-grid">
           <div className="ck-webcam-tile">
-            <h3 className="ck-webcam-title">Portscatho Harbour Webcam</h3>
+            <h3 className="ck-webcam-title">Portscatho Harbour Webcam (With thanks to the Harbour Club, Portscatho)</h3>
             <div className="ck-webcam-frame">
               <iframe title="Portscatho Harbour webcam" src="https://camsecure.uk/httpswebcam/truro/truro.html" loading="lazy" allowFullScreen />
             </div>
@@ -2512,7 +2515,18 @@ function TidesPage({ setPage }) {
           </div>
         </div>
         <div className="ck-tides-embed">
-          <iframe title="Tide times" src="https://tides.willyweather.co.uk/sw/cornwall/portscatho.html" loading="lazy" />
+          {/* WillyWeather's embed has a large blank ad-reserved gap between the
+              location search bar and the tabs/chart below it. We crop that gap
+              out by stacking two copies of the same iframe: one showing just
+              the header+search (cropped short), one shifted up to skip straight
+              to the tabs and chart. Tuned for desktop widths; may drift on
+              very different viewport sizes since it's a cross-origin page. */}
+          <div className="ck-tides-crop-header">
+            <iframe title="Tide times header" src="https://tides.willyweather.co.uk/sw/cornwall/portscatho.html" loading="lazy" />
+          </div>
+          <div className="ck-tides-crop-body">
+            <iframe title="Tide times" src="https://tides.willyweather.co.uk/sw/cornwall/portscatho.html" loading="lazy" />
+          </div>
         </div>
       </section>
     </>
