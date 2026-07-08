@@ -2720,6 +2720,26 @@ export default function App() {
   // Reset subpage when main page changes
   useEffect(() => { setSubPage(null); }, [page]);
 
+  // Sync page navigation with browser history, so the back button steps
+  // back through pages instead of leaving the site.
+  const isPopState = useRef(false);
+  const isFirstRender = useRef(true);
+  useEffect(() => {
+    const handlePopState = e => {
+      isPopState.current = true;
+      setSubPage(null);
+      setPage((e.state && e.state.page) || "home");
+    };
+    window.history.replaceState({ page: "home" }, "");
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+  useEffect(() => {
+    if (isFirstRender.current) { isFirstRender.current = false; return; }
+    if (isPopState.current) { isPopState.current = false; return; }
+    window.history.pushState({ page }, "");
+  }, [page]);
+
   // Render sub-pages (detail views)
   if (subPage) {
     let content = null;
