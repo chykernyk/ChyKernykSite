@@ -149,6 +149,9 @@ const PARKRUNS = [
 ];
 
 const REMEDIES = [
+  { category: "Useful Numbers", items: [
+    { name: "Dom & Davina", detail: "Contact for any issues — 07976 732303", icon: "🏠" },
+  ]},
   { category: "Medical", items: [
     { name: "Roseland Surgery", detail: "St Mawes — 01326 270218", icon: "🏥" },
     { name: "Treliske Hospital (Royal Cornwall)", detail: "Truro — 01872 250000 — A&E available 24hrs", icon: "🚑" },
@@ -160,14 +163,11 @@ const REMEDIES = [
   ]},
   { category: "Amenities", items: [
     { name: "Amenities", detail: "Washing machine, tumble dryer & WiFi", icon: "🧺" },
+    { name: "WiFi Password", detail: "Network: ChyKernyk-Guest / Password: HiddenHut", icon: "📶" },
   ]},
   { category: "House Maintenance", items: [
     { name: "Stopcock Location", detail: "Under the kitchen sink, left side. Turn clockwise to close.", icon: "🚰" },
     { name: "Fusebox Location", detail: "Utility room, wall-mounted to the right of the door.", icon: "🔌" },
-  ]},
-  { category: "Useful Numbers", items: [
-    { name: "D & D", detail: "Contact for any issues — 07976 732303", icon: "🏠" },
-    { name: "WiFi Password", detail: "Network: ChyKernyk-Guest / Password: HiddenHut", icon: "📶" },
   ]},
   { category: "House Rules", items: [
     { name: "Dogs", detail: "Well behaved dogs welcome downstairs only.", icon: "🐾" },
@@ -552,7 +552,7 @@ const CSS = `
     background:none; border:none; cursor:pointer;
     color:var(--ocean); font-family:var(--font-body);
     font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase;
-    margin-bottom: 2rem; padding:0;
+    margin-bottom: 0.5rem; padding:0;
   }
   .ck-back-link:hover { text-decoration:underline; color:var(--gold); }
   .ck-section-desc {
@@ -563,7 +563,7 @@ const CSS = `
 
   /* ── PAGE HEADER ── */
   .ck-page-header {
-    padding-top:120px; padding-bottom:3rem;
+    padding-top:120px; padding-bottom:1.25rem;
     background: linear-gradient(180deg, var(--sand) 0%, var(--white) 100%);
   }
   .ck-page-header-inner {
@@ -2335,7 +2335,7 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
   return (
     <>
       <PageHeader title="Explore" setPage={setPage} backTo="home" />
-      <section className="ck-section" style={{ paddingTop: 0, marginTop: "-4rem" }}>
+      <section className="ck-section" style={{ paddingTop: "1rem" }}>
         {isAdmin && (
           <div className="ck-map-admin-bar">
             <button className={`ck-btn ${addMode ? "ck-btn-primary" : "ck-btn-secondary"} ck-btn-sm`} onClick={() => { setAddMode(!addMode); setPendingPos(null); }}>
@@ -2546,7 +2546,7 @@ function ContactPage({ setPage }) {
           <div className="ck-contact-info">
             <div className="ck-contact-item">
               <h3>Address</h3>
-              <p>Chy Kernyk<br />Portscatho<br />Truro, Cornwall<br />TR2 5DU</p>
+              <p>Chy Kernyk<br />56 Parc an Dillon Road<br />Portscatho<br />Truro, Cornwall<br />TR2 5DU</p>
             </div>
             <div className="ck-contact-item">
               <h3>What3Words</h3>
