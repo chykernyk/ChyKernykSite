@@ -906,9 +906,9 @@ const CSS = `
   .ck-webcam-frame {
     width:100%; aspect-ratio:16/9;
     border-radius:12px; overflow:hidden; border:1px solid var(--sand-dark);
-    background:var(--sand-dark);
+    background:var(--sand-dark); position:relative;
   }
-  .ck-webcam-frame iframe { width:100%; height:100%; border:0; }
+  .ck-webcam-frame iframe { position:absolute; inset:0; width:100%; height:100%; display:block; border:0; }
   .ck-tides-embed {
     width:100%; height:85vh; min-height:800px;
     border-radius:12px; overflow:hidden; border:1px solid var(--sand-dark);
@@ -1044,7 +1044,7 @@ const CSS = `
   }
   @media(max-width:560px) {
     .ck-map-jump-chip-label-text { display:none; }
-    .ck-map-jump-chip-label svg { width:20px; height:20px; }
+    .ck-map-jump-chip-label .ck-map-legend-diamond { width:18px; height:18px; }
   }
 
   /* ── CATEGORY LIST + MAP LAYOUT ── */
@@ -2353,7 +2353,7 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
                 </div>
               )}
               <div className="ck-map-jump-chip-label">
-                <CategoryIcon type={key} color={t.color} size={14} />
+                <span className="ck-map-legend-diamond" style={{ background: t.color }} />
                 <span className="ck-map-jump-chip-label-text">{t.label}</span>
               </div>
             </button>
