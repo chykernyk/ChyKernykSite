@@ -132,9 +132,9 @@ const ACTIVITIES = [
 ];
 
 const WALKS = [
-  { id: "nare", name: "Nare Head", desc: "A spectacular circular walk around Nare Head with panoramic views of the coast. Moderate difficulty with some steep sections.", length: "4.2 miles", difficulty: "Moderate", parking: "Park at Carne Beach car park (free for National Trust members). Can get busy in summer — arrive before 10am.", eating: "The Shillakabooky Beach Hut is a perfect post-walk stop for something simple and delicious right by the water.", image: imgNareHead, stravaRouteId: "3507453955926855126" },
-  { id: "curgurrell", name: "Curgurrell Creek", desc: "A gentle walk through ancient woodland and along the creek. Perfect for a peaceful morning stroll or a family outing with young children.", length: "2.8 miles", difficulty: "Easy", parking: "Limited roadside parking near Curgurrell Farm. Please park considerately and respect local residents.", eating: "Curgurrell Farm Shop for provisions, or continue to Portscatho for the full range of options.", image: imgCurgurrellWalk, stravaRouteId: "3508117142736593884" },
-  { id: "towan", name: "Towan Beach Circuit", desc: "A beautiful coastal and inland loop taking in Towan Beach, farmland, and quiet lanes. Wonderful wildflowers in spring and early summer.", length: "3.5 miles", difficulty: "Easy-Moderate", parking: "Towan Beach car park. Honesty box payment.", eating: "Pack a picnic from Portscatho Stores — Towan Beach is a perfect lunch spot.", image: imgTowanShellPicking, stravaRouteId: "3508117195142270626" },
+  { id: "nare", name: "Nare Head", desc: "Drive to Pendower Beach for a spectacular circular walk around Nare Head with panoramic views of the coast. Reward yourself with coffee and ice cream at the Shillakabooky Beach Hut at the end. Moderate difficulty with some steep sections.", length: "4.2 miles", difficulty: "Moderate", parking: "Park at Carne Beach car park (free for National Trust members). Can get busy in summer — arrive before 10am.", eating: "The Shillakabooky Beach Hut is a perfect post-walk stop for something simple and delicious right by the water.", image: imgNareHead, stravaRouteId: "3507453955926855126" },
+  { id: "curgurrell", name: "Curgurrell Creek", desc: "A circular walk north from Portscatho along the coast, past the weather station and along hidden beaches with views out towards Gull Rock. Enjoy lunch or coffee at the famous Hidden Hut cafe above Porthcurnick beach.", length: "2.8 miles", difficulty: "Easy", parking: "Limited roadside parking near Curgurrell Farm. Please park considerately and respect local residents.", eating: "Curgurrell Farm Shop for provisions, or continue to Portscatho for the full range of options.", image: imgCurgurrellWalk, stravaRouteId: "3508117142736593884" },
+  { id: "towan", name: "Towan Beach Circuit", desc: "A circular walk south from Portscatho along the coast and back through pretty farmland and quiet country roads. Spot Towan's resident seals and enjoy delicious toasties and refreshments at Towan beach cafe. A great circuit for runners.", length: "3.5 miles", difficulty: "Easy-Moderate", parking: "Towan Beach car park. Honesty box payment.", eating: "Pack a picnic from Portscatho Stores — Towan Beach is a perfect lunch spot.", image: imgTowanShellPicking, stravaRouteId: "3508117195142270626" },
   { id: "st-anthony", name: "St Anthony Head", desc: "Walk to the lighthouse at St Anthony Head with views across Falmouth Bay. One of the finest viewpoints in Cornwall.", length: "3.0 miles", difficulty: "Easy-Moderate", parking: "National Trust car park at Place. Follow signs carefully — the lanes are narrow.", eating: "The Place restaurant (seasonal) or head to St Mawes for the Tresanton or the pub on the quay.", image: imgStAnthony, stravaRouteId: "3508119257673450600" },
   { id: "st-mawes", name: "St Mawes Castle Walk", desc: "A gentle walk around St Mawes taking in the castle, harbour, and stunning views of the Fal estuary and Pendennis Castle opposite.", length: "2.0 miles", difficulty: "Easy", parking: "St Mawes main car park (pay and display). Free in winter months.", eating: "Spoilt for choice — the Tresanton for something special, the Watch House for fish and chips, or the Rising Sun for a proper pub lunch.", image: imgStMawesCastle, stravaRouteId: "3508117047959651292" },
 ];
@@ -1368,10 +1368,11 @@ function HomePage({ setPage }) {
         <h2 className="ck-section-title" style={{ marginBottom: "1rem" }}>Welcome</h2>
         <div className="ck-section-line" style={{ margin: "0 auto 2rem" }} />
         <p style={{ fontSize: "1.1rem", lineHeight: 1.9, color: "var(--text-light)" }}>
-          Perched above the beach in Portscatho, on Cornwall's beautiful Roseland Peninsula,
-          Chy Kernyk offers an extraordinary coastal retreat. Wake to the sound of the sea,
-          watch the light play across the water towards Gull Rock, and discover one of the
-          most unspoilt corners of Cornwall.
+          Chy Kernyk (meaning "house on the corner" in Cornish) is situated along the South West
+          Coast Path in Portscatho, on Cornwall's beautiful Roseland Peninsula. Wake up to
+          uninterrupted views across the sea to Gull Rock, direct access to the beach on foot, a
+          wide range of scenic walking routes, wonderful local food and drink, in one of the most
+          unspoilt corners of Cornwall.
         </p>
         <div style={{ display: "flex", gap: "1rem", justifyContent: "center", marginTop: "2.5rem", flexWrap: "wrap" }}>
           <button className="ck-btn ck-btn-secondary" onClick={() => { setPage("calendar"); window.scrollTo(0, 0); }}>Check Availability</button>
