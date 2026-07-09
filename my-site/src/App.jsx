@@ -25,6 +25,7 @@ import imgHouseEast from "./assets/images/HouseEast.jpeg";
 import imgHouseFromRoad from "./assets/images/HouseFromRoad.jpeg";
 import imgHouseNorth from "./assets/images/HouseNorth.jpeg";
 import imgJuniorRaceWeek from "./assets/images/JuniorRaceWeek.jpeg";
+import imgKelpCanteen from "./assets/images/KelpCanteen.jpg";
 import imgKingHarryFerry from "./assets/images/KingHarryFerry.jpg";
 import imgKitchenToBe from "./assets/images/KitchenToBe.jpeg";
 import imgMaritimeMuseum from "./assets/images/MaritimeMuseum.jpg";
@@ -33,6 +34,7 @@ import imgMevagissey from "./assets/images/Mevagissey.jpg";
 import imgNareHead from "./assets/images/NareHead.jpeg";
 import imgNativeGrain from "./assets/images/NativeGrain.jpg";
 import imgPendowerFarmShop from "./assets/images/PendowerFarmShop.webp";
+import imgPercuilBoatyard from "./assets/images/PercuilBoatyard.jpg";
 import imgPorthcurnick from "./assets/images/Porthcurnick.jpeg";
 import imgPorthcurnickPortcatho from "./assets/images/PorthcurnickPortcatho.jpeg";
 import imgPorthcurnickPortcatho2 from "./assets/images/PorthcurnickPortcatho2.jpeg";
@@ -105,6 +107,7 @@ const FOOD_PLACES = [
   { id: "standard", name: "The Standard", desc: "Contemporary dining with impeccable local sourcing. The tasting menu is a journey through Cornwall's finest ingredients.", image: imgTheStandardLevel, tags: ["restaurant", "fine dining"], website: "#", location: "Falmouth", foodType: "eating" },
   { id: "tresanton", name: "Hotel Tresanton", desc: "Olga Polizzi's celebrated hotel restaurant in St Mawes. Mediterranean-influenced cooking with stunning harbour views.", image: imgTresanton, tags: ["restaurant", "hotel", "harbour views"], website: "#", location: "St Mawes", foodType: "eating" },
   { id: "the-meat-counter", name: "The Meat Counter", desc: "Falmouth's finest butcher and charcuterie. Dry-aged steaks, house-made sausages, and a deli counter that demands multiple visits.", image: imgMeatCounter, tags: ["butcher", "deli", "charcuterie"], website: "#", location: "Falmouth", foodType: "eating" },
+  { id: "kelp-canteen", name: "Kelp Canteen", desc: "A harbourside food trailer in Falmouth serving oysters, mussels, fish, and seaweed. Simple, fresh, and right by the water.", image: imgKelpCanteen, tags: ["seafood", "oysters", "harbourside"], website: "#", location: "Falmouth", foodType: "eating" },
   { id: "scathos-scoops", name: "Scatho's Scoops", desc: "Artisan ice cream made in Portscatho. Clotted cream, Cornish strawberry, and salted caramel are unmissable on a warm afternoon.", image: imgScathosScoops, tags: ["ice cream", "treats"], website: "#", location: "Portscatho", foodType: "eating" },
   { id: "shillakabooky-beach-hut", name: "Shallikabooky Beach Hut", desc: "A charming beach hut serving simple, delicious food right by the water. A perfect stop before or after a walk along the coast path.", image: imgShillakabookyBeachHut, tags: ["beach hut", "casual", "coastal"], website: "#", location: "Roseland Peninsula", foodType: "eating" },
   { id: "cafe-mylor", name: "Café Mylor", desc: "A relaxed waterside café at Mylor Yacht Harbour, serving brunch, coffee, and light lunches with views over the boats.", image: imgCafeMylor, tags: ["cafe", "waterside", "brunch"], website: "#", location: "Mylor Harbour", foodType: "eating" },
@@ -137,6 +140,7 @@ const WALKS = [
   { id: "towan", name: "Towan Beach Circuit", desc: "A circular walk south from Portscatho along the coast and back through pretty farmland and quiet country roads. Spot Towan's resident seals and enjoy delicious toasties and refreshments at Towan beach cafe. A great circuit for runners.", length: "3.5 miles", difficulty: "Easy-Moderate", parking: "Towan Beach car park. Honesty box payment.", eating: "Pack a picnic from Portscatho Stores — Towan Beach is a perfect lunch spot.", image: imgTowanShellPicking, stravaRouteId: "3508117195142270626" },
   { id: "st-anthony", name: "St Anthony Head", desc: "Walk to the lighthouse at St Anthony Head with views across Falmouth Bay. One of the finest viewpoints in Cornwall.", length: "3.0 miles", difficulty: "Easy-Moderate", parking: "National Trust car park at Place. Follow signs carefully — the lanes are narrow.", eating: "The Place restaurant (seasonal) or head to St Mawes for the Tresanton or the pub on the quay.", image: imgStAnthony, stravaRouteId: "3508119257673450600" },
   { id: "st-mawes", name: "St Mawes Castle Walk", desc: "A gentle walk around St Mawes taking in the castle, harbour, and stunning views of the Fal estuary and Pendennis Castle opposite.", length: "2.0 miles", difficulty: "Easy", parking: "St Mawes main car park (pay and display). Free in winter months.", eating: "Spoilt for choice — the Tresanton for something special, the Watch House for fish and chips, or the Rising Sun for a proper pub lunch.", image: imgStMawesCastle, stravaRouteId: "3508117047959651292" },
+  { id: "percuil-boatyard", name: "Percuil Boatyard Loop", desc: "A circular walk from Portscatho along the Roseland coast, through fields of sunflowers, down to Percuil boatyard. Return to Portscatho for ice cream at Scatho's Scoops, or tea and pastries at Tide and Thyme coffee hut.", length: "6.5 miles", difficulty: "Moderate", parking: "Free roadside parking in Portscatho village.", eating: "Scatho's Scoops or the Tide and Thyme coffee hut in Portscatho are perfect for a treat at the end.", image: imgPercuilBoatyard, stravaRouteId: "3510178570089264786" },
 ];
 
 const PARKRUNS = [
@@ -738,7 +742,10 @@ const CSS = `
   }
   .ck-visitor-form-title {
     font-family:var(--font-display); font-size:1.3rem;
-    color:var(--ocean); margin-bottom:1.25rem;
+    color:var(--ocean); margin-bottom:0.5rem;
+  }
+  .ck-visitor-form-intro {
+    font-size:0.9rem; color:var(--text-light); margin-bottom:1.5rem;
   }
   .ck-visitor-form-filecount {
     font-size:0.8rem; color:var(--text-light); margin-top:0.4rem;
@@ -1544,6 +1551,7 @@ function VisitorEntryForm({ onAdded }) {
   return (
     <div className="ck-visitor-form">
       <h3 className="ck-visitor-form-title">Sign the Visitors Book</h3>
+      <p className="ck-visitor-form-intro">Please share stories, photos and tips for other guests from your stay at Chy Kernyk!</p>
       {error && <p className="ck-modal-error">{error}</p>}
       <div className="ck-form-group">
         <label className="ck-label">Name</label>
