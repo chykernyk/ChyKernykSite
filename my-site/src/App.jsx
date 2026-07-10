@@ -789,11 +789,14 @@ const CSS = `
     letter-spacing:0.06em; text-transform:uppercase;
   }
   .ck-input, .ck-textarea {
-    width:100%; padding:0.75rem 1rem;
+    width:100%; max-width:100%; box-sizing:border-box; padding:0.75rem 1rem;
     border:1px solid var(--sand-dark);
     border-radius:8px; font-family:var(--font-body);
     font-size:0.95rem; color:var(--text);
     background:white; transition: border-color 0.3s;
+  }
+  input.ck-input[type="date"] {
+    -webkit-appearance:none; appearance:none;
   }
   .ck-input:focus, .ck-textarea:focus {
     outline:none; border-color:var(--ocean);
