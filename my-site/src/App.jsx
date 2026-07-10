@@ -159,14 +159,8 @@ const REMEDIES = [
   { category: "Useful Numbers", items: [
     { name: "Dom & Davina", detail: "Contact for any issues — 07976 732303", icon: "🏠" },
   ]},
-  { category: "Medical", items: [
-    { name: "Roseland Surgery", detail: "St Mawes — 01326 270218", icon: "🏥" },
-    { name: "Treliske Hospital (Royal Cornwall)", detail: "Truro — 01872 250000 — A&E available 24hrs", icon: "🚑" },
-    { name: "NHS 111", detail: "Call 111 for non-emergency medical advice", icon: "📞" },
-  ]},
-  { category: "Emergency Services", items: [
-    { name: "Emergency", detail: "999 — Police, Fire, Ambulance, Coastguard", icon: "🆘" },
-    { name: "Coastguard", detail: "999 and ask for Coastguard", icon: "⚓" },
+  { category: "House Rules", items: [
+    { name: "Dogs", detail: "Well behaved dogs welcome downstairs only.", icon: "🐾" },
   ]},
   { category: "Amenities", items: [
     { name: "Amenities", detail: "Washing machine, tumble dryer & WiFi", icon: "🧺" },
@@ -177,8 +171,13 @@ const REMEDIES = [
     { name: "Stopcock Location", detail: "Under the kitchen sink, left side. Turn clockwise to close.", icon: "🚰" },
     { name: "Fusebox Location", detail: "Utility room, wall-mounted to the right of the door.", icon: "🔌" },
   ]},
-  { category: "House Rules", items: [
-    { name: "Dogs", detail: "Well behaved dogs welcome downstairs only.", icon: "🐾" },
+  { category: "Medical", items: [
+    { name: "Treliske Hospital (Royal Cornwall)", detail: "Truro — 01872 250000 — A&E available 24hrs", icon: "🚑" },
+    { name: "NHS 111", detail: "Call 111 for non-emergency medical advice", icon: "📞" },
+  ]},
+  { category: "Emergency Services", items: [
+    { name: "Emergency", detail: "999 — Police, Fire, Ambulance, Coastguard", icon: "🆘" },
+    { name: "Coastguard", detail: "999 and ask for Coastguard", icon: "⚓" },
   ]},
 ];
 
