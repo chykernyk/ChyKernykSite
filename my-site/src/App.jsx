@@ -171,6 +171,7 @@ const REMEDIES = [
   { category: "Amenities", items: [
     { name: "Amenities", detail: "Washing machine, tumble dryer & WiFi", icon: "🧺" },
     { name: "WiFi Password", detail: "Network: ChyKernyk-Guest / Password: HiddenHut", icon: "📶" },
+    { name: "Nearest Petrol Station", detail: "Roseland Local, Ruan High Lanes", icon: "⛽", url: "https://www.google.com/maps/search/?api=1&query=Roseland+Local+Ruan+High+Lanes" },
   ]},
   { category: "House Maintenance", items: [
     { name: "Stopcock Location", detail: "Under the kitchen sink, left side. Turn clockwise to close.", icon: "🚰" },
