@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import imgWifiQr from "./assets/wifi-qr.svg";
 import imgBarbaraHepworthGarden from "./assets/images/BarbaraHepworthGarden.jpeg";
 import imgBarbaraHepworthStudio from "./assets/images/BarbaraHepworthStudio.jpeg";
 import imgBarbaraHepworthStudio2 from "./assets/images/BarbaraHepworthStudio2.jpeg";
@@ -164,7 +165,7 @@ const REMEDIES = [
   ]},
   { category: "Amenities", items: [
     { name: "Amenities", detail: "Washing machine, tumble dryer & WiFi", icon: "🧺" },
-    { name: "WiFi Password", detail: "Network: ChyKernyk-Guest / Password: HiddenHut", icon: "📶" },
+    { name: "WiFi Password", detail: "Network: ChyKernyk-Guest / Password: HiddenHut", icon: "📶", qr: imgWifiQr },
     { name: "Nearest Petrol Station", detail: "Roseland Local, Ruan High Lanes", icon: "⛽", url: "https://www.google.com/maps/search/?api=1&query=Roseland+Local+Ruan+High+Lanes" },
   ]},
   { category: "House Maintenance", items: [
@@ -904,8 +905,10 @@ const CSS = `
   .ck-remedy-item:hover { border-color:var(--ocean); background:var(--sand); }
   a.ck-remedy-item { text-decoration:none; color:inherit; }
   .ck-remedy-icon { font-size:1.5rem; flex-shrink:0; }
+  .ck-remedy-text { flex:1; }
   .ck-remedy-name { font-weight:500; color:var(--ocean); margin-bottom:0.2rem; }
   .ck-remedy-detail { font-size:0.9rem; color:var(--text-light); }
+  .ck-remedy-qr { width:56px; height:56px; flex-shrink:0; border-radius:4px; }
 
   /* ── TIDES ── */
   .ck-webcam-grid {
@@ -2469,10 +2472,11 @@ function RemediesPage({ setPage }) {
               return (
                 <Tag key={item.name} className="ck-remedy-item" {...linkProps}>
                   <span className="ck-remedy-icon">{item.icon}</span>
-                  <div>
+                  <div className="ck-remedy-text">
                     <div className="ck-remedy-name">{item.name}</div>
                     <div className="ck-remedy-detail">{item.detail}</div>
                   </div>
+                  {item.qr && <img className="ck-remedy-qr" src={item.qr} alt="QR code to join WiFi" />}
                 </Tag>
               );
             })}
