@@ -21,7 +21,7 @@ jobs:
           node-version: 22
 
       - name: Deploy Edge Function
-        run: npx supabase@latest functions deploy notify-visitor-entry --project-ref jcjhnscpunecubmcmkzr --no-verify-jwt
+        run: npx supabase@latest functions deploy notify-visitor-entry --project-ref jcjhnscpunecubmcmkzr --no-verify-jwt --use-api
 
       - name: Set function secrets
         run: |
