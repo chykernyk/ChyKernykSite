@@ -1,0 +1,34 @@
+name: "Deploy Visitor Notify Function"
+
+# Manual, one-off deployment of the notify-visitor-entry Supabase Edge
+# Function and its secrets. Run from the Actions tab (Run workflow) after
+# adding the required repository secrets: SUPABASE_ACCESS_TOKEN, SMTP_HOST,
+# SMTP_PORT, SMTP_USER, SMTP_PASS, NOTIFY_TO, WEBHOOK_SECRET.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Deploy Edge Function
+        run: npx supabase@latest functions deploy notify-visitor-entry --project-ref jcjhnscpunecubmcmkzr --no-verify-jwt
+
+      - name: Set function secrets
+        run: |
+          npx supabase@latest secrets set --project-ref jcjhnscpunecubmcmkzr \
+            SMTP_HOST="${{ secrets.SMTP_HOST }}" \
+            SMTP_PORT="${{ secrets.SMTP_PORT }}" \
+            SMTP_USER="${{ secrets.SMTP_USER }}" \
+            SMTP_PASS="${{ secrets.SMTP_PASS }}" \
+            NOTIFY_TO="${{ secrets.NOTIFY_TO }}" \
+            WEBHOOK_SECRET="${{ secrets.WEBHOOK_SECRET }}"
