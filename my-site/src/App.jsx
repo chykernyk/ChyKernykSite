@@ -716,6 +716,15 @@ const CSS = `
     transition: opacity 0.3s;
   }
   .ck-lightbox-close:hover { opacity:1; }
+  .ck-lightbox-arrow {
+    position:absolute; top:50%; transform:translateY(-50%);
+    background:none; border:none; color:white;
+    font-size:2.5rem; line-height:1; cursor:pointer; opacity:0.7;
+    padding:0.5rem 1rem; transition: opacity 0.3s;
+  }
+  .ck-lightbox-arrow:hover { opacity:1; }
+  .ck-lightbox-arrow.prev { left:0.5rem; }
+  .ck-lightbox-arrow.next { right:0.5rem; }
   .ck-lightbox-caption {
     position:absolute; bottom:2rem; left:50%;
     transform:translateX(-50%); color:white;
@@ -1632,7 +1641,8 @@ function VisitorsBookPage({ setPage, isAdmin }) {
               {entry.photo_urls && entry.photo_urls.length > 0 && (
                 <div className="ck-visitor-entry-photos">
                   {entry.photo_urls.map((url, i) => (
-                    <img key={i} src={url} alt={`Photo ${i + 1} from ${entry.name}`} loading="lazy" onClick={() => setLightbox(url)} />
+                    <img key={i} src={url} alt={`Photo ${i + 1} from ${entry.name}`} loading="lazy"
+                      onClick={() => setLightbox({ urls: entry.photo_urls, index: i })} />
                   ))}
                 </div>
               )}
@@ -1647,7 +1657,19 @@ function VisitorsBookPage({ setPage, isAdmin }) {
       {lightbox && (
         <div className="ck-lightbox" onClick={() => setLightbox(null)} role="dialog" aria-label="Image lightbox">
           <button className="ck-lightbox-close" onClick={() => setLightbox(null)} aria-label="Close lightbox">×</button>
-          <img src={lightbox} alt="" />
+          {lightbox.urls.length > 1 && (
+            <button className="ck-lightbox-arrow prev" aria-label="Previous photo"
+              onClick={e => { e.stopPropagation(); setLightbox(lb => ({ ...lb, index: (lb.index - 1 + lb.urls.length) % lb.urls.length })); }}>
+              ‹
+            </button>
+          )}
+          <img src={lightbox.urls[lightbox.index]} alt="" onClick={e => e.stopPropagation()} />
+          {lightbox.urls.length > 1 && (
+            <button className="ck-lightbox-arrow next" aria-label="Next photo"
+              onClick={e => { e.stopPropagation(); setLightbox(lb => ({ ...lb, index: (lb.index + 1) % lb.urls.length })); }}>
+              ›
+            </button>
+          )}
         </div>
       )}
     </>
