@@ -172,7 +172,7 @@ const REMEDIES = [
     { name: "Amenities", detail: "Washing machine, tumble dryer & WiFi", icon: "🧺" },
     { name: "WiFi Password", detail: "Network: ChyKernyk-Guest / Password: HiddenHut", icon: "📶", qr: imgWifiQr },
     { name: "Nearest Petrol Station", detail: "Roseland Local, Ruan High Lanes", icon: "⛽", url: "https://www.google.com/maps/search/?api=1&query=Roseland+Local+Ruan+High+Lanes" },
-    { name: "Bin Day", detail: "Bin day is Monday.", icon: "🗑️", binCollection: true },
+    { name: "Bin Day", detail: "Bin day is Monday.", binCollection: true },
   ]},
   { category: "House Maintenance", items: [
     { name: "Stopcock Location", detail: "Under the kitchen sink, left side. Turn clockwise to close.", icon: "🚰" },
@@ -2629,6 +2629,19 @@ function ParkrunPage({ setPage, setSubPage }) {
   );
 }
 
+function WheelieBinIcon({ size = 24, color = "currentColor" }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="9.5" y="2" width="5" height="2" rx="0.5" />
+      <path d="M5 6.5h14" />
+      <rect x="6.5" y="6.5" width="11" height="13" rx="1.2" />
+      <path d="M9.5 9.5v7M14.5 9.5v7" />
+      <circle cx="9" cy="20.5" r="1.3" />
+      <circle cx="15" cy="20.5" r="1.3" />
+    </svg>
+  );
+}
+
 // Shows which bin(s) are due for collection next, read via a Supabase Edge
 // Function since Cornwall Council's site can't be fetched directly from the
 // browser. Hides itself if the page's format can't be confidently read.
@@ -2663,7 +2676,9 @@ function RemediesPage({ setPage }) {
               const linkProps = item.url ? { href: item.url, target: "_blank", rel: "noopener noreferrer" } : {};
               return (
                 <Tag key={item.name} className="ck-remedy-item" {...linkProps}>
-                  <span className="ck-remedy-icon">{item.icon}</span>
+                  <span className="ck-remedy-icon">
+                    {item.binCollection ? <WheelieBinIcon color="var(--ocean)" /> : item.icon}
+                  </span>
                   <div className="ck-remedy-text">
                     <div className="ck-remedy-name">{item.name}</div>
                     <div className="ck-remedy-detail">{item.detail}</div>
