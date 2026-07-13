@@ -117,6 +117,9 @@ const FOOD_PLACES = [
   { id: "teacup-tearoom", name: "Teacup Tearoom", desc: "A quaint tearoom on the Mevagissey harbourside, serving homemade cakes, cream teas, and proper loose-leaf tea.", image: imgTeacupTearoom, tags: ["tearoom", "cake", "cream tea"], website: "#", location: "Mevagissey", foodType: "eating" },
   { id: "waitrose", name: "Waitrose", desc: "The nearest large supermarket, well stocked for a full shop — good wine selection and a decent deli counter too.", image: imgWaitrose2, tags: ["supermarket", "groceries"], website: "#", location: "Truro", foodType: "buying" },
   { id: "native-grain-bakers", name: "Native Grain Bakers", desc: "A Truro bakery turning out beautiful sourdough pastries and viennoiserie — the Chelsea buns and laminated bakes are worth the trip alone.", image: imgNativeGrain, tags: ["bakery", "pastries"], website: "#", location: "Truro", foodType: "buying" },
+  { id: "the-watchtower", name: "The Watchtower", desc: "Fish and chips in St Mawes, freshly cooked and perfect eaten looking out over the harbour.", tags: ["fish and chips", "takeaway", "harbourside"], website: "#", location: "St Mawes", foodType: "eating" },
+  { id: "st-mawes-fudge-shop", name: "St Mawes Fudge Shop", desc: "A traditional Cornish fudge shop with a tempting array of flavours to take home or enjoy on the harbourside.", tags: ["fudge", "sweets", "gifts"], website: "#", location: "St Mawes", foodType: "eating" },
+  { id: "vegetable-stall", name: "Vegetable Stall", desc: "An honesty-box stall selling fresh, local seasonal vegetables.", tags: ["vegetables", "local produce", "honesty box"], website: "#", location: "Roseland Peninsula", foodType: "buying" },
 ];
 
 const ACTIVITIES = [
@@ -618,6 +621,11 @@ const CSS = `
   }
   .ck-card:hover .ck-card-img { transform:scale(1.05); }
   .ck-card-img-wrap { overflow:hidden; }
+  .ck-placeholder-photo {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:0.5rem; background:var(--sand); color:var(--text-light);
+    font-size:0.85rem;
+  }
   .ck-card-body { padding:1.5rem; }
   .ck-card-title {
     font-family: var(--font-display);
@@ -1728,6 +1736,21 @@ function VisitorsBookPage({ setPage, isAdmin }) {
   );
 }
 
+// Fills the same space as a photo would, for entries that don't have one
+// yet — a plain image-frame icon rather than a broken/empty <img>.
+function PlaceholderPhoto({ className }) {
+  return (
+    <div className={`${className} ck-placeholder-photo`}>
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="4" width="18" height="16" rx="2" />
+        <circle cx="8.5" cy="9.5" r="1.5" />
+        <path d="M21 16l-5.5-5.5a2 2 0 0 0-2.8 0L3 20" />
+      </svg>
+      <span>Photo coming soon</span>
+    </div>
+  );
+}
+
 // FOOD
 function FoodListPage({ setPage, setSubPage, foodType, linkType, title, subtitle }) {
   const places = FOOD_PLACES.filter(p => p.foodType === foodType);
@@ -1739,7 +1762,11 @@ function FoodListPage({ setPage, setSubPage, foodType, linkType, title, subtitle
           <div className="ck-grid">
             {places.map(place => (
               <div key={place.id} className="ck-card" onClick={() => { setSubPage({ type: "food-detail", id: place.id }); window.scrollTo(0, 0); }}>
-                <div className="ck-card-img-wrap"><img className="ck-card-img" src={place.image} alt={place.name} loading="lazy" /></div>
+                <div className="ck-card-img-wrap">
+                  {place.image
+                    ? <img className="ck-card-img" src={place.image} alt={place.name} loading="lazy" />
+                    : <PlaceholderPhoto className="ck-card-img" />}
+                </div>
                 <div className="ck-card-body">
                   <p className="ck-card-meta">{place.location}</p>
                   <h3 className="ck-card-title">{place.name}</h3>
@@ -1786,7 +1813,9 @@ function FoodDetail({ place, setPage, setSubPage }) {
   const backLabel = place.foodType === "eating" ? "Eating Out" : "Buying Food";
   return (
     <>
-      <img src={place.image} alt={place.name} className="ck-detail-hero" />
+      {place.image
+        ? <img src={place.image} alt={place.name} className="ck-detail-hero" />
+        : <PlaceholderPhoto className="ck-detail-hero" />}
       <div className="ck-detail-content">
         <div className="ck-breadcrumb" style={{ marginBottom: "1rem" }}>
           <button onClick={() => { setSubPage(null); setPage(backTo); window.scrollTo(0, 0); }}>{backLabel}</button>
