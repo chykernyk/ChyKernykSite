@@ -118,7 +118,7 @@ const FOOD_PLACES = [
   { id: "waitrose", name: "Waitrose", desc: "The nearest large supermarket, well stocked for a full shop — good wine selection and a decent deli counter too.", image: imgWaitrose2, tags: ["supermarket", "groceries"], website: "#", location: "Truro", foodType: "buying" },
   { id: "native-grain-bakers", name: "Native Grain Bakers", desc: "A Truro bakery turning out beautiful sourdough pastries and viennoiserie — the Chelsea buns and laminated bakes are worth the trip alone.", image: imgNativeGrain, tags: ["bakery", "pastries"], website: "#", location: "Truro", foodType: "buying" },
   { id: "the-watchtower", name: "The Watchtower", desc: "Fish and chips in St Mawes, freshly cooked and perfect eaten looking out over the harbour.", tags: ["fish and chips", "takeaway", "harbourside"], website: "#", location: "St Mawes", foodType: "eating" },
-  { id: "st-mawes-fudge-shop", name: "St Mawes Fudge Shop", desc: "A traditional Cornish fudge shop with a tempting array of flavours to take home or enjoy on the harbourside.", tags: ["fudge", "sweets", "gifts"], website: "#", location: "St Mawes", foodType: "eating" },
+  { id: "st-mawes-fudge-shop", name: "St Mawes Fudge Shop", desc: "A traditional Cornish fudge shop with a tempting array of flavours to take home or enjoy on the harbourside.", tags: ["fudge", "sweets", "gifts"], website: "#", location: "St Mawes", foodType: "buying" },
   { id: "vegetable-stall", name: "Vegetable Stall", desc: "An honesty-box stall selling fresh, local seasonal vegetables.", tags: ["vegetables", "local produce", "honesty box"], website: "#", location: "Roseland Peninsula", foodType: "buying" },
 ];
 
