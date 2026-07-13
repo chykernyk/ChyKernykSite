@@ -673,6 +673,12 @@ const CSS = `
   .ck-ferry-status-red .ck-ferry-status-dot { background:#c0392b; }
   .ck-ferry-status-unknown .ck-ferry-status-dot { background:var(--text-light); }
   .ck-ferry-status-loading { color:var(--text-light); font-size:0.9rem; margin-bottom:1.5rem; }
+  .ck-card-ferry-alert {
+    display:flex; align-items:center; gap:0.4rem;
+    color:#c0392b; font-size:0.8rem; font-weight:600;
+    margin-bottom:0.4rem;
+  }
+  .ck-card-ferry-alert .ck-ferry-status-dot { background:#c0392b; }
   .ck-departure-clocks {
     display:flex; gap:2.5rem; flex-wrap:wrap;
     margin-bottom:1.5rem;
@@ -1038,6 +1044,15 @@ const CSS = `
     transform: rotate(45deg);
   }
   .ck-map-pin:hover { transform: rotate(45deg) scale(1.25); }
+  .ck-map-pin-no-entry {
+    width:20px; height:20px; border-radius:50%;
+    background:#c0392b; border:2px solid var(--white);
+    box-shadow:0 2px 8px rgba(0,0,0,0.35);
+    cursor:pointer; transition: transform 0.2s;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .ck-map-pin-no-entry:hover { transform: scale(1.25); }
+  .ck-map-pin-no-entry-bar { width:60%; height:3px; background:var(--white); border-radius:1px; }
   .ck-map-offscreen {
     position:absolute; transform:translate(-50%,-50%);
     width:26px; height:26px; border-radius:50%;
@@ -1790,6 +1805,7 @@ function FoodDetail({ place, setPage, setSubPage }) {
 
 // ACTIVITIES
 function ActivityListPage({ setPage, setSubPage, items, linkType, title, subtitle }) {
+  const ferryStatus = useFerryStatus();
   return (
     <>
       <PageHeader title={title} subtitle={subtitle} setPage={setPage} backTo="around" />
@@ -1800,6 +1816,9 @@ function ActivityListPage({ setPage, setSubPage, items, linkType, title, subtitl
               <div key={a.id} className="ck-card" onClick={() => { setSubPage({ type: "activity-detail", id: a.id }); window.scrollTo(0, 0); }}>
                 <div className="ck-card-img-wrap"><img className="ck-card-img" src={a.image} alt={a.name} loading="lazy" /></div>
                 <div className="ck-card-body">
+                  {a.ferryStatus && ferryStatus?.level === "red" && (
+                    <div className="ck-card-ferry-alert"><span className="ck-ferry-status-dot" />Ferry not running today</div>
+                  )}
                   <h3 className="ck-card-title">{a.name}</h3>
                   <p className="ck-card-text">{a.desc}</p>
                   <div className="ck-card-tags">
@@ -1848,22 +1867,28 @@ function BeachesPage({ setPage, setSubPage }) {
   );
 }
 
-// Shows the live St Mawes Ferry running status, read via a Supabase Edge
-// Function since falriver.co.uk can't be fetched directly from the browser.
-function FerryStatus() {
+// Reads the live St Mawes Ferry running status, via a Supabase Edge Function
+// since falriver.co.uk can't be fetched directly from the browser. Returns
+// null while loading, or { level: "green"|"amber"|"red"|"unknown", message }.
+function useFerryStatus() {
   const [status, setStatus] = useState(null);
-  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     fetch(`${SUPABASE_URL}/functions/v1/ferry-status`)
       .then(res => { if (!res.ok) throw new Error("Failed to load ferry status"); return res.json(); })
       .then(data => { if (!cancelled) setStatus(data); })
-      .catch(() => { if (!cancelled) setFailed(true); });
+      .catch(() => { if (!cancelled) setStatus({ level: "unknown" }); });
     return () => { cancelled = true; };
   }, []);
 
-  if (failed) return null;
+  return status;
+}
+
+function FerryStatus() {
+  const status = useFerryStatus();
+
+  if (status && status.level === "unknown") return null;
   if (!status) return <p className="ck-ferry-status-loading">Checking live ferry status…</p>;
 
   return (
@@ -2200,7 +2225,7 @@ function CategoryIcon({ type, color, size = 22 }) {
   }
 }
 
-function AroundAboutMap({ pins, addMode, onMapClick, onPinClick, activeTypes }) {
+function AroundAboutMap({ pins, addMode, onMapClick, onPinClick, activeTypes, ferryStatus }) {
   const wrapRef = useRef(null);
   const mapRef = useRef(null);
   const markersRef = useRef([]);
@@ -2254,18 +2279,28 @@ function AroundAboutMap({ pins, addMode, onMapClick, onPinClick, activeTypes }) 
     markersRef.current.forEach(m => map.removeLayer(m));
     markersRef.current = visible.map(pin => {
       const type = PIN_TYPES[pin.link_type];
-      const icon = L.divIcon({
-        className: "",
-        html: `<div class="ck-map-pin" style="background:${type ? type.color : "var(--stone)"}"></div>`,
-        iconSize: [18, 18],
-        iconAnchor: [9, 9],
-      });
+      const ferryDown = ferryStatus?.level === "red" &&
+        pin.link_type === "activity-detail" &&
+        ACTIVITIES.some(a => a.id === pin.link_id && a.ferryStatus);
+      const icon = ferryDown
+        ? L.divIcon({
+            className: "",
+            html: `<div class="ck-map-pin-no-entry"><div class="ck-map-pin-no-entry-bar"></div></div>`,
+            iconSize: [20, 20],
+            iconAnchor: [10, 10],
+          })
+        : L.divIcon({
+            className: "",
+            html: `<div class="ck-map-pin" style="background:${type ? type.color : "var(--stone)"}"></div>`,
+            iconSize: [18, 18],
+            iconAnchor: [9, 9],
+          });
       const marker = L.marker([pin.lat, pin.lng], { icon }).addTo(map);
       marker.bindTooltip(pinPreviewHTML(pin), { direction: "top", offset: [0, -12], className: "ck-map-pin-tooltip" });
       marker.on("click", () => clickHandlerRef.current(pin));
       return marker;
     });
-  }, [pins, activeTypes]);
+  }, [pins, activeTypes, ferryStatus]);
 
   const visiblePins = pins.filter(p => activeTypes[p.link_type] !== false);
   const offscreenGroups = view ? groupOffscreenPins(visiblePins, view.bounds, view.center) : [];
@@ -2436,6 +2471,7 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
   const [activeTypes, setActiveTypes] = useState(() =>
     Object.fromEntries(Object.keys(PIN_TYPES).map(k => [k, true]))
   );
+  const ferryStatus = useFerryStatus();
 
   // Pick one random real (non-stock) photo per category, once per visit,
   // to illustrate that category's jump button. Some categories have a
@@ -2523,6 +2559,7 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
             onMapClick={setPendingPos}
             onPinClick={handlePinClick}
             activeTypes={activeTypes}
+            ferryStatus={ferryStatus}
           />
         )}
 
