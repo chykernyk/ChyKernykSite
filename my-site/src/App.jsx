@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo, Fragment } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import imgWifiQr from "./assets/wifi-qr.svg";
@@ -2788,27 +2788,31 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
 
         <div className="ck-map-jump-bar">
           {Object.entries(PIN_TYPES).filter(([, t]) => t.page).map(([key, t]) => (
-            <button key={key} className="ck-map-jump-chip" onClick={() => { setPage(t.page); window.scrollTo(0, 0); }}>
-              {jumpImages[key] ? (
-                <img className="ck-map-jump-chip-img" src={jumpImages[key]} alt="" />
-              ) : (
-                <div className="ck-map-jump-chip-img ck-map-jump-chip-img-empty" style={{ background: t.color }}>
-                  <CategoryIcon type={key} color="#fff" size={42} />
-                </div>
+            <Fragment key={key}>
+              {key === "parkrun" && (
+                <button className="ck-map-jump-chip" onClick={() => document.getElementById("fishing-section")?.scrollIntoView({ behavior: "smooth" })}>
+                  <img className="ck-map-jump-chip-img" src={imgFishingOffRocks} alt="" />
+                  <div className="ck-map-jump-chip-label">
+                    <span className="ck-map-legend-diamond" style={{ background: "#2f7fb8" }} />
+                    <span className="ck-map-jump-chip-label-text">Fishing</span>
+                  </div>
+                </button>
               )}
-              <div className="ck-map-jump-chip-label">
-                <span className="ck-map-legend-diamond" style={{ background: t.color }} />
-                <span className="ck-map-jump-chip-label-text">{t.label}</span>
-              </div>
-            </button>
+              <button className="ck-map-jump-chip" onClick={() => { setPage(t.page); window.scrollTo(0, 0); }}>
+                {jumpImages[key] ? (
+                  <img className="ck-map-jump-chip-img" src={jumpImages[key]} alt="" />
+                ) : (
+                  <div className="ck-map-jump-chip-img ck-map-jump-chip-img-empty" style={{ background: t.color }}>
+                    <CategoryIcon type={key} color="#fff" size={42} />
+                  </div>
+                )}
+                <div className="ck-map-jump-chip-label">
+                  <span className="ck-map-legend-diamond" style={{ background: t.color }} />
+                  <span className="ck-map-jump-chip-label-text">{t.label}</span>
+                </div>
+              </button>
+            </Fragment>
           ))}
-          <button className="ck-map-jump-chip" onClick={() => document.getElementById("fishing-section")?.scrollIntoView({ behavior: "smooth" })}>
-            <img className="ck-map-jump-chip-img" src={imgFishingOffRocks} alt="" />
-            <div className="ck-map-jump-chip-label">
-              <span className="ck-map-legend-diamond" style={{ background: "#2f7fb8" }} />
-              <span className="ck-map-jump-chip-label-text">Fishing</span>
-            </div>
-          </button>
         </div>
 
         {loading && <p style={{ color: "var(--text-light)" }}>Loading map…</p>}
