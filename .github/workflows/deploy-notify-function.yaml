@@ -1,9 +1,11 @@
-name: "Deploy Visitor Notify Function"
+name: "Deploy Edge Functions"
 
-# Manual, one-off deployment of the notify-visitor-entry Supabase Edge
-# Function and its secrets. Run from the Actions tab (Run workflow) after
-# adding the required repository secrets: SUPABASE_ACCESS_TOKEN, SMTP_HOST,
-# SMTP_PORT, SMTP_USER, SMTP_PASS, NOTIFY_TO, WEBHOOK_SECRET.
+# Manual, one-off deployment of this repo's Supabase Edge Functions:
+#   - notify-visitor-entry: emails on new Visitors Book entries
+#   - ferry-status: live St Mawes Ferry running status
+# Run from the Actions tab (Run workflow) after adding the required
+# repository secrets: SUPABASE_ACCESS_TOKEN, SMTP_HOST, SMTP_PORT,
+# SMTP_USER, SMTP_PASS, NOTIFY_TO, WEBHOOK_SECRET.
 
 on:
   workflow_dispatch:
@@ -20,10 +22,10 @@ jobs:
         with:
           node-version: 22
 
-      - name: Deploy Edge Function
+      - name: Deploy notify-visitor-entry
         run: npx supabase@latest functions deploy notify-visitor-entry --project-ref jcjhnscpunecubmcmkzr --no-verify-jwt --use-api
 
-      - name: Set function secrets
+      - name: Set notify-visitor-entry secrets
         run: |
           npx supabase@latest secrets set --project-ref jcjhnscpunecubmcmkzr \
             SMTP_HOST="${{ secrets.SMTP_HOST }}" \
@@ -32,3 +34,6 @@ jobs:
             SMTP_PASS="${{ secrets.SMTP_PASS }}" \
             NOTIFY_TO="${{ secrets.NOTIFY_TO }}" \
             WEBHOOK_SECRET="${{ secrets.WEBHOOK_SECRET }}"
+
+      - name: Deploy ferry-status
+        run: npx supabase@latest functions deploy ferry-status --project-ref jcjhnscpunecubmcmkzr --no-verify-jwt --use-api
