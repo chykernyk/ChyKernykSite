@@ -172,6 +172,7 @@ const REMEDIES = [
     { name: "Amenities", detail: "Washing machine, tumble dryer & WiFi", icon: "🧺" },
     { name: "WiFi Password", detail: "Network: ChyKernyk-Guest / Password: HiddenHut", icon: "📶", qr: imgWifiQr },
     { name: "Nearest Petrol Station", detail: "Roseland Local, Ruan High Lanes", icon: "⛽", url: "https://www.google.com/maps/search/?api=1&query=Roseland+Local+Ruan+High+Lanes" },
+    { name: "Bin Day", detail: "Bin day is Monday.", icon: "🗑️", binCollection: true },
   ]},
   { category: "House Maintenance", items: [
     { name: "Stopcock Location", detail: "Under the kitchen sink, left side. Turn clockwise to close.", icon: "🚰" },
@@ -673,6 +674,8 @@ const CSS = `
   .ck-ferry-status-red .ck-ferry-status-dot { background:#c0392b; }
   .ck-ferry-status-unknown .ck-ferry-status-dot { background:var(--text-light); }
   .ck-ferry-status-loading { color:var(--text-light); font-size:0.9rem; margin-bottom:1.5rem; }
+  .ck-bin-collection { font-size:0.85rem; color:var(--ocean); margin-top:0.3rem; font-weight:500; }
+  .ck-bin-collection-loading { font-size:0.85rem; color:var(--text-light); margin-top:0.3rem; }
   .ck-card-ferry-alert {
     display:flex; align-items:center; gap:0.4rem;
     color:#c0392b; font-size:0.8rem; font-weight:600;
@@ -2626,6 +2629,26 @@ function ParkrunPage({ setPage, setSubPage }) {
   );
 }
 
+// Shows which bin(s) are due for collection next, read via a Supabase Edge
+// Function since Cornwall Council's site can't be fetched directly from the
+// browser. Hides itself if the page's format can't be confidently read.
+function BinCollection() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`${SUPABASE_URL}/functions/v1/bin-collection`)
+      .then(res => { if (!res.ok) throw new Error("Failed to load bin collection info"); return res.json(); })
+      .then(d => { if (!cancelled) setData(d); })
+      .catch(() => { if (!cancelled) setData({ found: false }); });
+    return () => { cancelled = true; };
+  }, []);
+
+  if (!data) return <p className="ck-bin-collection-loading">Checking next collection…</p>;
+  if (!data.found) return null;
+  return <p className="ck-bin-collection">{data.message}</p>;
+}
+
 // REMEDIES
 function RemediesPage({ setPage }) {
   return (
@@ -2644,6 +2667,7 @@ function RemediesPage({ setPage }) {
                   <div className="ck-remedy-text">
                     <div className="ck-remedy-name">{item.name}</div>
                     <div className="ck-remedy-detail">{item.detail}</div>
+                    {item.binCollection && <BinCollection />}
                   </div>
                   {item.qr && <img className="ck-remedy-qr" src={item.qr} alt="QR code to join WiFi" />}
                 </Tag>

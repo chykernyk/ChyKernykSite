@@ -3,6 +3,7 @@ name: "Deploy Edge Functions"
 # Manual, one-off deployment of this repo's Supabase Edge Functions:
 #   - notify-visitor-entry: emails on new Visitors Book entries
 #   - ferry-status: live St Mawes Ferry running status
+#   - bin-collection: next bin collection from Cornwall Council
 # Run from the Actions tab (Run workflow) after adding the required
 # repository secrets: SUPABASE_ACCESS_TOKEN, SMTP_HOST, SMTP_PORT,
 # SMTP_USER, SMTP_PASS, NOTIFY_TO, WEBHOOK_SECRET.
@@ -37,3 +38,6 @@ jobs:
 
       - name: Deploy ferry-status
         run: npx supabase@latest functions deploy ferry-status --project-ref jcjhnscpunecubmcmkzr --no-verify-jwt --use-api
+
+      - name: Deploy bin-collection
+        run: npx supabase@latest functions deploy bin-collection --project-ref jcjhnscpunecubmcmkzr --no-verify-jwt --use-api
