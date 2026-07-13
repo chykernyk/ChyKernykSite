@@ -924,6 +924,10 @@ const CSS = `
     position:absolute; top:2px; right:4px;
     font-size:0.6rem; color:var(--gold); line-height:1;
   }
+  .ck-cal-day-flag {
+    position:absolute; top:2px; left:4px;
+    font-size:0.6rem; line-height:1;
+  }
   .ck-cal-legend {
     display:flex; gap:1.5rem; margin-top:1.5rem; flex-wrap:wrap;
   }
@@ -2839,6 +2843,11 @@ const FEAST_NIGHTS = new Set([
   "2026-08-14", "2026-08-21",
 ]);
 
+// Falmouth Week sailing regatta, 7–16 August 2026.
+const FALMOUTH_WEEK = new Set(
+  Array.from({ length: 10 }, (_, i) => `2026-08-${String(i + 7).padStart(2, "0")}`)
+);
+
 // CALENDAR
 // Every date from today until this cutoff is marked booked/unavailable.
 const UNAVAILABLE_UNTIL = new Date(2027, 1, 1); // 1 Feb 2027
@@ -2915,14 +2924,16 @@ function CalendarPage({ setPage, isAdmin }) {
               const status = bookings[dateStr] || "";
               const isToday = dateStr === todayStr;
               const isFeastNight = FEAST_NIGHTS.has(dateStr);
+              const isFalmouthWeek = FALMOUTH_WEEK.has(dateStr);
               return (
                 <div key={dateStr}
                   className={`ck-cal-day ${status} ${isToday ? "today" : ""}`}
                   onClick={() => toggleDate(dateStr)}
                   role={isAdmin ? "button" : undefined}
-                  aria-label={`${d} ${currentMonth.toLocaleDateString("en-GB", { month: "long" })} ${status || "available"}${isFeastNight ? ", Feast Night" : ""}`}
+                  aria-label={`${d} ${currentMonth.toLocaleDateString("en-GB", { month: "long" })} ${status || "available"}${isFeastNight ? ", Feast Night" : ""}${isFalmouthWeek ? ", Falmouth Week" : ""}`}
                 >
                   {d}
+                  {isFalmouthWeek && <span className="ck-cal-day-flag" title="Falmouth Week">🚩</span>}
                   {isFeastNight && <span className="ck-cal-day-star" title="Feast Night">★</span>}
                 </div>
               );
@@ -2948,6 +2959,10 @@ function CalendarPage({ setPage, isAdmin }) {
             <div className="ck-cal-legend-item">
               <span style={{ color: "var(--gold)" }}>★</span>
               Feast Night at The Hidden Hut
+            </div>
+            <div className="ck-cal-legend-item">
+              <span>🚩</span>
+              Falmouth Week
             </div>
           </div>
         </div>
