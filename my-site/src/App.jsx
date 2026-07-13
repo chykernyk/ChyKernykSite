@@ -2805,7 +2805,7 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
             <Fragment key={key}>
               {key === "parkrun" && (
                 <button className="ck-map-jump-chip" onClick={() => { setPage("fishing"); window.scrollTo(0, 0); }}>
-                  <img className="ck-map-jump-chip-img" src={imgFishingOffRocks} alt="" />
+                  <img className="ck-map-jump-chip-img" src={imgFishingOffRocks} alt="" style={{ objectPosition: "center 15%" }} />
                   <div className="ck-map-jump-chip-label">
                     <span className="ck-map-legend-diamond" style={{ background: "#2f7fb8" }} />
                     <span className="ck-map-jump-chip-label-text">Fishing</span>
