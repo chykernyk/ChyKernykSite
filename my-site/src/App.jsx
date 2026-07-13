@@ -127,7 +127,10 @@ const ACTIVITIES = [
   { id: "the-tresanton", name: "The Tresanton", desc: "Olga Polizzi's celebrated hotel in St Mawes. Spend a day soaking up the harbour views, with lunch on the terrace or a swim from the hotel's private boat.", tags: ["hotel", "harbour views", "luxury"], image: imgTresanton },
   { id: "the-scarlet", name: "The Scarlet", desc: "An adults-only eco-spa hotel perched on the cliffs above Mawgan Porth. Outdoor hot tubs, a wood-fired sauna, and a natural reed-filtered pool overlooking the beach.", tags: ["spa", "clifftop", "adults-only"], image: imgScarlet },
   { id: "surfing-newquay", name: "Surfing in Newquay", desc: "An hour's drive takes you to Cornwall's surf capital. Lessons available for all ages and abilities at Fistral and Watergate Bay.", image: imgFistralBeach, tags: ["surfing", "adventure"] },
-  { id: "king-harry-ferry", name: "King Harry Ferry", desc: "A historic chain ferry crossing the River Fal, in operation since 1888. A scenic and surprisingly fun way to explore the Roseland and beyond.", image: imgKingHarryFerry, tags: ["ferry", "river", "scenic"] },
+  { id: "king-harry-ferry", name: "King Harry Ferry", desc: "A historic chain ferry crossing the River Fal, in operation since 1888. A scenic and surprisingly fun way to explore the Roseland and beyond. The ferry runs from 7am.", image: imgKingHarryFerry, tags: ["ferry", "river", "scenic"], departureClocks: [
+    { label: "Philleigh → Feock", minutes: [10, 30, 50] },
+    { label: "Feock → Philleigh", minutes: [0, 20, 40] },
+  ] },
   { id: "falmouth-by-ferry", name: "Falmouth by Ferry", desc: "Drive to St Mawes and catch the ferry to Falmouth for a day of shopping or visit the Maritime Museum. Ferries run regularly through the year except in bad weather.", image: imgStMawesFerry, tags: ["ferry", "day trip", "shopping"], timetableUrl: "https://www.falriver.co.uk/ferries/st-mawes-ferry/timetable", ferryStatus: true },
   { id: "heligan", name: "The Lost Gardens of Heligan", desc: "One of the most beloved gardens in England. Explore the jungle, the productive gardens, and the famous sleeping mud maid.", image: imgHeligan, tags: ["gardens", "history"], category: "garden" },
   { id: "burncoose", name: "Burncoose Nurseries", desc: "One of the UK's finest nurseries set in 30 acres of woodland garden. Magnificent camellias, magnolias, and rare plants.", image: imgBurncooseGoldMedal, tags: ["gardens", "plants"], category: "garden" },
@@ -670,6 +673,21 @@ const CSS = `
   .ck-ferry-status-red .ck-ferry-status-dot { background:#c0392b; }
   .ck-ferry-status-unknown .ck-ferry-status-dot { background:var(--text-light); }
   .ck-ferry-status-loading { color:var(--text-light); font-size:0.9rem; margin-bottom:1.5rem; }
+  .ck-departure-clocks {
+    display:flex; gap:2.5rem; flex-wrap:wrap;
+    margin-bottom:1.5rem;
+  }
+  .ck-departure-clock { display:flex; flex-direction:column; align-items:center; width:150px; }
+  .ck-clock-svg { width:130px; height:130px; }
+  .ck-clock-face { fill:white; stroke:var(--sand-dark); stroke-width:2; }
+  .ck-clock-tick { stroke:var(--text-light); stroke-width:1.5; }
+  .ck-clock-hand { stroke:var(--ocean); stroke-width:2.5; stroke-linecap:round; }
+  .ck-clock-dot, .ck-clock-center { fill:var(--ocean); }
+  .ck-clock-label { font-size:9px; fill:var(--text); font-family:var(--font-body); }
+  .ck-departure-clock-caption {
+    margin-top:0.6rem; font-weight:500; color:var(--ocean);
+    text-align:center; font-size:0.9rem;
+  }
   .ck-detail-info {
     background:var(--sand); border-radius:12px;
     padding:2rem; margin:2rem 0;
@@ -1856,6 +1874,44 @@ function FerryStatus() {
   );
 }
 
+// A small analog clock face marking recurring departure minutes (e.g. every
+// 20 minutes past the hour), used for ferries that run on a fixed pattern
+// rather than a full timetable.
+function DepartureClock({ label, minutes }) {
+  const cx = 60, cy = 60, r = 50, handR = 38;
+  const hourTicks = Array.from({ length: 12 }, (_, i) => {
+    const angle = (i * 30 * Math.PI) / 180;
+    const x1 = cx + (r - 6) * Math.sin(angle), y1 = cy - (r - 6) * Math.cos(angle);
+    const x2 = cx + r * Math.sin(angle), y2 = cy - r * Math.cos(angle);
+    return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} className="ck-clock-tick" />;
+  });
+
+  return (
+    <div className="ck-departure-clock">
+      <svg viewBox="0 0 120 120" className="ck-clock-svg">
+        <circle cx={cx} cy={cy} r={r} className="ck-clock-face" />
+        {hourTicks}
+        {minutes.map(m => {
+          const angle = (m * 6 * Math.PI) / 180;
+          const x2 = cx + handR * Math.sin(angle), y2 = cy - handR * Math.cos(angle);
+          const lx = cx + (handR + 16) * Math.sin(angle), ly = cy - (handR + 16) * Math.cos(angle);
+          return (
+            <g key={m}>
+              <line x1={cx} y1={cy} x2={x2} y2={y2} className="ck-clock-hand" />
+              <circle cx={x2} cy={y2} r="2.5" className="ck-clock-dot" />
+              <text x={lx} y={ly} className="ck-clock-label" textAnchor="middle" dominantBaseline="middle">
+                :{String(m).padStart(2, "0")}
+              </text>
+            </g>
+          );
+        })}
+        <circle cx={cx} cy={cy} r="3" className="ck-clock-center" />
+      </svg>
+      <p className="ck-departure-clock-caption">{label}</p>
+    </div>
+  );
+}
+
 function ActivityDetail({ activity, setPage, setSubPage }) {
   if (!activity) return <div className="ck-section"><p>Activity not found.</p></div>;
   const backTo = activity.category === "garden" ? "gardens" : activity.category === "beach" ? "beaches" : "activities";
@@ -1873,6 +1929,11 @@ function ActivityDetail({ activity, setPage, setSubPage }) {
           {activity.tags.map(t => <span key={t} className="ck-tag">{t}</span>)}
         </div>
         <div className="ck-detail-body"><p>{activity.desc}</p></div>
+        {activity.departureClocks && (
+          <div className="ck-departure-clocks">
+            {activity.departureClocks.map(c => <DepartureClock key={c.label} label={c.label} minutes={c.minutes} />)}
+          </div>
+        )}
         {activity.ferryStatus && <FerryStatus />}
         {activity.timetableUrl && (
           <a className="ck-btn ck-btn-primary" style={{ marginTop: "0.5rem", display: "inline-block", textDecoration: "none" }}
