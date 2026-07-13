@@ -282,6 +282,33 @@ async function deletePinById(id) {
   if (!res.ok) throw new Error("Failed to delete pin");
 }
 
+async function fetchFishingSpots() {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/fishing_spots?select=*&order=created_at.asc`, {
+    headers: SUPABASE_HEADERS,
+  });
+  if (!res.ok) throw new Error("Failed to load fishing spots");
+  return res.json();
+}
+
+async function createFishingSpot(spot) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/fishing_spots`, {
+    method: "POST",
+    headers: { ...SUPABASE_HEADERS, "Content-Type": "application/json", Prefer: "return=representation" },
+    body: JSON.stringify(spot),
+  });
+  if (!res.ok) throw new Error("Failed to save fishing spot");
+  const rows = await res.json();
+  return rows[0];
+}
+
+async function deleteFishingSpotById(id) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/fishing_spots?id=eq.${id}`, {
+    method: "DELETE",
+    headers: SUPABASE_HEADERS,
+  });
+  if (!res.ok) throw new Error("Failed to delete fishing spot");
+}
+
 // ─── VISITORS BOOK ───────────────────────────────────────────────────
 // Entries (and their photos) live in Supabase for the same reason pins do —
 // this is a static site with no server of its own. Photos go to a separate
@@ -1072,6 +1099,15 @@ const CSS = `
   }
   .ck-map-pin-no-entry:hover { transform: scale(1.25); }
   .ck-map-pin-no-entry-bar { width:60%; height:3px; background:var(--white); border-radius:1px; }
+  .ck-map-pin-fish {
+    width:26px; height:26px; border-radius:50%;
+    background:var(--white); border:2px solid #2f7fb8;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 2px 8px rgba(0,0,0,0.35);
+    cursor:pointer; transition: transform 0.2s;
+  }
+  .ck-map-pin-fish:hover { transform: scale(1.2); }
+  .ck-fishing-map { margin-bottom:1.5rem; }
   .ck-map-offscreen {
     position:absolute; transform:translate(-50%,-50%);
     width:26px; height:26px; border-radius:50%;
@@ -2502,6 +2538,183 @@ function AddPinForm({ pos, onCancel, onSave }) {
   );
 }
 
+// Original flat-colour illustration (not a stock asset), matching the
+// wheelie bin icon's style: a simple side-profile fish silhouette.
+const FISH_ICON_SVG = `<svg width="16" height="16" viewBox="0 0 24 24"><path d="M4 12 0 8v8l4-4Z" fill="#2f7fb8"/><ellipse cx="14" cy="12" rx="8" ry="4.5" fill="#3b8fc9"/><circle cx="19.5" cy="10.5" r="1" fill="#0b3a5c"/><path d="M9 8.5c1.2 1 1.2 4.9 0 5.9M13 7.8c1.6 1.3 1.6 5.6 0 6.9" stroke="#2a6ea3" stroke-width="0.9" fill="none" stroke-linecap="round"/></svg>`;
+
+function FishIcon({ size = 22 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24">
+      <path d="M4 12 0 8v8l4-4Z" fill="#2f7fb8" />
+      <ellipse cx="14" cy="12" rx="8" ry="4.5" fill="#3b8fc9" />
+      <circle cx="19.5" cy="10.5" r="1" fill="#0b3a5c" />
+      <path d="M9 8.5c1.2 1 1.2 4.9 0 5.9M13 7.8c1.6 1.3 1.6 5.6 0 6.9" stroke="#2a6ea3" strokeWidth="0.9" fill="none" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+// A close-up map of Portscatho showing recent fishing spots, separate from
+// the main Roseland-wide Explore map since it's zoomed to village scale.
+function FishingMap({ spots, addMode, onMapClick, onSpotClick }) {
+  const wrapRef = useRef(null);
+  const mapRef = useRef(null);
+  const markersRef = useRef([]);
+  const clickHandlerRef = useRef(onSpotClick);
+  clickHandlerRef.current = onSpotClick;
+
+  useEffect(() => {
+    const map = L.map(wrapRef.current, { scrollWheelZoom: false })
+      .setView([PROPERTY_LOCATION.lat, PROPERTY_LOCATION.lng], 15);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 18,
+    }).addTo(map);
+    mapRef.current = map;
+    return () => { map.remove(); mapRef.current = null; };
+  }, []);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    const handler = e => onMapClick({ lat: e.latlng.lat, lng: e.latlng.lng });
+    if (addMode) map.on("click", handler);
+    map.getContainer().style.cursor = addMode ? "crosshair" : "";
+    return () => map.off("click", handler);
+  }, [addMode, onMapClick]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    markersRef.current.forEach(m => map.removeLayer(m));
+    markersRef.current = spots.map(spot => {
+      const icon = L.divIcon({
+        className: "",
+        html: `<div class="ck-map-pin-fish">${FISH_ICON_SVG}</div>`,
+        iconSize: [26, 26],
+        iconAnchor: [13, 13],
+      });
+      const marker = L.marker([spot.lat, spot.lng], { icon }).addTo(map);
+      const dateLabel = new Date(spot.created_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+      marker.bindTooltip(
+        `<strong>${spot.note ? escapeHtml(spot.note) : "Fishing spot"}</strong><br><span style="opacity:.7">${dateLabel}</span>`,
+        { direction: "top", offset: [0, -14] },
+      );
+      marker.on("click", () => clickHandlerRef.current(spot));
+      return marker;
+    });
+  }, [spots]);
+
+  return (
+    <div className={`ck-map-wrap ck-fishing-map ${addMode ? "ck-map-addable" : ""}`}>
+      <div ref={wrapRef} className="ck-map-leaflet" />
+    </div>
+  );
+}
+
+function AddFishingSpotForm({ pos, onCancel, onSave }) {
+  const [note, setNote] = useState("");
+  const [saving, setSaving] = useState(false);
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      await onSave({ lat: pos.lat, lng: pos.lng, note: note.trim() || null });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="ck-modal-overlay" onClick={onCancel}>
+      <div className="ck-modal" onClick={e => e.stopPropagation()}>
+        <h2 className="ck-modal-title">Add a Fishing Spot</h2>
+        <p className="ck-modal-subtitle">Optionally note what you caught here.</p>
+        <div className="ck-form-group">
+          <label className="ck-label">Note (optional)</label>
+          <input className="ck-input" value={note} onChange={e => setNote(e.target.value)} placeholder="e.g. Sea bass, evening tide" />
+        </div>
+        <div style={{ display: "flex", gap: "0.75rem", marginTop: "1.5rem" }}>
+          <button className="ck-btn ck-btn-primary" onClick={handleSave} disabled={saving}>
+            {saving ? "Saving…" : "Save Spot"}
+          </button>
+          <button className="ck-btn ck-btn-secondary" onClick={onCancel}>Cancel</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FishingSection({ isAdmin }) {
+  const [spots, setSpots] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [addMode, setAddMode] = useState(false);
+  const [pendingPos, setPendingPos] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchFishingSpots()
+      .then(rows => { if (!cancelled) setSpots(rows); })
+      .catch(() => { if (!cancelled) setError("Couldn't load fishing spots right now."); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, []);
+
+  const handleSaveSpot = async data => {
+    const saved = await createFishingSpot(data);
+    setSpots(prev => [...prev, saved]);
+    setPendingPos(null);
+  };
+
+  const handleDeleteSpot = async spot => {
+    if (!confirm(`Remove this fishing spot${spot.note ? ` ("${spot.note}")` : ""}?`)) return;
+    await deleteFishingSpotById(spot.id);
+    setSpots(prev => prev.filter(s => s.id !== spot.id));
+  };
+
+  return (
+    <section className="ck-section" style={{ paddingTop: "1rem" }}>
+      <h2 className="ck-remedy-title">Fishing</h2>
+      <p className="ck-section-desc" style={{ marginBottom: "1.5rem" }}>
+        The fishing is good around here, with recent hauls of sea bass and wrasse. These are the spots we have caught fish recently.
+      </p>
+
+      {isAdmin && (
+        <div className="ck-map-admin-bar">
+          <button className={`ck-btn ${addMode ? "ck-btn-primary" : "ck-btn-secondary"} ck-btn-sm`} onClick={() => { setAddMode(!addMode); setPendingPos(null); }}>
+            {addMode ? "Cancel Adding" : "+ Add Fishing Spot"}
+          </button>
+          {addMode && <span className="ck-map-hint">Click anywhere on the map to place a spot.</span>}
+        </div>
+      )}
+
+      {loading && <p style={{ color: "var(--text-light)" }}>Loading map…</p>}
+      {error && <p className="ck-modal-error">{error}</p>}
+
+      {!loading && (
+        <FishingMap spots={spots} addMode={addMode} onMapClick={setPendingPos} onSpotClick={() => {}} />
+      )}
+
+      {isAdmin && spots.length > 0 && (
+        <div className="ck-map-pin-list">
+          <h3>Manage Fishing Spots</h3>
+          {spots.map(spot => (
+            <div key={spot.id} className="ck-map-pin-list-item">
+              <FishIcon size={18} />
+              <span>{spot.note || "Fishing spot"}</span>
+              <button className="ck-btn ck-btn-danger ck-btn-sm" onClick={() => handleDeleteSpot(spot)}>Remove</button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {pendingPos && (
+        <AddFishingSpotForm pos={pendingPos} onCancel={() => setPendingPos(null)} onSave={handleSaveSpot} />
+      )}
+    </section>
+  );
+}
+
 function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
   const [pins, setPins] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -2634,6 +2847,8 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
           </div>
         )}
       </section>
+
+      <FishingSection isAdmin={isAdmin} />
 
       {pendingPos && (
         <AddPinForm pos={pendingPos} onCancel={() => setPendingPos(null)} onSave={handleSavePin} />
