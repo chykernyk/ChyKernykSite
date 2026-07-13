@@ -54,6 +54,7 @@ import imgStAnthony from "./assets/images/StAnthony.webp";
 import imgStIves from "./assets/images/StIves.jpeg";
 import imgStJustInRoseland from "./assets/images/StJustInRoseland.jpg";
 import imgStMawesCastle from "./assets/images/StMawesCastle.webp";
+import imgStMawesFerry from "./assets/images/StMawesFerry.jpeg";
 import imgStMawesHarbour from "./assets/images/StMawesHarbour.jpeg";
 import imgStMawesHarbour2 from "./assets/images/StMawesHarbour2.jpeg";
 import imgStMawesHarbourWall from "./assets/images/StMawesHarbourWall.jpeg";
@@ -127,6 +128,7 @@ const ACTIVITIES = [
   { id: "the-scarlet", name: "The Scarlet", desc: "An adults-only eco-spa hotel perched on the cliffs above Mawgan Porth. Outdoor hot tubs, a wood-fired sauna, and a natural reed-filtered pool overlooking the beach.", tags: ["spa", "clifftop", "adults-only"], image: imgScarlet },
   { id: "surfing-newquay", name: "Surfing in Newquay", desc: "An hour's drive takes you to Cornwall's surf capital. Lessons available for all ages and abilities at Fistral and Watergate Bay.", image: imgFistralBeach, tags: ["surfing", "adventure"] },
   { id: "king-harry-ferry", name: "King Harry Ferry", desc: "A historic chain ferry crossing the River Fal, in operation since 1888. A scenic and surprisingly fun way to explore the Roseland and beyond.", image: imgKingHarryFerry, tags: ["ferry", "river", "scenic"] },
+  { id: "falmouth-by-ferry", name: "Falmouth by Ferry", desc: "Drive to St Mawes and catch the ferry to Falmouth for a day of shopping or visit the Maritime Museum. Ferries run regularly through the year except in bad weather.", image: imgStMawesFerry, tags: ["ferry", "day trip", "shopping"], timetableUrl: "https://www.falriver.co.uk/ferries/st-mawes-ferry/timetable", ferryStatus: true },
   { id: "heligan", name: "The Lost Gardens of Heligan", desc: "One of the most beloved gardens in England. Explore the jungle, the productive gardens, and the famous sleeping mud maid.", image: imgHeligan, tags: ["gardens", "history"], category: "garden" },
   { id: "burncoose", name: "Burncoose Nurseries", desc: "One of the UK's finest nurseries set in 30 acres of woodland garden. Magnificent camellias, magnolias, and rare plants.", image: imgBurncooseGoldMedal, tags: ["gardens", "plants"], category: "garden" },
   { id: "eden-project", name: "Eden Project", desc: "The iconic biomes housing the world's largest indoor rainforest. A must-visit that never disappoints, whatever the weather.", image: imgEdenProject, tags: ["attraction", "family"], category: "garden" },
@@ -654,6 +656,20 @@ const CSS = `
     color: var(--text);
   }
   .ck-detail-body p { margin-bottom:1.5rem; }
+  .ck-ferry-status {
+    display:flex; align-items:center; gap:0.6rem;
+    padding:0.9rem 1.1rem; border-radius:8px;
+    background:var(--sand); font-size:0.95rem;
+    margin-bottom:1.5rem;
+  }
+  .ck-ferry-status-dot {
+    width:0.7rem; height:0.7rem; border-radius:50%; flex-shrink:0;
+  }
+  .ck-ferry-status-green .ck-ferry-status-dot { background:#2e9e4f; }
+  .ck-ferry-status-amber .ck-ferry-status-dot { background:#e0a417; }
+  .ck-ferry-status-red .ck-ferry-status-dot { background:#c0392b; }
+  .ck-ferry-status-unknown .ck-ferry-status-dot { background:var(--text-light); }
+  .ck-ferry-status-loading { color:var(--text-light); font-size:0.9rem; margin-bottom:1.5rem; }
   .ck-detail-info {
     background:var(--sand); border-radius:12px;
     padding:2rem; margin:2rem 0;
@@ -1814,6 +1830,32 @@ function BeachesPage({ setPage, setSubPage }) {
   );
 }
 
+// Shows the live St Mawes Ferry running status, read via a Supabase Edge
+// Function since falriver.co.uk can't be fetched directly from the browser.
+function FerryStatus() {
+  const [status, setStatus] = useState(null);
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`${SUPABASE_URL}/functions/v1/ferry-status`)
+      .then(res => { if (!res.ok) throw new Error("Failed to load ferry status"); return res.json(); })
+      .then(data => { if (!cancelled) setStatus(data); })
+      .catch(() => { if (!cancelled) setFailed(true); });
+    return () => { cancelled = true; };
+  }, []);
+
+  if (failed) return null;
+  if (!status) return <p className="ck-ferry-status-loading">Checking live ferry status…</p>;
+
+  return (
+    <div className={`ck-ferry-status ck-ferry-status-${status.level}`}>
+      <span className="ck-ferry-status-dot" />
+      <span>{status.message}</span>
+    </div>
+  );
+}
+
 function ActivityDetail({ activity, setPage, setSubPage }) {
   if (!activity) return <div className="ck-section"><p>Activity not found.</p></div>;
   const backTo = activity.category === "garden" ? "gardens" : activity.category === "beach" ? "beaches" : "activities";
@@ -1831,6 +1873,13 @@ function ActivityDetail({ activity, setPage, setSubPage }) {
           {activity.tags.map(t => <span key={t} className="ck-tag">{t}</span>)}
         </div>
         <div className="ck-detail-body"><p>{activity.desc}</p></div>
+        {activity.ferryStatus && <FerryStatus />}
+        {activity.timetableUrl && (
+          <a className="ck-btn ck-btn-primary" style={{ marginTop: "0.5rem", display: "inline-block", textDecoration: "none" }}
+            href={activity.timetableUrl} target="_blank" rel="noopener noreferrer">
+            View Timetable
+          </a>
+        )}
       </div>
     </>
   );
