@@ -2658,7 +2658,7 @@ function AddFishingSpotForm({ pos, onCancel, onSave }) {
   );
 }
 
-function FishingSection({ isAdmin }) {
+function FishingPage({ setPage, isAdmin }) {
   const [spots, setSpots] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -2687,45 +2687,47 @@ function FishingSection({ isAdmin }) {
   };
 
   return (
-    <section id="fishing-section" className="ck-section" style={{ paddingTop: "1rem" }}>
-      <h2 className="ck-remedy-title">Fishing</h2>
-      <p className="ck-section-desc" style={{ marginBottom: "1.5rem" }}>
-        The fishing is good around here, with recent hauls of sea bass and wrasse. These are the spots we have caught fish recently.
-      </p>
+    <>
+      <PageHeader title="Fishing" setPage={setPage} backTo="around" />
+      <section className="ck-section" style={{ paddingTop: "1rem" }}>
+        <p className="ck-section-desc" style={{ marginBottom: "1.5rem" }}>
+          The fishing is good around here, with recent hauls of sea bass and wrasse. These are the spots we have caught fish recently.
+        </p>
 
-      {isAdmin && (
-        <div className="ck-map-admin-bar">
-          <button className={`ck-btn ${addMode ? "ck-btn-primary" : "ck-btn-secondary"} ck-btn-sm`} onClick={() => { setAddMode(!addMode); setPendingPos(null); }}>
-            {addMode ? "Cancel Adding" : "+ Add Fishing Spot"}
-          </button>
-          {addMode && <span className="ck-map-hint">Click anywhere on the map to place a spot.</span>}
-        </div>
-      )}
+        {isAdmin && (
+          <div className="ck-map-admin-bar">
+            <button className={`ck-btn ${addMode ? "ck-btn-primary" : "ck-btn-secondary"} ck-btn-sm`} onClick={() => { setAddMode(!addMode); setPendingPos(null); }}>
+              {addMode ? "Cancel Adding" : "+ Add Fishing Spot"}
+            </button>
+            {addMode && <span className="ck-map-hint">Click anywhere on the map to place a spot.</span>}
+          </div>
+        )}
 
-      {loading && <p style={{ color: "var(--text-light)" }}>Loading map…</p>}
-      {error && <p className="ck-modal-error">{error}</p>}
+        {loading && <p style={{ color: "var(--text-light)" }}>Loading map…</p>}
+        {error && <p className="ck-modal-error">{error}</p>}
 
-      {!loading && (
-        <FishingMap spots={spots} addMode={addMode} onMapClick={setPendingPos} onSpotClick={() => {}} />
-      )}
+        {!loading && (
+          <FishingMap spots={spots} addMode={addMode} onMapClick={setPendingPos} onSpotClick={() => {}} />
+        )}
 
-      {isAdmin && spots.length > 0 && (
-        <div className="ck-map-pin-list">
-          <h3>Manage Fishing Spots</h3>
-          {spots.map(spot => (
-            <div key={spot.id} className="ck-map-pin-list-item">
-              <FishIcon size={18} />
-              <span>{spot.note || "Fishing spot"}</span>
-              <button className="ck-btn ck-btn-danger ck-btn-sm" onClick={() => handleDeleteSpot(spot)}>Remove</button>
-            </div>
-          ))}
-        </div>
-      )}
+        {isAdmin && spots.length > 0 && (
+          <div className="ck-map-pin-list">
+            <h3>Manage Fishing Spots</h3>
+            {spots.map(spot => (
+              <div key={spot.id} className="ck-map-pin-list-item">
+                <FishIcon size={18} />
+                <span>{spot.note || "Fishing spot"}</span>
+                <button className="ck-btn ck-btn-danger ck-btn-sm" onClick={() => handleDeleteSpot(spot)}>Remove</button>
+              </div>
+            ))}
+          </div>
+        )}
 
-      {pendingPos && (
-        <AddFishingSpotForm pos={pendingPos} onCancel={() => setPendingPos(null)} onSave={handleSaveSpot} />
-      )}
-    </section>
+        {pendingPos && (
+          <AddFishingSpotForm pos={pendingPos} onCancel={() => setPendingPos(null)} onSave={handleSaveSpot} />
+        )}
+      </section>
+    </>
   );
 }
 
@@ -2802,7 +2804,7 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
           {Object.entries(PIN_TYPES).filter(([, t]) => t.page).map(([key, t]) => (
             <Fragment key={key}>
               {key === "parkrun" && (
-                <button className="ck-map-jump-chip" onClick={() => document.getElementById("fishing-section")?.scrollIntoView({ behavior: "smooth" })}>
+                <button className="ck-map-jump-chip" onClick={() => { setPage("fishing"); window.scrollTo(0, 0); }}>
                   <img className="ck-map-jump-chip-img" src={imgFishingOffRocks} alt="" />
                   <div className="ck-map-jump-chip-label">
                     <span className="ck-map-legend-diamond" style={{ background: "#2f7fb8" }} />
@@ -2872,8 +2874,6 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
           </div>
         )}
       </section>
-
-      <FishingSection isAdmin={isAdmin} />
 
       {pendingPos && (
         <AddPinForm pos={pendingPos} onCancel={() => setPendingPos(null)} onSave={handleSavePin} />
@@ -3225,7 +3225,9 @@ function Footer() {
 
 // ─── MAIN APP ────────────────────────────────────────────────────────
 export default function App() {
-  const [siteUnlocked, setSiteUnlocked] = useState(false);
+  const [siteUnlocked, setSiteUnlocked] = useState(() => {
+    try { return localStorage.getItem("ck_site_unlocked") === "1"; } catch { return false; }
+  });
   const [page, setPage] = useState("home");
   const [subPage, setSubPage] = useState(null);
   const [adminUser, setAdminUser] = useState(null);
@@ -3295,7 +3297,11 @@ export default function App() {
     return (
       <div className="ck-app">
         <style>{CSS}</style>
-        <SiteGate onUnlock={() => setSiteUnlocked(true)} />
+        <SiteGate onUnlock={() => {
+          try { localStorage.setItem("ck_site_unlocked", "1"); } catch {}
+          setSiteUnlocked(true);
+          window.scrollTo(0, 0);
+        }} />
       </div>
     );
   }
@@ -3312,6 +3318,7 @@ export default function App() {
     beaches: <BeachesPage setPage={setPage} setSubPage={setSubPage} />,
     walks: <WalksPage setPage={setPage} setSubPage={setSubPage} />,
     around: <AroundAboutPage setPage={setPage} setSubPage={setSubPage} isAdmin={isAdmin} />,
+    fishing: <FishingPage setPage={setPage} isAdmin={isAdmin} />,
     parkrun: <ParkrunPage setPage={setPage} setSubPage={setSubPage} />,
     calendar: <CalendarPage setPage={setPage} isAdmin={isAdmin} />,
     remedies: <RemediesPage setPage={setPage} />,
