@@ -2943,6 +2943,7 @@ export default function App() {
       setPage((e.state && e.state.page) || "home");
     };
     window.history.replaceState({ page: "home" }, "");
+    window.scrollTo(0, 0);
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
