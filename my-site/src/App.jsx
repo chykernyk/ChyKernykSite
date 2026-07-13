@@ -2658,15 +2658,18 @@ function ParkrunPage({ setPage, setSubPage }) {
   );
 }
 
-function WheelieBinIcon({ size = 24, color = "currentColor" }) {
+// An original flat-colour illustration (not a stock asset) so there's no
+// licensing risk, styled to read clearly as a wheelie bin rather than a
+// generic wastebasket: hinge handle, overhanging lid, ribbed body, wheels.
+function WheelieBinIcon({ size = 24 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="9.5" y="2" width="5" height="2" rx="0.5" />
-      <path d="M5 6.5h14" />
-      <rect x="6.5" y="6.5" width="11" height="13" rx="1.2" />
-      <path d="M9.5 9.5v7M14.5 9.5v7" />
-      <circle cx="9" cy="20.5" r="1.3" />
-      <circle cx="15" cy="20.5" r="1.3" />
+    <svg width={size} height={size} viewBox="0 0 24 24">
+      <rect x="9.5" y="2" width="5" height="1.8" rx="0.6" fill="#8a95a1" />
+      <rect x="5" y="4.2" width="14" height="2.3" rx="1" fill="#37424a" />
+      <path d="M6.6 6.5h10.8l-1 13.2a1.8 1.8 0 0 1-1.8 1.65H9.4a1.8 1.8 0 0 1-1.8-1.65L6.6 6.5Z" fill="#4a5560" />
+      <path d="M10 9.5v8M14 9.5v8" stroke="#37424a" strokeWidth="0.8" strokeLinecap="round" />
+      <circle cx="9" cy="20.6" r="1.4" fill="#1f2428" />
+      <circle cx="15" cy="20.6" r="1.4" fill="#1f2428" />
     </svg>
   );
 }
@@ -2706,7 +2709,7 @@ function RemediesPage({ setPage }) {
               return (
                 <Tag key={item.name} className="ck-remedy-item" {...linkProps}>
                   <span className="ck-remedy-icon">
-                    {item.binCollection ? <WheelieBinIcon color="var(--ocean)" /> : item.icon}
+                    {item.binCollection ? <WheelieBinIcon /> : item.icon}
                   </span>
                   <div className="ck-remedy-text">
                     <div className="ck-remedy-name">{item.name}</div>
