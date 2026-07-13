@@ -1171,7 +1171,7 @@ const CSS = `
   }
   .ck-map-jump-chip:hover { border-color:var(--ocean); box-shadow:0 6px 16px rgba(0,0,0,0.1); transform:translateY(-2px); }
   .ck-map-jump-chip-img {
-    width:100%; height:55%; object-fit:cover; display:block; flex-shrink:0;
+    width:100%; height:75%; object-fit:cover; display:block; flex-shrink:0;
   }
   .ck-map-jump-chip-img-empty { display:flex; align-items:center; justify-content:center; }
   .ck-map-jump-chip-label {
