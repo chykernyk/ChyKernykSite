@@ -1155,7 +1155,7 @@ const CSS = `
   }
   .ck-map-pin-list-item > span:nth-child(2) { flex:1; }
   .ck-map-jump-bar {
-    display:grid; grid-template-columns:repeat(7, 1fr);
+    display:grid; grid-template-columns:repeat(8, 1fr);
     gap:0.6rem; margin-bottom:1.5rem;
   }
   .ck-map-jump-chip {
@@ -2539,16 +2539,18 @@ function AddPinForm({ pos, onCancel, onSave }) {
 }
 
 // Original flat-colour illustration (not a stock asset), matching the
-// wheelie bin icon's style: a simple side-profile fish silhouette.
-const FISH_ICON_SVG = `<svg width="16" height="16" viewBox="0 0 24 24"><path d="M4 12 0 8v8l4-4Z" fill="#2f7fb8"/><ellipse cx="14" cy="12" rx="8" ry="4.5" fill="#3b8fc9"/><circle cx="19.5" cy="10.5" r="1" fill="#0b3a5c"/><path d="M9 8.5c1.2 1 1.2 4.9 0 5.9M13 7.8c1.6 1.3 1.6 5.6 0 6.9" stroke="#2a6ea3" stroke-width="0.9" fill="none" stroke-linecap="round"/></svg>`;
+// wheelie bin icon's style: a side-profile fish with a forked tail and
+// dorsal fin, closer to a "real" fish silhouette than a plain oval.
+const FISH_ICON_SVG = `<svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 12 1 7 3 12 1 17Z" fill="#2f7fb8"/><path d="M20 12c0-3.5-3.5-6-8-6s-7 2.5-7 6 3.5 6 7 6 8-2.5 8-6Z" fill="#4a9bd1"/><path d="M10 6.5 12 2.5 14 6.3Z" fill="#2f7fb8"/><path d="M15.2 8.3q-1.6 3.7 0 7.4" stroke="#2f7fb8" stroke-width="0.9" fill="none" stroke-linecap="round"/><circle cx="16.6" cy="10" r="1.1" fill="#0b3a5c"/></svg>`;
 
 function FishIcon({ size = 22 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24">
-      <path d="M4 12 0 8v8l4-4Z" fill="#2f7fb8" />
-      <ellipse cx="14" cy="12" rx="8" ry="4.5" fill="#3b8fc9" />
-      <circle cx="19.5" cy="10.5" r="1" fill="#0b3a5c" />
-      <path d="M9 8.5c1.2 1 1.2 4.9 0 5.9M13 7.8c1.6 1.3 1.6 5.6 0 6.9" stroke="#2a6ea3" strokeWidth="0.9" fill="none" strokeLinecap="round" />
+      <path d="M5 12 1 7 3 12 1 17Z" fill="#2f7fb8" />
+      <path d="M20 12c0-3.5-3.5-6-8-6s-7 2.5-7 6 3.5 6 7 6 8-2.5 8-6Z" fill="#4a9bd1" />
+      <path d="M10 6.5 12 2.5 14 6.3Z" fill="#2f7fb8" />
+      <path d="M15.2 8.3q-1.6 3.7 0 7.4" stroke="#2f7fb8" strokeWidth="0.9" fill="none" strokeLinecap="round" />
+      <circle cx="16.6" cy="10" r="1.1" fill="#0b3a5c" />
     </svg>
   );
 }
@@ -2673,7 +2675,7 @@ function FishingSection({ isAdmin }) {
   };
 
   return (
-    <section className="ck-section" style={{ paddingTop: "1rem" }}>
+    <section id="fishing-section" className="ck-section" style={{ paddingTop: "1rem" }}>
       <h2 className="ck-remedy-title">Fishing</h2>
       <p className="ck-section-desc" style={{ marginBottom: "1.5rem" }}>
         The fishing is good around here, with recent hauls of sea bass and wrasse. These are the spots we have caught fish recently.
@@ -2800,6 +2802,13 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
               </div>
             </button>
           ))}
+          <button className="ck-map-jump-chip" onClick={() => document.getElementById("fishing-section")?.scrollIntoView({ behavior: "smooth" })}>
+            <img className="ck-map-jump-chip-img" src={imgFishingOffRocks} alt="" />
+            <div className="ck-map-jump-chip-label">
+              <span className="ck-map-legend-diamond" style={{ background: "#2f7fb8" }} />
+              <span className="ck-map-jump-chip-label-text">Fishing</span>
+            </div>
+          </button>
         </div>
 
         {loading && <p style={{ color: "var(--text-light)" }}>Loading map…</p>}
