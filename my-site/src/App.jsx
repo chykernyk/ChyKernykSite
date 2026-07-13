@@ -177,6 +177,10 @@ const REMEDIES = [
     { name: "Nearest Petrol Station", detail: "Roseland Local, Ruan High Lanes", icon: "⛽", url: "https://www.google.com/maps/search/?api=1&query=Roseland+Local+Ruan+High+Lanes" },
     { name: "Bin Day", detail: "Bin day is Monday.", binCollection: true, url: "https://www.cornwall.gov.uk/media/rggnvze3/monfort1new.pdf" },
   ]},
+  { category: "Church Services", items: [
+    { name: "St Just-in-Roseland", detail: "Services at 8am and 11am.", icon: "⛪", url: "https://stjustandstmawes.org.uk/whats-on/parish-calendar/" },
+    { name: "Portscatho", detail: "Service at 10:30am.", icon: "⛪", url: "https://portscathounitedchurch.wordpress.com/" },
+  ]},
   { category: "House Maintenance", items: [
     { name: "Stopcock Location", detail: "Under the kitchen sink, left side. Turn clockwise to close.", icon: "🚰" },
     { name: "Fusebox Location", detail: "Utility room, wall-mounted to the right of the door.", icon: "🔌" },
