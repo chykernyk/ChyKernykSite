@@ -1112,7 +1112,7 @@ const CSS = `
     cursor:pointer; transition: transform 0.2s;
   }
   .ck-map-pin-fish:hover { transform: scale(1.2); }
-  .ck-fishing-map { margin-bottom:1.5rem; aspect-ratio: 1 / 1; }
+  .ck-fishing-map { margin-bottom:1.5rem; aspect-ratio: 1 / 2; }
   .ck-map-offscreen {
     position:absolute; transform:translate(-50%,-50%);
     width:26px; height:26px; border-radius:50%;
@@ -2575,12 +2575,14 @@ function FishingMap({ spots, addMode, onMapClick, onSpotClick }) {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 18,
     }).addTo(map);
-    // Porthcurnick sits at one edge with Portscatho at the centre, so mirror
-    // the same lat/lng distance to the opposite side for a symmetric view.
+    // Porthcurnick sits at the far edge, mirrored the same lat distance to
+    // the opposite side for full north-south coverage — but only the
+    // coastal (eastern, seaward) half of that span is shown, since the
+    // village itself anchors the western edge with nothing but land beyond.
     const dLat = Math.abs(PORTHCURNICK.lat - PROPERTY_LOCATION.lat);
     const dLng = Math.abs(PORTHCURNICK.lng - PROPERTY_LOCATION.lng);
     map.fitBounds([
-      [PROPERTY_LOCATION.lat - dLat, PROPERTY_LOCATION.lng - dLng],
+      [PROPERTY_LOCATION.lat - dLat, PROPERTY_LOCATION.lng],
       [PROPERTY_LOCATION.lat + dLat, PROPERTY_LOCATION.lng + dLng],
     ]);
     mapRef.current = map;
@@ -2690,38 +2692,45 @@ function FishingPage({ setPage, isAdmin }) {
     <>
       <PageHeader title="Fishing" setPage={setPage} backTo="around" />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
-        <p className="ck-section-desc" style={{ marginBottom: "1.5rem" }}>
-          The fishing is good around here, with recent hauls of sea bass and wrasse. These are the spots we have caught fish recently.
-        </p>
+        <div className="ck-category-layout">
+          <div>
+            <p className="ck-section-desc" style={{ marginBottom: "1.5rem" }}>
+              The fishing is good around here, with recent hauls of sea bass and wrasse. These are the spots we have caught fish recently.
+            </p>
 
-        {isAdmin && (
-          <div className="ck-map-admin-bar">
-            <button className={`ck-btn ${addMode ? "ck-btn-primary" : "ck-btn-secondary"} ck-btn-sm`} onClick={() => { setAddMode(!addMode); setPendingPos(null); }}>
-              {addMode ? "Cancel Adding" : "+ Add Fishing Spot"}
-            </button>
-            {addMode && <span className="ck-map-hint">Click anywhere on the map to place a spot.</span>}
-          </div>
-        )}
-
-        {loading && <p style={{ color: "var(--text-light)" }}>Loading map…</p>}
-        {error && <p className="ck-modal-error">{error}</p>}
-
-        {!loading && (
-          <FishingMap spots={spots} addMode={addMode} onMapClick={setPendingPos} onSpotClick={() => {}} />
-        )}
-
-        {isAdmin && spots.length > 0 && (
-          <div className="ck-map-pin-list">
-            <h3>Manage Fishing Spots</h3>
-            {spots.map(spot => (
-              <div key={spot.id} className="ck-map-pin-list-item">
-                <FishIcon size={18} />
-                <span>{spot.note || "Fishing spot"}</span>
-                <button className="ck-btn ck-btn-danger ck-btn-sm" onClick={() => handleDeleteSpot(spot)}>Remove</button>
+            {isAdmin && (
+              <div className="ck-map-admin-bar">
+                <button className={`ck-btn ${addMode ? "ck-btn-primary" : "ck-btn-secondary"} ck-btn-sm`} onClick={() => { setAddMode(!addMode); setPendingPos(null); }}>
+                  {addMode ? "Cancel Adding" : "+ Add Fishing Spot"}
+                </button>
+                {addMode && <span className="ck-map-hint">Click anywhere on the map to place a spot.</span>}
               </div>
-            ))}
+            )}
+
+            {error && <p className="ck-modal-error">{error}</p>}
+
+            {isAdmin && spots.length > 0 && (
+              <div className="ck-map-pin-list">
+                <h3>Manage Fishing Spots</h3>
+                {spots.map(spot => (
+                  <div key={spot.id} className="ck-map-pin-list-item">
+                    <FishIcon size={18} />
+                    <span>{spot.note || "Fishing spot"}</span>
+                    <button className="ck-btn ck-btn-danger ck-btn-sm" onClick={() => handleDeleteSpot(spot)}>Remove</button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-        )}
+
+          <div className="ck-category-map-wrap">
+            {loading ? (
+              <p style={{ color: "var(--text-light)" }}>Loading map…</p>
+            ) : (
+              <FishingMap spots={spots} addMode={addMode} onMapClick={setPendingPos} onSpotClick={() => {}} />
+            )}
+          </div>
+        </div>
 
         {pendingPos && (
           <AddFishingSpotForm pos={pendingPos} onCancel={() => setPendingPos(null)} onSave={handleSaveSpot} />
