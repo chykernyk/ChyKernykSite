@@ -380,6 +380,11 @@ function navigateToPin(pin, setPage, setSubPage) {
 // The property's location — ///latches.invisible.rope
 const PROPERTY_LOCATION = { lat: 50.182204, lng: -4.976218 };
 
+// Porthcurnick Beach, used to size the Fishing map: it's zoomed so
+// Porthcurnick sits at one edge and Portscatho stays centred, with the
+// same distance shown on the opposite side.
+const PORTHCURNICK = { lat: 50.18568, lng: -4.972522 };
+
 // Reference points shown on the map for orientation (not clickable pins).
 const MAP_LANDMARKS = [
   { lat: 50.1533, lng: -5.0708, label: "Falmouth" },
@@ -1107,7 +1112,7 @@ const CSS = `
     cursor:pointer; transition: transform 0.2s;
   }
   .ck-map-pin-fish:hover { transform: scale(1.2); }
-  .ck-fishing-map { margin-bottom:1.5rem; }
+  .ck-fishing-map { margin-bottom:1.5rem; aspect-ratio: 1 / 1; }
   .ck-map-offscreen {
     position:absolute; transform:translate(-50%,-50%);
     width:26px; height:26px; border-radius:50%;
@@ -2565,12 +2570,19 @@ function FishingMap({ spots, addMode, onMapClick, onSpotClick }) {
   clickHandlerRef.current = onSpotClick;
 
   useEffect(() => {
-    const map = L.map(wrapRef.current, { scrollWheelZoom: false })
-      .setView([PROPERTY_LOCATION.lat, PROPERTY_LOCATION.lng], 15);
+    const map = L.map(wrapRef.current, { scrollWheelZoom: false });
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 18,
     }).addTo(map);
+    // Porthcurnick sits at one edge with Portscatho at the centre, so mirror
+    // the same lat/lng distance to the opposite side for a symmetric view.
+    const dLat = Math.abs(PORTHCURNICK.lat - PROPERTY_LOCATION.lat);
+    const dLng = Math.abs(PORTHCURNICK.lng - PROPERTY_LOCATION.lng);
+    map.fitBounds([
+      [PROPERTY_LOCATION.lat - dLat, PROPERTY_LOCATION.lng - dLng],
+      [PROPERTY_LOCATION.lat + dLat, PROPERTY_LOCATION.lng + dLng],
+    ]);
     mapRef.current = map;
     return () => { map.remove(); mapRef.current = null; };
   }, []);
