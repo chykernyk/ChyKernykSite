@@ -175,7 +175,7 @@ const REMEDIES = [
     { name: "Amenities", detail: "Washing machine, tumble dryer & WiFi", icon: "🧺" },
     { name: "WiFi Password", detail: "Network: ChyKernyk-Guest / Password: HiddenHut", icon: "📶", qr: imgWifiQr },
     { name: "Nearest Petrol Station", detail: "Roseland Local, Ruan High Lanes", icon: "⛽", url: "https://www.google.com/maps/search/?api=1&query=Roseland+Local+Ruan+High+Lanes" },
-    { name: "Bin Day", detail: "Bin day is Monday.", binCollection: true },
+    { name: "Bin Day", detail: "Bin day is Monday.", binCollection: true, url: "https://www.cornwall.gov.uk/media/rggnvze3/monfort1new.pdf" },
   ]},
   { category: "House Maintenance", items: [
     { name: "Stopcock Location", detail: "Under the kitchen sink, left side. Turn clockwise to close.", icon: "🚰" },
