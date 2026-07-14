@@ -14,6 +14,7 @@ import imgEdenProject from "./assets/images/EdenProject.jpeg";
 import imgFishNTrips from "./assets/images/FishNTrips.jpeg";
 import imgFishingOffRocks from "./assets/images/FishingOffRocks.jpeg";
 import imgFistralBeach from "./assets/images/FistralBeach.jpg";
+import imgFudgeAndMore from "./assets/images/FudgeAndMore.jpeg";
 import imgHarbour from "./assets/images/Harbour.jpeg";
 import imgHeligan from "./assets/images/Heligan.png";
 import imgHiddenHut from "./assets/images/HiddenHut.jpeg";
@@ -63,6 +64,7 @@ import imgStandardInnGarden from "./assets/images/StandardInnGarden.jpeg";
 import imgTeacupTearoom from "./assets/images/TeacupTearoom.jpg";
 import imgTheStandard from "./assets/images/TheStandard.jpeg";
 import imgTheStandardLevel from "./assets/images/TheStandardLevel.jpeg";
+import imgTheWatchHouse from "./assets/images/TheWatchHouse.jpeg";
 import imgTowanShellPicking from "./assets/images/TowanShellPicking.jpeg";
 import imgTregew from "./assets/images/Tregew.jpeg";
 import imgTregewFish from "./assets/images/TregewFish.jpeg";
@@ -117,8 +119,8 @@ const FOOD_PLACES = [
   { id: "teacup-tearoom", name: "Teacup Tearoom", desc: "A quaint tearoom on the Mevagissey harbourside, serving homemade cakes, cream teas, and proper loose-leaf tea.", image: imgTeacupTearoom, tags: ["tearoom", "cake", "cream tea"], website: "#", location: "Mevagissey", foodType: "eating" },
   { id: "waitrose", name: "Waitrose", desc: "The nearest large supermarket, well stocked for a full shop — good wine selection and a decent deli counter too.", image: imgWaitrose2, tags: ["supermarket", "groceries"], website: "#", location: "Truro", foodType: "buying" },
   { id: "native-grain-bakers", name: "Native Grain Bakers", desc: "A Truro bakery turning out beautiful sourdough pastries and viennoiserie — the Chelsea buns and laminated bakes are worth the trip alone.", image: imgNativeGrain, tags: ["bakery", "pastries"], website: "#", location: "Truro", foodType: "buying" },
-  { id: "the-watchtower", name: "The Watchtower", desc: "Fish and chips in St Mawes, freshly cooked and perfect eaten looking out over the harbour.", tags: ["fish and chips", "takeaway", "harbourside"], website: "#", location: "St Mawes", foodType: "eating" },
-  { id: "st-mawes-fudge-shop", name: "St Mawes Fudge Shop", desc: "A traditional Cornish fudge shop with a tempting array of flavours to take home or enjoy on the harbourside.", tags: ["fudge", "sweets", "gifts"], website: "#", location: "St Mawes", foodType: "buying" },
+  { id: "the-watchtower", name: "The Watch House", desc: "Fish and chips in St Mawes, freshly cooked and perfect eaten looking out over the harbour.", image: imgTheWatchHouse, tags: ["fish and chips", "takeaway", "harbourside"], website: "#", location: "St Mawes", foodType: "eating" },
+  { id: "st-mawes-fudge-shop", name: "St Mawes Fudge Shop", desc: "A traditional Cornish fudge shop with a tempting array of flavours to take home or enjoy on the harbourside.", image: imgFudgeAndMore, tags: ["fudge", "sweets", "gifts"], website: "#", location: "St Mawes", foodType: "buying" },
   { id: "vegetable-stall", name: "Vegetable Stall", desc: "An honesty-box stall selling fresh, local seasonal vegetables.", tags: ["vegetables", "local produce", "honesty box"], website: "#", location: "Roseland Peninsula", foodType: "buying" },
 ];
 
