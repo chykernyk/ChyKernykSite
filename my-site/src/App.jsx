@@ -108,7 +108,7 @@ const FOOD_PLACES = [
   { id: "portscatho-stores", name: "Portscatho Stores", desc: "The heart of the village — exceptional deli, fresh bread daily, local produce, and everything you need. Their pasties are legendary. Open 7 'til 7 daily.", image: imgPortscathoStoresLevel, tags: ["deli", "groceries", "bakery"], website: "#", location: "Portscatho", foodType: "buying" },
   { id: "tregew-food-barn", name: "Tregew Food Barn", desc: "A weekly barn full of local food produce from Bread, Cheese, Meat, Fish, Pies, Veg and everything in between. Only open Saturday mornings, 9am - 1pm, but get there early as they do sell out.", image: imgTregewFoodBarn, tags: ["farm shop", "local produce"], website: "https://www.foodbarn-tregew.co.uk/", location: "Near Froe", foodType: "buying" },
   { id: "curgurrell-farm-shop", name: "Pendower Farm Shop", desc: "Family-run farm shop with their own livestock and kitchen garden produce. Also great fresh fish. Seasonal, honest, and utterly delicious. Open 10am-6pm every day except Sunday.", image: imgPendowerFarmShop, tags: ["farm shop", "meat", "seasonal"], website: "https://www.pendowerfarmshop.com/", location: "Pendower", foodType: "buying" },
-  { id: "hidden-hut", name: "Hidden Hut", desc: "Cornwall's most famous beach café. Their feast nights are the stuff of legend — booking opens midday on the first of each month and is closed (literally) seconds later. By day, superb lunches, cakes and coffee on Porthcurnick Beach.", image: imgHiddenHut, tags: ["restaurant", "beach", "feast nights"], website: "https://hiddenhut.co.uk/", location: "Porthcurnick Beach", foodType: "eating" },
+  { id: "hidden-hut", name: "Hidden Hut", desc: "Cornwall's most famous beach café. Their feast nights are the stuff of legend — booking opens midday on the first of each month and is closed (literally) seconds later. By day, superb lunches, cakes and coffee on Porthcurnick Beach.", image: imgHiddenHut, imagePosition: "center 15%", tags: ["restaurant", "beach", "feast nights"], website: "https://hiddenhut.co.uk/", location: "Porthcurnick Beach", foodType: "eating" },
   { id: "standard", name: "The Standard", desc: "Contemporary dining with impeccable local sourcing. It is widely celebrated for its welcoming atmosphere, locally sourced Cornish drinks, and seasonal dishes cooked over a wood-fired grill. It is very busy so book early.", image: imgTheStandardLevel, tags: ["restaurant", "fine dining"], website: "https://www.standardinn.co.uk/", location: "Falmouth", foodType: "eating" },
   { id: "tresanton", name: "Hotel Tresanton", desc: "Olga Polizzi's celebrated hotel restaurant in St Mawes. Mediterranean-influenced cooking with stunning harbour views and a cocktail terrace that wouldn't be out of place in the med.", image: imgTresanton, tags: ["restaurant", "hotel", "harbour views"], website: "https://thepolizzicollection.com/hotel-tresanton/", location: "St Mawes", foodType: "eating" },
   { id: "the-meat-counter", name: "The Meat Counter", desc: "Falmouth's finest burger bar. They cater for everyone from the vegan Pumpkin up the Yam to glorious Double Bacon Cheese with chicken and pulled in between. Don't miss their cajun fries.", image: imgMeatCounter, tags: ["burgers", "takeaway", "cajun fries"], website: "https://meatcounterfalmouth.uk/", location: "Falmouth", foodType: "eating" },
@@ -1815,7 +1815,8 @@ function FoodListPage({ setPage, setSubPage, foodType, linkType, title, subtitle
               <div key={place.id} className="ck-card" onClick={() => { setSubPage({ type: "food-detail", id: place.id }); window.scrollTo(0, 0); }}>
                 <div className="ck-card-img-wrap">
                   {place.image
-                    ? <img className="ck-card-img" src={place.image} alt={place.name} loading="lazy" />
+                    ? <img className="ck-card-img" src={place.image} alt={place.name} loading="lazy"
+                        style={place.imagePosition ? { objectPosition: place.imagePosition } : undefined} />
                     : <PlaceholderPhoto className="ck-card-img" />}
                 </div>
                 <div className="ck-card-body">
@@ -1865,7 +1866,8 @@ function FoodDetail({ place, setPage, setSubPage }) {
   return (
     <>
       {place.image
-        ? <img src={place.image} alt={place.name} className="ck-detail-hero" />
+        ? <img src={place.image} alt={place.name} className="ck-detail-hero"
+            style={place.imagePosition ? { objectPosition: place.imagePosition } : undefined} />
         : <PlaceholderPhoto className="ck-detail-hero" />}
       <div className="ck-detail-content">
         <div className="ck-breadcrumb" style={{ marginBottom: "1rem" }}>
