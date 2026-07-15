@@ -52,6 +52,7 @@ import imgScarlet from "./assets/images/Scarlet.webp";
 import imgScathosScoops from "./assets/images/ScathosScoops.jpeg";
 import imgShillakabookyBeachHut from "./assets/images/ShillakabookyBeachHut.jpeg";
 import imgStAnthony from "./assets/images/StAnthony.webp";
+import imgStAnthonyLight from "./assets/images/StAnthonyLight.jpeg";
 import imgStIves from "./assets/images/StIves.jpeg";
 import imgStJustInRoseland from "./assets/images/StJustInRoseland.jpg";
 import imgStMawesCastle from "./assets/images/StMawesCastle.webp";
@@ -155,6 +156,7 @@ const WALKS = [
   { id: "st-mawes", name: "St Mawes Castle Walk", desc: "A gentle walk around St Mawes taking in the castle, harbour, and stunning views of the Fal estuary and Pendennis Castle opposite.", length: "4 miles", difficulty: "Easy", parking: "St Mawes main car park (pay and display). Free in winter months.", eating: "Spoilt for choice — the Tresanton for something special, the Watch House for fish and chips, or the Rising Sun for a proper pub lunch.", image: imgStMawesCastle, stravaRouteId: "3508117047959651292" },
   { id: "percuil-boatyard", name: "Percuil Boatyard Loop", desc: "A circular walk from Portscatho along the Roseland coast, through fields of sunflowers, down to Percuil boatyard. Return to Portscatho for ice cream at Scatho's Scoops, or tea and pastries at Tide and Thyme coffee hut.", length: "4.5 miles", difficulty: "Moderate", parking: "Free roadside parking in Portscatho village.", eating: "Scatho's Scoops or the Tide and Thyme coffee hut in Portscatho are perfect for a treat at the end.", image: imgPercuilBoatyard, stravaRouteId: "3510178570089264786" },
   { id: "st-anthony", name: "St Anthony Head", desc: "Walk to St Anthony's lighthouse, the inspiration for Fraggle Rock (Davina's favourite childhood TV programme!) with views across Falmouth Bay.", length: "10 miles", difficulty: "Moderate-Hard", parking: "National Trust car park at Place. Follow signs carefully — the lanes are narrow.", eating: "The Place restaurant (seasonal) or head to St Mawes for the Tresanton or the pub on the quay.", image: imgStAnthony, stravaRouteId: "3508119257673450600" },
+  { id: "st-anthony-light", name: "St Anthony Light", desc: "You can drive to St Anthony where there is some parking, then walk anti-clockwise along the coastal path to Bohortha, then over the hill to Place. Stop to look at St Anthony Chapel then over the hill again to look across at St Mawes, Falmouth and finish with the lighthouse, the home of the Fraggles of Fraggle Rock (Davina's favourite program as a child).", length: "3.6 miles", difficulty: "Easy-Moderate", parking: "Small car park at St Anthony — limited spaces, arrive early in summer.", eating: "The Place restaurant (seasonal), or continue on to St Mawes for the Tresanton or the pub on the quay.", image: imgStAnthonyLight, stravaRouteId: "3512380107759473190" },
 ];
 
 const PARKRUNS = [
