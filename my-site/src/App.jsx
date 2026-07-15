@@ -17,6 +17,7 @@ import imgFistralBeach from "./assets/images/FistralBeach.jpg";
 import imgFudgeAndMore from "./assets/images/FudgeAndMore.jpeg";
 import imgHarbour from "./assets/images/Harbour.jpeg";
 import imgHarbourWallJumpingPortscatho from "./assets/images/HarbourWallJumpingPortscatho.jpeg";
+import imgHarbourWallJumpingStMawes from "./assets/images/HarbourWallJumpingStMawes.jpeg";
 import imgHeligan from "./assets/images/Heligan.png";
 import imgHiddenHut from "./assets/images/HiddenHut.jpeg";
 import imgHiddenHutAerial from "./assets/images/HiddenHutAerial.jpeg";
@@ -149,8 +150,8 @@ const ACTIVITIES = [
   { id: "pendower", name: "Pendower Beach", desc: "A mile long, gently shelving sandy beach next to Carne. Great starting point for the Nare's Head walk or just a day building sandcastles. Excellent Shallikabooky café at the Pendower.", image: imgCarneBeach, tags: ["beach", "walking", "family"], category: "beach" },
   { id: "fistral", name: "Fistral Beach", desc: "Cornwall's most famous surf beach in Newquay. Big Atlantic swells, a lively beach scene, and plenty of surf schools for all levels.", image: imgFistralBeach, tags: ["beach", "surfing"], category: "beach" },
   { id: "harbour-wall-jumping-portscatho", name: "Harbour Wall Jumping (Portscatho)", desc: "Harbour wall jumping is a rite of passage for all children. Portscatho offers a gentler introduction for newcomers and better viewing for parents. This is a high tide only activity!", image: imgHarbourWallJumpingPortscatho, imagePosition: "center top", tags: ["harbour", "jumping", "family"], category: "beach" },
-  { id: "harbour-wall-jumping-st-mawes", name: "Harbour Wall Jumping (St Mawes)", desc: "Harbour wall jumping is a rite of passage for all children. St Mawes is not for the faint of heart and have a look at whether we are on spring or neap tides, it is a long way down on neaps!", tags: ["harbour", "jumping"], category: "beach" },
-  { id: "great-molunan", name: "Great Molunan Beach", desc: "This beach is best accessed by boat, but at the end of a walk at St Anthony's Head you can slide down a rock to the beach. But beware there is only a rope to clamber back up!", tags: ["beach", "remote"], category: "beach" },
+  { id: "harbour-wall-jumping-st-mawes", name: "Harbour Wall Jumping (St Mawes)", desc: "Harbour wall jumping is a rite of passage for all children. St Mawes is not for the faint of heart and have a look at whether we are on spring or neap tides, it is a long way down on neaps!", image: imgHarbourWallJumpingStMawes, imagePosition: "center 30%", tags: ["harbour", "jumping"], category: "beach" },
+  { id: "great-molunan", name: "Great Molunan Beach", desc: "This beach is best accessed by boat, but at the end of a walk at St Anthony's Head you can slide down a rock to the beach. But beware there is only a rope to clamber back up!", image: imgStAnthonyLight, tags: ["beach", "remote"], category: "beach" },
 ];
 
 const WALKS = [
