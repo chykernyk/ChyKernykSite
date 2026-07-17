@@ -48,6 +48,7 @@ import imgPortscathoHarbour2 from "./assets/images/PortscathoHarbour2.jpeg";
 import imgPortscathoStores from "./assets/images/PortscathoStores.jpeg";
 import imgPortscathoStoresLevel from "./assets/images/PortscathoStoresLevel.jpeg";
 import imgPortscathofromtheAir2 from "./assets/images/PortscathofromtheAir2.JPG";
+import imgPotagerGarden from "./assets/images/PotagerGarden.jpeg";
 import imgPurchaseDay from "./assets/images/PurchaseDay.jpeg";
 import imgRalphs from "./assets/images/Ralphs.jpeg";
 import imgScarlet from "./assets/images/Scarlet.webp";
@@ -121,6 +122,7 @@ const FOOD_PLACES = [
   { id: "kelp-canteen", name: "Kelp Canteen", desc: "A harbourside food trailer in Falmouth serving oysters, mussels, fish, and seaweed. Simple, fresh, and right by the water.", image: imgKelpCanteen, tags: ["seafood", "oysters", "harbourside"], website: "#", location: "Falmouth", foodType: "eating" },
   { id: "cafe-mylor", name: "Café Mylor", desc: "A relaxed waterside café at Mylor Yacht Harbour, serving brunch, coffee, and light lunches with views over the boats.", image: imgCafeMylor, tags: ["cafe", "waterside", "brunch"], website: "https://cafemylor.com/", location: "Mylor Harbour", foodType: "eating" },
   { id: "teacup-tearoom", name: "Teacup Tearoom", desc: "Quintessentially traditional Cornish tea shop located in the historic fishing village of Mevagissey, Cornwall. Highly rated for its homemade cream teas, welcoming atmosphere, and exceptional allergy-friendly and dog-friendly options.", image: imgTeacupTearoom, tags: ["tearoom", "cake", "cream tea"], website: "http://teacuptearoom.com/", location: "Mevagissey", foodType: "eating" },
+  { id: "potager-garden", name: "Potager Garden", desc: "A vegetarian gem sitting the other side of Falmouth serving a range of delicious vege bites. Their pickles are amazing. Open Thursday to Sunday from 10am to 3pm.", image: imgPotagerGarden, tags: ["vegetarian", "cafe", "garden"], website: "https://www.potagergarden.org/", location: "Constantine", foodType: "eating" },
   { id: "waitrose", name: "Waitrose", desc: "I know I know, you all know Waitrose is a supermarket, but this one has another shop on the side called Great Cornish Food with a great selection of Cornish food, books, pottery, booze, etc.", image: imgWaitrose2, tags: ["supermarket", "groceries"], website: "http://www.greatcornishfood.co.uk/", location: "Truro", foodType: "buying" },
   { id: "native-grain-bakers", name: "Native Grain Bakers", desc: "A Truro bakery turning out beautiful sourdough pastries and viennoiserie — the Chelsea buns and laminated bakes are worth the trip alone.", image: imgNativeGrain, tags: ["bakery", "pastries"], website: "http://www.instagram.com/native.grain.bakery", location: "Truro", foodType: "buying" },
   { id: "st-mawes-fudge-shop", name: "St Mawes Fudge Shop", desc: "A traditional Cornish fudge shop with a tempting array of flavours to take home or enjoy on the harbourside.", image: imgFudgeAndMore, tags: ["fudge", "sweets", "gifts"], website: "#", location: "St Mawes", foodType: "buying" },
