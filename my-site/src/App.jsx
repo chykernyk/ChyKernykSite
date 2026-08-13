@@ -3137,6 +3137,8 @@ const UNAVAILABLE_UNTIL = new Date(2027, 1, 1); // 1 Feb 2027
 function buildInitialBookings() {
   const bookings = {
     "2026-04-25": "owner", "2026-04-26": "owner", "2026-04-27": "owner",
+    // Booked by family, 11–25 Jul 2027.
+    "2027-07-11": "booked", "2027-07-12": "booked", "2027-07-13": "booked", "2027-07-14": "booked", "2027-07-15": "booked", "2027-07-16": "booked", "2027-07-17": "booked", "2027-07-18": "booked", "2027-07-19": "booked", "2027-07-20": "booked", "2027-07-21": "booked", "2027-07-22": "booked", "2027-07-23": "booked", "2027-07-24": "booked", "2027-07-25": "booked",
     // Booked by family, 21 Aug – 4 Sep 2027.
     "2027-08-21": "booked", "2027-08-22": "booked", "2027-08-23": "booked", "2027-08-24": "booked", "2027-08-25": "booked", "2027-08-26": "booked", "2027-08-27": "booked", "2027-08-28": "booked", "2027-08-29": "booked", "2027-08-30": "booked", "2027-08-31": "booked", "2027-09-01": "booked", "2027-09-02": "booked", "2027-09-03": "booked", "2027-09-04": "booked",
   };
