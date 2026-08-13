@@ -140,7 +140,7 @@ const ACTIVITIES = [
   { id: "st-ives", name: "St Ives", desc: "The jewel of the north coast and inspiration to artists. Tate St Ives, the Barbara Hepworth Museum, cobbled lanes, and some of the best light in Britain.", image: imgBarbaraHepworthGarden, tags: ["town", "art", "culture"] },
   { id: "caerhayes", name: "Caerhayes Castle Gardens", desc: "A spectacular woodland garden famous for its world-renowned collection of magnolias, best seen in spring. The castle itself is a Nash-designed gem.", image: imgCaerhayes, tags: ["gardens", "magnolias", "castle"], category: "garden", website: "https://visit.caerhays.co.uk/" },
   { id: "trelissick-garden", name: "Trelissick Garden", desc: "A National Trust garden overlooking the Fal estuary, with sub-tropical planting, woodland walks, and a wonderful walled garden and, of course, a café.", image: imgTrelissick, tags: ["gardens", "national trust", "views"], category: "garden", website: "https://www.nationaltrust.org.uk/visit/cornwall/trelissick" },
-  { id: "harbour-wall-jumping-portscatho", name: "Harbour Wall Jumping (Portscatho)", desc: "Harbour wall jumping is a rite of passage for all children. Portscatho offers a gentler introduction for newcomers and better viewing for parents. This is a high tide only activity!", image: imgHarbourWallJumpingPortscatho, imagePosition: "center top", tags: ["harbour", "jumping", "family"], category: "beach" },
+  { id: "harbour-wall-jumping-portscatho", name: "Harbour Wall Jumping (Portscatho)", desc: "Harbour wall jumping is a rite of passage for all children. Portscatho offers a gentler introduction for newcomers and better viewing for parents. This is a high tide only activity!", image: imgHarbourWallJumpingPortscatho, imagePosition: "center 33%", tags: ["harbour", "jumping", "family"], category: "beach" },
   { id: "porthcurnick", name: "Porthcurnick", desc: "Our local beach, over the road then follow the path down from the car park. Good for a long swim to Portscatho at high tide or a scramble at low tide, it is served by the Hidden Hut with great food, drinks and ice cream.", image: imgPorthcurnick, tags: ["beach", "walking", "family"], category: "beach" },
   { id: "towan", name: "Towan Beach", desc: "A National Trust beach, so there is a small car park nearby, but better reached by a walk from Portscatho which takes about ¾ of an hour. Nice swimming, traditionally the top beach for shell hunting — there is the Thirstea café across the road from the car park.", image: imgTowanShellPicking, tags: ["beach", "rockpools", "family"], category: "beach" },
   { id: "pendower", name: "Pendower Beach", desc: "A mile long, gently shelving sandy beach next to Carne. Great starting point for the Nare's Head walk or just a day building sandcastles. Excellent Shallikabooky café at the Pendower.", image: imgCarneBeach, tags: ["beach", "walking", "family"], category: "beach" },
@@ -1363,10 +1363,10 @@ function Nav({ page, setPage, isAdmin, onLoginClick, onLogout, mobileOpen, setMo
   const links = [
     { id: "home", label: "Home" },
     { id: "around", label: "Explore" },
-    { id: "visitors-book", label: "Visitors Book" },
+    { id: "gallery", label: "Gallery" },
     { id: "remedies", label: "Info" },
     { id: "tides", label: "Tides" },
-    { id: "gallery", label: "Gallery" },
+    { id: "visitors-book", label: "Visitors Book" },
     { id: "calendar", label: "Calendar" },
     { id: "contact", label: "Contact" },
   ];
