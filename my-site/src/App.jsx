@@ -150,13 +150,13 @@ const ACTIVITIES = [
 ];
 
 const WALKS = [
-  { id: "percuil-boatyard", name: "Percuil Boatyard Loop", desc: "A circular walk from Portscatho along the Roseland coast, through fields of sunflowers, down to Percuil boatyard. Return to Portscatho for ice cream at Scatho's Scoops, or tea and pastries at Tide and Thyme coffee hut.", length: "4.5 miles", difficulty: "Moderate", parking: "Free roadside parking in Portscatho village.", eating: "Scatho's Scoops or the Tide and Thyme coffee hut in Portscatho are perfect for a treat at the end.", image: imgPercuilBoatyard, stravaRouteId: "3510178570089264786" },
   { id: "curgurrell", name: "Curgurrell Creek", desc: "A circular walk north from Portscatho along the coast, past the weather station and along hidden beaches with views out towards Gull Rock. Enjoy lunch or coffee at the famous Hidden Hut cafe above Porthcurnick beach.", length: "3.1 miles", difficulty: "Easy", parking: "Limited roadside parking near Curgurrell Farm. Please park considerately and respect local residents.", eating: "Curgurrell Farm Shop for provisions, or continue to Portscatho for the full range of options.", image: imgCurgurrellWalk, stravaRouteId: "3508117142736593884" },
-  { id: "towan", name: "Towan Beach Circuit", desc: "A circular walk south from Portscatho along the coast and back through pretty farmland and quiet country roads. Spot Towan's resident seals and enjoy delicious toasties and refreshments at Towan beach cafe. A great circuit for runners.", length: "4.3 miles", difficulty: "Easy-Moderate", parking: "Towan Beach car park. Honesty box payment.", eating: "Pack a picnic from Portscatho Stores — Towan Beach is a perfect lunch spot.", image: imgTowanShellPicking, stravaRouteId: "3508117195142270626" },
-  { id: "nare", name: "Nare Head", desc: "Drive to Pendower Beach for a spectacular circular walk around Nare Head with panoramic views of the coast. Reward yourself with coffee and ice cream at the Shallikabooky Beach Hut at the end. Moderate difficulty with some steep sections.", length: "4 miles", difficulty: "Moderate", parking: "Park at Carne Beach car park (free for National Trust members). Can get busy in summer — arrive before 10am.", eating: "The Shallikabooky Beach Hut is a perfect post-walk stop for something simple and delicious right by the water.", image: imgNareHead, stravaRouteId: "3507453955926855126" },
-  { id: "st-anthony", name: "St Anthony Long", desc: "Walk to St Anthony's lighthouse, the inspiration for Fraggle Rock (Davina's favourite childhood TV programme!) with views across Falmouth Bay.", length: "10 miles", difficulty: "Moderate-Hard", parking: "National Trust car park at Place. Follow signs carefully — the lanes are narrow.", eating: "The Place restaurant (seasonal) or head to St Mawes for the Tresanton or the pub on the quay.", image: imgStAnthony, stravaRouteId: "3508119257673450600" },
-  { id: "st-mawes", name: "St Mawes Castle Walk", desc: "A gentle walk around St Mawes taking in the castle, harbour, and stunning views of the Fal estuary and Pendennis Castle opposite.", length: "4 miles", difficulty: "Easy", parking: "St Mawes main car park (pay and display). Free in winter months.", eating: "Spoilt for choice — the Tresanton for something special, the Watch House for fish and chips, or the Rising Sun for a proper pub lunch.", image: imgStMawesCastle, stravaRouteId: "3508117047959651292" },
   { id: "st-anthony-light", name: "St Anthony Short", desc: "You can drive to St Anthony where there is some parking, then walk anti-clockwise along the coastal path to Bohortha, then over the hill to Place. Stop to look at St Anthony's Church, sign the visitors book (it helps support the church) then over the hill again to look across at St Mawes, Falmouth and finish with the lighthouse, the home of the Fraggles of Fraggle Rock (Davina's favourite program as a child).", length: "3.6 miles", difficulty: "Easy-Moderate", parking: "Small car park at St Anthony — limited spaces, arrive early in summer.", eating: "The Place restaurant (seasonal), or continue on to St Mawes for the Tresanton or the pub on the quay.", image: imgStAnthonyLight, stravaRouteId: "3512380107759473190" },
+  { id: "nare", name: "Nare Head", desc: "Drive to Pendower Beach for a spectacular circular walk around Nare Head with panoramic views of the coast. Reward yourself with coffee and ice cream at the Shallikabooky Beach Hut at the end. Moderate difficulty with some steep sections.", length: "4 miles", difficulty: "Moderate", parking: "Park at Carne Beach car park (free for National Trust members). Can get busy in summer — arrive before 10am.", eating: "The Shallikabooky Beach Hut is a perfect post-walk stop for something simple and delicious right by the water.", image: imgNareHead, stravaRouteId: "3507453955926855126" },
+  { id: "st-mawes", name: "St Mawes Castle Walk", desc: "A gentle walk around St Mawes taking in the castle, harbour, and stunning views of the Fal estuary and Pendennis Castle opposite.", length: "4 miles", difficulty: "Easy", parking: "St Mawes main car park (pay and display). Free in winter months.", eating: "Spoilt for choice — the Tresanton for something special, the Watch House for fish and chips, or the Rising Sun for a proper pub lunch.", image: imgStMawesCastle, stravaRouteId: "3508117047959651292" },
+  { id: "towan", name: "Towan Beach Circuit", desc: "A circular walk south from Portscatho along the coast and back through pretty farmland and quiet country roads. Spot Towan's resident seals and enjoy delicious toasties and refreshments at Towan beach cafe. A great circuit for runners.", length: "4.3 miles", difficulty: "Easy-Moderate", parking: "Towan Beach car park. Honesty box payment.", eating: "Pack a picnic from Portscatho Stores — Towan Beach is a perfect lunch spot.", image: imgTowanShellPicking, stravaRouteId: "3508117195142270626" },
+  { id: "percuil-boatyard", name: "Percuil Boatyard Loop", desc: "A circular walk from Portscatho along the Roseland coast, through fields of sunflowers, down to Percuil boatyard. Return to Portscatho for ice cream at Scatho's Scoops, or tea and pastries at Tide and Thyme coffee hut.", length: "4.5 miles", difficulty: "Moderate", parking: "Free roadside parking in Portscatho village.", eating: "Scatho's Scoops or the Tide and Thyme coffee hut in Portscatho are perfect for a treat at the end.", image: imgPercuilBoatyard, stravaRouteId: "3510178570089264786" },
+  { id: "st-anthony", name: "St Anthony Long", desc: "Walk to St Anthony's lighthouse, the inspiration for Fraggle Rock (Davina's favourite childhood TV programme!) with views across Falmouth Bay.", length: "10 miles", difficulty: "Moderate-Hard", parking: "National Trust car park at Place. Follow signs carefully — the lanes are narrow.", eating: "The Place restaurant (seasonal) or head to St Mawes for the Tresanton or the pub on the quay.", image: imgStAnthony, stravaRouteId: "3508119257673450600" },
 ];
 
 const PARKRUNS = [
@@ -938,8 +938,6 @@ const CSS = `
   .ck-cal-day.empty:hover { background:transparent; }
   .ck-cal-day.today { font-weight:600; box-shadow:inset 0 0 0 2px var(--ocean); }
   .ck-cal-day.booked { background:#fde8e8; color:#a33; }
-  .ck-cal-day.available { background:#e8f5e8; color:#3a7; }
-  .ck-cal-day.owner { background:#e8f0fd; color:#36a; }
   .ck-cal-day-star {
     position:absolute; top:2px; right:4px;
     font-size:0.6rem; color:var(--gold); line-height:1;
@@ -948,8 +946,15 @@ const CSS = `
     position:absolute; top:2px; left:4px;
     font-size:0.6rem; line-height:1;
   }
+  .ck-cal-day-crown {
+    position:absolute; bottom:2px; left:50%; transform:translateX(-50%);
+    font-size:0.6rem; line-height:1;
+  }
   .ck-cal-legend {
-    display:flex; gap:1.5rem; margin-top:1.5rem; flex-wrap:wrap;
+    display:flex; flex-direction:column; gap:0.6rem; margin-top:1.5rem;
+  }
+  .ck-cal-legend-row {
+    display:flex; gap:1.5rem; flex-wrap:wrap;
   }
   .ck-cal-legend-item {
     display:flex; align-items:center; gap:0.5rem;
@@ -2971,13 +2976,17 @@ const FALMOUTH_WEEK = new Set(
   Array.from({ length: 10 }, (_, i) => `2026-08-${String(i + 7).padStart(2, "0")}`)
 );
 
+// Portscatho Regatta — the Saturday before the August Bank Holiday
+// (the last Monday in August).
+const PORTSCATHO_REGATTA = new Set(["2026-08-29"]);
+
 // CALENDAR
 // Every date from today until this cutoff is marked booked/unavailable.
 const UNAVAILABLE_UNTIL = new Date(2027, 1, 1); // 1 Feb 2027
 
 function buildInitialBookings() {
   const bookings = {
-    "2026-04-25": "owner", "2026-04-26": "owner", "2026-04-27": "owner",
+    "2026-04-25": "booked", "2026-04-26": "booked", "2026-04-27": "booked",
     // Booked by family, 11–25 Jul 2027.
     "2027-07-11": "booked", "2027-07-12": "booked", "2027-07-13": "booked", "2027-07-14": "booked", "2027-07-15": "booked", "2027-07-16": "booked", "2027-07-17": "booked", "2027-07-18": "booked", "2027-07-19": "booked", "2027-07-20": "booked", "2027-07-21": "booked", "2027-07-22": "booked", "2027-07-23": "booked", "2027-07-24": "booked", "2027-07-25": "booked",
     // Booked by family, 21 Aug – 4 Sep 2027.
@@ -3009,7 +3018,7 @@ function CalendarPage({ setPage, isAdmin }) {
 
   const toggleDate = (dateStr) => {
     if (!isAdmin) return;
-    const states = [undefined, "booked", "owner", "available"];
+    const states = [undefined, "booked"];
     const current = bookings[dateStr];
     const idx = states.indexOf(current);
     const next = states[(idx + 1) % states.length];
@@ -3030,7 +3039,7 @@ function CalendarPage({ setPage, isAdmin }) {
   return (
     <>
       <PageHeader title="Availability"
-        subtitle={isAdmin ? "Click on dates to cycle through: clear → booked → owner → available." : "Check when Chy Kernyk is available for your visit."}
+        subtitle={isAdmin ? "Click on dates to toggle: available → booked." : "Check when Chy Kernyk is available for your visit."}
         setPage={setPage} backTo="home" />
       <section className="ck-section" style={{ paddingTop: "1rem", maxWidth: 700 }}>
         <div className="ck-cal">
@@ -3052,44 +3061,46 @@ function CalendarPage({ setPage, isAdmin }) {
               const isToday = dateStr === todayStr;
               const isFeastNight = FEAST_NIGHTS.has(dateStr);
               const isFalmouthWeek = FALMOUTH_WEEK.has(dateStr);
+              const isPortscathoRegatta = PORTSCATHO_REGATTA.has(dateStr);
               return (
                 <div key={dateStr}
                   className={`ck-cal-day ${status} ${isToday ? "today" : ""}`}
                   onClick={() => toggleDate(dateStr)}
                   role={isAdmin ? "button" : undefined}
-                  aria-label={`${d} ${currentMonth.toLocaleDateString("en-GB", { month: "long" })} ${status || "available"}${isFeastNight ? ", Feast Night" : ""}${isFalmouthWeek ? ", Falmouth Week" : ""}`}
+                  aria-label={`${d} ${currentMonth.toLocaleDateString("en-GB", { month: "long" })} ${status || "available"}${isPortscathoRegatta ? ", Portscatho Regatta" : ""}${isFeastNight ? ", Feast Night" : ""}${isFalmouthWeek ? ", Falmouth Week" : ""}`}
                 >
                   {d}
                   {isFalmouthWeek && <span className="ck-cal-day-flag" title="Falmouth Week">🚩</span>}
                   {isFeastNight && <span className="ck-cal-day-star" title="Feast Night">★</span>}
+                  {isPortscathoRegatta && <span className="ck-cal-day-crown" title="Portscatho Regatta">👑</span>}
                 </div>
               );
             })}
           </div>
           <div className="ck-cal-legend">
-            <div className="ck-cal-legend-item">
-              <div className="ck-cal-legend-dot" style={{ background: "white", border: "1px solid var(--sand-dark)" }} />
-              Available
+            <div className="ck-cal-legend-row">
+              <div className="ck-cal-legend-item">
+                <div className="ck-cal-legend-dot" style={{ background: "white", border: "1px solid var(--sand-dark)" }} />
+                Available
+              </div>
+              <div className="ck-cal-legend-item">
+                <div className="ck-cal-legend-dot" style={{ background: "#fde8e8" }} />
+                Booked
+              </div>
             </div>
-            <div className="ck-cal-legend-item">
-              <div className="ck-cal-legend-dot" style={{ background: "#fde8e8" }} />
-              Booked
-            </div>
-            <div className="ck-cal-legend-item">
-              <div className="ck-cal-legend-dot" style={{ background: "#e8f0fd" }} />
-              Owner
-            </div>
-            <div className="ck-cal-legend-item">
-              <div className="ck-cal-legend-dot" style={{ background: "#e8f5e8" }} />
-              Confirmed Available
-            </div>
-            <div className="ck-cal-legend-item">
-              <span style={{ color: "var(--gold)" }}>★</span>
-              Feast Night at The Hidden Hut
-            </div>
-            <div className="ck-cal-legend-item">
-              <span>🚩</span>
-              Falmouth Week
+            <div className="ck-cal-legend-row">
+              <div className="ck-cal-legend-item">
+                <span>👑</span>
+                Portscatho Regatta
+              </div>
+              <div className="ck-cal-legend-item">
+                <span style={{ color: "var(--gold)" }}>★</span>
+                Feast Night at The Hidden Hut
+              </div>
+              <div className="ck-cal-legend-item">
+                <span>🚩</span>
+                Falmouth Week
+              </div>
             </div>
           </div>
         </div>
