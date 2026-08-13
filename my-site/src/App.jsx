@@ -950,6 +950,10 @@ const CSS = `
     position:absolute; top:2px; left:50%; transform:translateX(-50%);
     font-size:0.6rem; line-height:1;
   }
+  .ck-cal-day-wedding {
+    position:absolute; bottom:2px; left:50%; transform:translateX(-50%);
+    font-size:0.6rem; line-height:1;
+  }
   .ck-cal-legend {
     display:flex; flex-direction:column; gap:0.6rem; margin-top:1.5rem;
   }
@@ -2982,6 +2986,13 @@ const FALMOUTH_WEEK = new Set(
 // (the last Monday in August).
 const PORTSCATHO_REGATTA = new Set(["2026-08-29"]);
 
+// Wedding bookings — shown with a bride & groom icon; clicking the date
+// (when not logged in as admin) shows who the day is booked for.
+const WEDDINGS = {
+  "2027-04-24": "George Mumford",
+  "2027-09-03": "Beanie & Gabe",
+};
+
 // CALENDAR
 // Every date from today until this cutoff is marked booked/unavailable.
 const UNAVAILABLE_UNTIL = new Date(2027, 1, 1); // 1 Feb 2027
@@ -2989,9 +3000,11 @@ const UNAVAILABLE_UNTIL = new Date(2027, 1, 1); // 1 Feb 2027
 function buildInitialBookings() {
   const bookings = {
     "2026-04-25": "booked", "2026-04-26": "booked", "2026-04-27": "booked",
+    // Wedding — George Mumford.
+    "2027-04-24": "booked",
     // Booked by family, 11–25 Jul 2027.
     "2027-07-11": "booked", "2027-07-12": "booked", "2027-07-13": "booked", "2027-07-14": "booked", "2027-07-15": "booked", "2027-07-16": "booked", "2027-07-17": "booked", "2027-07-18": "booked", "2027-07-19": "booked", "2027-07-20": "booked", "2027-07-21": "booked", "2027-07-22": "booked", "2027-07-23": "booked", "2027-07-24": "booked", "2027-07-25": "booked",
-    // Booked by family, 21 Aug – 4 Sep 2027.
+    // Booked by family, 21 Aug – 4 Sep 2027 (includes wedding — Beanie & Gabe — on 3 Sep).
     "2027-08-21": "booked", "2027-08-22": "booked", "2027-08-23": "booked", "2027-08-24": "booked", "2027-08-25": "booked", "2027-08-26": "booked", "2027-08-27": "booked", "2027-08-28": "booked", "2027-08-29": "booked", "2027-08-30": "booked", "2027-08-31": "booked", "2027-09-01": "booked", "2027-09-02": "booked", "2027-09-03": "booked", "2027-09-04": "booked",
   };
   const d = new Date();
@@ -3007,6 +3020,7 @@ function buildInitialBookings() {
 function CalendarPage({ setPage, isAdmin }) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [bookings, setBookings] = useState(buildInitialBookings);
+  const [weddingPopup, setWeddingPopup] = useState(null);
 
   const year = currentMonth.getFullYear();
   const month = currentMonth.getMonth();
@@ -3030,6 +3044,14 @@ function CalendarPage({ setPage, isAdmin }) {
       setBookings(newBookings);
     } else {
       setBookings({ ...bookings, [dateStr]: next });
+    }
+  };
+
+  const handleDayClick = (dateStr) => {
+    if (isAdmin) {
+      toggleDate(dateStr);
+    } else if (WEDDINGS[dateStr]) {
+      setWeddingPopup(WEDDINGS[dateStr]);
     }
   };
 
@@ -3064,17 +3086,19 @@ function CalendarPage({ setPage, isAdmin }) {
               const isFeastNight = FEAST_NIGHTS.has(dateStr);
               const isFalmouthWeek = FALMOUTH_WEEK.has(dateStr);
               const isPortscathoRegatta = PORTSCATHO_REGATTA.has(dateStr);
+              const wedding = WEDDINGS[dateStr];
               return (
                 <div key={dateStr}
                   className={`ck-cal-day ${status} ${isToday ? "today" : ""}`}
-                  onClick={() => toggleDate(dateStr)}
-                  role={isAdmin ? "button" : undefined}
-                  aria-label={`${d} ${currentMonth.toLocaleDateString("en-GB", { month: "long" })} ${status || "available"}${isPortscathoRegatta ? ", Portscatho Regatta" : ""}${isFeastNight ? ", Feast Night" : ""}${isFalmouthWeek ? ", Falmouth Week" : ""}`}
+                  onClick={() => handleDayClick(dateStr)}
+                  role={(isAdmin || wedding) ? "button" : undefined}
+                  aria-label={`${d} ${currentMonth.toLocaleDateString("en-GB", { month: "long" })} ${status || "available"}${isPortscathoRegatta ? ", Portscatho Regatta" : ""}${isFeastNight ? ", Feast Night" : ""}${isFalmouthWeek ? ", Falmouth Week" : ""}${wedding ? ", Wedding" : ""}`}
                 >
                   {d}
                   {isFalmouthWeek && <span className="ck-cal-day-flag" title="Falmouth Week">🚩</span>}
                   {isFeastNight && <span className="ck-cal-day-star" title="Feast Night">★</span>}
                   {isPortscathoRegatta && <span className="ck-cal-day-crown" title="Portscatho Regatta">👑</span>}
+                  {wedding && <span className="ck-cal-day-wedding" title="Wedding">👰🤵</span>}
                 </div>
               );
             })}
@@ -3103,10 +3127,23 @@ function CalendarPage({ setPage, isAdmin }) {
                 <span>🚩</span>
                 Falmouth Week
               </div>
+              <div className="ck-cal-legend-item">
+                <span>👰🤵</span>
+                Wedding
+              </div>
             </div>
           </div>
         </div>
       </section>
+      {weddingPopup && (
+        <div className="ck-modal-overlay" onClick={() => setWeddingPopup(null)}>
+          <div className="ck-modal" onClick={e => e.stopPropagation()}>
+            <h2 className="ck-modal-title">👰🤵 {weddingPopup}</h2>
+            <p className="ck-modal-subtitle">Chy Kernyk is booked for a wedding on this date.</p>
+            <button className="ck-btn ck-btn-secondary" onClick={() => setWeddingPopup(null)}>Close</button>
+          </div>
+        </div>
+      )}
     </>
   );
 }
