@@ -2990,7 +2990,7 @@ const PORTSCATHO_REGATTA = new Set(["2026-08-29"]);
 // (when not logged in as admin) shows who the day is booked for.
 const WEDDINGS = {
   "2027-04-24": "George Mumford",
-  "2027-09-03": "Beanie & Gabe",
+  "2027-09-04": "Beanie & Gabe",
 };
 
 // CALENDAR
@@ -3004,7 +3004,7 @@ function buildInitialBookings() {
     "2027-04-24": "booked",
     // Booked by family, 11–25 Jul 2027.
     "2027-07-11": "booked", "2027-07-12": "booked", "2027-07-13": "booked", "2027-07-14": "booked", "2027-07-15": "booked", "2027-07-16": "booked", "2027-07-17": "booked", "2027-07-18": "booked", "2027-07-19": "booked", "2027-07-20": "booked", "2027-07-21": "booked", "2027-07-22": "booked", "2027-07-23": "booked", "2027-07-24": "booked", "2027-07-25": "booked",
-    // Booked by family, 21 Aug – 4 Sep 2027 (includes wedding — Beanie & Gabe — on 3 Sep).
+    // Booked by family, 21 Aug – 4 Sep 2027 (includes wedding — Beanie & Gabe — on 4 Sep).
     "2027-08-21": "booked", "2027-08-22": "booked", "2027-08-23": "booked", "2027-08-24": "booked", "2027-08-25": "booked", "2027-08-26": "booked", "2027-08-27": "booked", "2027-08-28": "booked", "2027-08-29": "booked", "2027-08-30": "booked", "2027-08-31": "booked", "2027-09-01": "booked", "2027-09-02": "booked", "2027-09-03": "booked", "2027-09-04": "booked",
   };
   const d = new Date();
@@ -3138,8 +3138,7 @@ function CalendarPage({ setPage, isAdmin }) {
       {weddingPopup && (
         <div className="ck-modal-overlay" onClick={() => setWeddingPopup(null)}>
           <div className="ck-modal" onClick={e => e.stopPropagation()}>
-            <h2 className="ck-modal-title">👰🤵 {weddingPopup}</h2>
-            <p className="ck-modal-subtitle">Chy Kernyk is booked for a wedding on this date.</p>
+            <h2 className="ck-modal-title">👰🤵 Congratulations, {weddingPopup}!</h2>
             <button className="ck-btn ck-btn-secondary" onClick={() => setWeddingPopup(null)}>Close</button>
           </div>
         </div>
