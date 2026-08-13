@@ -947,7 +947,7 @@ const CSS = `
     font-size:0.6rem; line-height:1;
   }
   .ck-cal-day-crown {
-    position:absolute; bottom:2px; left:50%; transform:translateX(-50%);
+    position:absolute; top:2px; left:50%; transform:translateX(-50%);
     font-size:0.6rem; line-height:1;
   }
   .ck-cal-legend {
