@@ -1267,6 +1267,8 @@ const CSS = `
     margin-bottom:0.5rem; letter-spacing:0.05em;
   }
   .ck-footer p { font-size:0.85rem; line-height:1.8; }
+  .ck-footer a { color:inherit; text-decoration:none; }
+  .ck-footer a:hover { color:var(--gold); }
 
   /* ── ANIMATIONS ── */
   @keyframes fadeInUp {
@@ -3115,7 +3117,7 @@ function Footer() {
     <footer className="ck-footer">
       <div className="ck-footer-name">Chy Kernyk</div>
       <p>Portscatho · Roseland Peninsula · Cornwall · TR2 5DU</p>
-      <p style={{ marginTop: "0.5rem" }}>contact@chykernyk.co.uk</p>
+      <p style={{ marginTop: "0.5rem" }}><a href="mailto:contact@chykernyk.co.uk">contact@chykernyk.co.uk</a></p>
       <p style={{ marginTop: "1rem", fontSize: "0.75rem", opacity: 0.5 }}>© {new Date().getFullYear()} Chy Kernyk. All rights reserved.</p>
     </footer>
   );
