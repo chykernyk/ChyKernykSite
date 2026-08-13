@@ -1142,17 +1142,6 @@ const CSS = `
   .ck-map-hint {
     font-size:0.85rem; color:var(--text-light); font-style:italic;
   }
-  .ck-map-filter-bar {
-    display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:1.25rem;
-  }
-  .ck-map-filter-chip {
-    display:flex; align-items:center; gap:0.5rem;
-    padding:0.45rem 0.9rem; border-radius:20px;
-    border:1px solid var(--sand-dark); background:white;
-    font-family:var(--font-body); font-size:0.82rem; color:var(--text-light);
-    cursor:pointer; transition: all 0.2s; opacity:0.45;
-  }
-  .ck-map-filter-chip.active { opacity:1; border-color:var(--ocean); color:var(--text); }
   .ck-map-filter-link {
     margin-left:0.15rem; color:var(--ocean); font-size:0.9rem;
     text-decoration:none; opacity:0.7;
@@ -2339,7 +2328,7 @@ function CategoryIcon({ type, color, size = 22 }) {
   }
 }
 
-function AroundAboutMap({ pins, addMode, onMapClick, onPinClick, activeTypes, ferryStatus }) {
+function AroundAboutMap({ pins, addMode, onMapClick, onPinClick, ferryStatus }) {
   const wrapRef = useRef(null);
   const mapRef = useRef(null);
   const markersRef = useRef([]);
@@ -2389,9 +2378,8 @@ function AroundAboutMap({ pins, addMode, onMapClick, onPinClick, activeTypes, fe
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
-    const visible = pins.filter(p => activeTypes[p.link_type] !== false);
     markersRef.current.forEach(m => map.removeLayer(m));
-    markersRef.current = visible.map(pin => {
+    markersRef.current = pins.map(pin => {
       const type = PIN_TYPES[pin.link_type];
       const ferryDown = ferryStatus?.level === "red" &&
         pin.link_type === "activity-detail" &&
@@ -2414,10 +2402,9 @@ function AroundAboutMap({ pins, addMode, onMapClick, onPinClick, activeTypes, fe
       marker.on("click", () => clickHandlerRef.current(pin));
       return marker;
     });
-  }, [pins, activeTypes, ferryStatus]);
+  }, [pins, ferryStatus]);
 
-  const visiblePins = pins.filter(p => activeTypes[p.link_type] !== false);
-  const offscreenGroups = view ? groupOffscreenPins(visiblePins, view.bounds, view.center) : [];
+  const offscreenGroups = view ? groupOffscreenPins(pins, view.bounds, view.center) : [];
 
   return (
     <div className={`ck-map-wrap ${addMode ? "ck-map-addable" : ""}`}>
@@ -2779,9 +2766,6 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
   const [error, setError] = useState("");
   const [addMode, setAddMode] = useState(false);
   const [pendingPos, setPendingPos] = useState(null);
-  const [activeTypes, setActiveTypes] = useState(() =>
-    Object.fromEntries(Object.keys(PIN_TYPES).map(k => [k, true]))
-  );
   const ferryStatus = useFerryStatus();
 
   // Pick one random real (non-stock) photo per category, once per visit,
@@ -2880,23 +2864,9 @@ function AroundAboutPage({ setPage, setSubPage, isAdmin }) {
             addMode={addMode}
             onMapClick={setPendingPos}
             onPinClick={handlePinClick}
-            activeTypes={activeTypes}
             ferryStatus={ferryStatus}
           />
         )}
-
-        <div className="ck-map-filter-bar" style={{ marginTop: "1.5rem" }}>
-          {Object.entries(PIN_TYPES).map(([key, t]) => (
-            <button
-              key={key}
-              className={`ck-map-filter-chip ${activeTypes[key] ? "active" : ""}`}
-              onClick={() => setActiveTypes(prev => ({ ...prev, [key]: !prev[key] }))}
-            >
-              <span className="ck-map-legend-diamond" style={{ background: t.color }} />
-              {t.label}
-            </button>
-          ))}
-        </div>
 
         <p className="ck-section-desc" style={{ marginTop: "1.5rem" }}>A map of the Roseland Peninsula — click a pin to explore, or jump straight to a category.</p>
 
