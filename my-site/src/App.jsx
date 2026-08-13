@@ -100,14 +100,6 @@ const HERO_IMAGES = [
   { url: imgPorthcurnickPortcatho, caption: "Portscatho from Porthcurnick", position: "center 15%" },
 ];
 
-const BLOG_POSTS = [
-  { id: "the-search", title: "The Search", date: "2024-03-15", excerpt: "How we discovered our dream property on the Roseland Peninsula, after months of searching the Cornish coastline for the perfect retreat.", content: "It all began with a winter drive along the south Cornwall coast. We'd spent weekends trawling property websites, but nothing compared to seeing the Roseland Peninsula in person. The winding lanes, the glimpses of turquoise sea through hedgerows heavy with wild garlic — we knew this was where we wanted to be.\n\nPortscatho captured our hearts immediately. A proper Cornish village with a genuine community, a wonderful store, and that extraordinary stretch of coastline. When we saw the listing for Chy Kernyk — perched above the beach with uninterrupted views towards Gull Rock — we booked a viewing within the hour.\n\nStanding in the garden that first afternoon, watching the light change across the water, we looked at each other and simply knew. This was it." },
-  { id: "the-purchase", title: "The Purchase", date: "2024-05-20", excerpt: "The story of acquiring Chy Kernyk — navigating surveys, conveyancing, and the peculiarities of buying a Cornish coastal property.", content: "Buying a property in Cornwall comes with its own unique set of adventures. The survey revealed the house had good bones but needed significant updating to become the retreat we envisioned. Negotiations were straightforward — the sellers were a lovely couple who wanted to know the house would be loved.\n\nThe conveyancing threw up some interesting quirks: ancient rights of way, coastal erosion considerations, and a boundary that was defined by a granite boulder that had apparently been there since the Bronze Age. Very Cornwall.\n\nThe day we finally collected the keys, we drove straight down from London. It was raining — properly Cornish rain, horizontal and enthusiastic — but as we opened the front door and looked through to that view, the sun broke through. We took it as a sign." },
-  { id: "the-design", title: "The Design", date: "2024-07-10", excerpt: "Working with our architect to reimagine the space — balancing modern comfort with coastal character, and making the most of those extraordinary views.", content: "We wanted the house to feel like it belonged to the landscape. No glass boxes or stark modernism — instead, a sensitive renovation that would enhance what was already there while making the most of the extraordinary setting.\n\nOur architect understood immediately. Natural materials — local stone, timber, lime render in soft whites — and generous windows positioned to frame specific views. The kitchen would look towards the headland. The main bedroom would wake to sunrise over the sea. The living room would open onto a terrace where you could watch storms roll in.\n\nEvery decision was guided by one question: does this bring us closer to the landscape or push us further away?" },
-  { id: "west-dean-stone-carving", title: "The West Dean Adventure in Stone Carving", date: "2024-09-05", excerpt: "An unexpected detour into the world of stone carving at West Dean College, creating a piece that would become part of the house itself.", content: "Sometimes the best ideas come from the most unexpected places. A weekend course at West Dean College in stone carving was meant to be a bit of fun — a break from renovation stress. Instead, it became one of the most meaningful parts of the whole project.\n\nWorking with Portland stone, learning to read the grain, feeling the chisel find its line — there's something deeply satisfying about shaping stone. By the end of the weekend, we'd each carved a piece that would be set into the garden wall at Chy Kernyk.\n\nThe Cornish name of the house — Chy Kernyk means 'Cornish House' — felt even more appropriate with hand-carved stone becoming part of its fabric. A house made with hands as well as hearts." },
-  { id: "the-build", title: "The Build", date: "2025-01-15", excerpt: "Dust, decisions, and determination — the renovation journey from stripped-back shell to the coastal retreat we'd always dreamed of.", content: "Nothing prepares you for the reality of a major renovation 300 miles from where you live. Weekly site visits became our rhythm — Friday evening drives down the A303, arriving late to a village wrapped in sea mist.\n\nThe builders were extraordinary. Local craftsmen who understood the materials and the climate. They talked about the house as if it were alive — 'she needs to breathe,' they'd say about the lime render. 'Let her settle,' about the new oak beams.\n\nThere were challenges: supply delays, a discovery of an old well beneath the kitchen floor (which became a feature rather than a problem), and a memorable week when Storm Éowyn tested every window seal. But watching the house transform — seeing our vision become reality — was worth every dusty, exhausting, wonderful moment." },
-];
-
 const FOOD_PLACES = [
   { id: "portscatho-stores", name: "Portscatho Stores", desc: "The heart of the village — exceptional deli, fresh bread daily, local produce, and everything you need. Their pasties are legendary. Open 7 'til 7 daily.", image: imgPortscathoStoresLevel, tags: ["deli", "groceries", "bakery"], website: "#", location: "Portscatho", foodType: "buying" },
   { id: "tregew-food-barn", name: "Tregew Food Barn", desc: "A weekly barn full of local food produce from Bread, Cheese, Meat, Fish, Pies, Veg and everything in between. Only open Saturday mornings, 9am - 1pm, but get there early as they do sell out.", image: imgTregewFoodBarn, tags: ["farm shop", "local produce"], website: "https://www.foodbarn-tregew.co.uk/", location: "Near Froe", foodType: "buying" },
@@ -830,22 +822,6 @@ const CSS = `
     letter-spacing:0.04em;
   }
 
-  /* ── BLOG ── */
-  .ck-blog-post { margin-bottom:2rem; }
-  .ck-blog-date {
-    font-size:0.78rem; color:var(--gold);
-    letter-spacing:0.1em; text-transform:uppercase;
-    margin-bottom:0.3rem;
-  }
-  .ck-read-more {
-    display:inline-block; margin-top:0.75rem;
-    color:var(--ocean); font-size:0.85rem; font-weight:500;
-    letter-spacing:0.06em; text-transform:uppercase;
-    border:none; background:none; cursor:pointer;
-    transition: color 0.3s;
-  }
-  .ck-read-more:hover { color:var(--gold); }
-
   /* ── VISITORS BOOK ── */
   .ck-visitor-form {
     padding:2rem; border-radius:12px; background:var(--sand);
@@ -1286,11 +1262,6 @@ const CSS = `
   }
   .ck-footer p { font-size:0.85rem; line-height:1.8; }
 
-  /* ── EDITOR ── */
-  .ck-editor-actions {
-    display:flex; gap:0.75rem; margin-bottom:2rem; flex-wrap:wrap;
-  }
-
   /* ── ANIMATIONS ── */
   @keyframes fadeInUp {
     from { opacity:0; transform:translateY(20px); }
@@ -1359,7 +1330,7 @@ function LoginModal({ onClose, onLogin }) {
     <div className="ck-modal-overlay" onClick={onClose}>
       <div className="ck-modal" onClick={e => e.stopPropagation()}>
         <h2 className="ck-modal-title">Admin Login</h2>
-        <p className="ck-modal-subtitle">Sign in to manage blog posts and calendar availability.</p>
+        <p className="ck-modal-subtitle">Sign in to manage calendar availability.</p>
         {error && <div className="ck-modal-error">{error}</div>}
         <div className="ck-form-group">
           <label className="ck-label">Email</label>
@@ -1391,7 +1362,6 @@ function Nav({ page, setPage, isAdmin, onLoginClick, onLogout, mobileOpen, setMo
   const links = [
     { id: "home", label: "Home" },
     { id: "around", label: "Explore" },
-    { id: "blog", label: "Story" },
     { id: "visitors-book", label: "Visitors Book" },
     { id: "remedies", label: "Info" },
     { id: "tides", label: "Tides" },
@@ -1513,106 +1483,6 @@ function HomePage({ setPage }) {
         </div>
       </section>
     </main>
-  );
-}
-
-// BLOG
-function BlogPage({ setPage, posts, setPosts, isAdmin, setSubPage }) {
-  const [editing, setEditing] = useState(null);
-  const [form, setForm] = useState({ title: "", excerpt: "", content: "" });
-
-  const startEdit = (post) => {
-    setEditing(post ? post.id : "new");
-    setForm(post ? { title: post.title, excerpt: post.excerpt, content: post.content } : { title: "", excerpt: "", content: "" });
-  };
-  const savePost = () => {
-    if (editing === "new") {
-      const id = form.title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
-      setPosts([{ id, title: form.title, date: new Date().toISOString().split("T")[0], excerpt: form.excerpt, content: form.content }, ...posts]);
-    } else {
-      setPosts(posts.map(p => p.id === editing ? { ...p, ...form } : p));
-    }
-    setEditing(null);
-  };
-  const deletePost = (id) => {
-    if (confirm("Delete this post?")) setPosts(posts.filter(p => p.id !== id));
-  };
-
-  if (editing) {
-    return (
-      <>
-        <PageHeader title={editing === "new" ? "New Post" : "Edit Post"} setPage={setPage} backTo="blog" backLabel="Story" />
-        <section className="ck-section" style={{ maxWidth: 800, paddingTop: "2rem" }}>
-          <div className="ck-form-group">
-            <label className="ck-label">Title</label>
-            <input className="ck-input" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} />
-          </div>
-          <div className="ck-form-group">
-            <label className="ck-label">Excerpt</label>
-            <input className="ck-input" value={form.excerpt} onChange={e => setForm({ ...form, excerpt: e.target.value })} />
-          </div>
-          <div className="ck-form-group">
-            <label className="ck-label">Content (use double newline for paragraphs)</label>
-            <textarea className="ck-textarea" rows={10} value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} />
-          </div>
-          <div style={{ display: "flex", gap: "0.75rem" }}>
-            <button className="ck-btn ck-btn-primary" onClick={savePost}>Save</button>
-            <button className="ck-btn ck-btn-secondary" onClick={() => setEditing(null)}>Cancel</button>
-          </div>
-        </section>
-      </>
-    );
-  }
-
-  return (
-    <>
-      <PageHeader title="Our Story" subtitle="The journey of finding, designing, and building our Cornish retreat." setPage={setPage} backTo="home" />
-      <section className="ck-section" style={{ paddingTop: "1rem" }}>
-        {isAdmin && (
-          <div className="ck-editor-actions">
-            <button className="ck-btn ck-btn-primary ck-btn-sm" onClick={() => startEdit(null)}>+ New Post</button>
-          </div>
-        )}
-        {posts.map(post => (
-          <article key={post.id} className="ck-blog-post ck-animate" style={{ marginBottom: "2.5rem" }}>
-            <p className="ck-blog-date">{new Date(post.date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}</p>
-            <h2 className="ck-card-title" style={{ marginBottom: "0.5rem", cursor: "pointer" }}
-              onClick={() => { setSubPage({ type: "blog-detail", id: post.id }); window.scrollTo(0, 0); }}>{post.title}</h2>
-            <p className="ck-card-text">{post.excerpt}</p>
-            <button className="ck-read-more" onClick={() => { setSubPage({ type: "blog-detail", id: post.id }); window.scrollTo(0, 0); }}>Read more →</button>
-            {isAdmin && (
-              <span style={{ marginLeft: "1rem" }}>
-                <button className="ck-btn ck-btn-secondary ck-btn-sm" onClick={() => startEdit(post)} style={{ marginRight: "0.5rem" }}>Edit</button>
-                <button className="ck-btn ck-btn-danger ck-btn-sm" onClick={() => deletePost(post.id)}>Delete</button>
-              </span>
-            )}
-          </article>
-        ))}
-      </section>
-    </>
-  );
-}
-
-function BlogDetail({ post, setPage, setSubPage }) {
-  if (!post) return <div className="ck-section"><p>Post not found.</p></div>;
-  return (
-    <>
-      <div className="ck-page-header">
-        <div className="ck-page-header-inner">
-          <div className="ck-breadcrumb">
-            <button onClick={() => { setSubPage(null); setPage("blog"); window.scrollTo(0, 0); }}>Story</button>
-            <span> / {post.title}</span>
-          </div>
-        </div>
-      </div>
-      <div className="ck-detail-content">
-        <p className="ck-blog-date">{new Date(post.date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}</p>
-        <h1 className="ck-detail-title">{post.title}</h1>
-        <div className="ck-detail-body">
-          {post.content.split("\n\n").map((p, i) => <p key={i}>{p}</p>)}
-        </div>
-      </div>
-    </>
   );
 }
 
@@ -3249,7 +3119,6 @@ export default function App() {
   const [adminUser, setAdminUser] = useState(null);
   const [showLogin, setShowLogin] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [posts, setPosts] = useState(BLOG_POSTS);
 
   const isAdmin = !!adminUser;
 
@@ -3280,10 +3149,7 @@ export default function App() {
   // Render sub-pages (detail views)
   if (subPage) {
     let content = null;
-    if (subPage.type === "blog-detail") {
-      const post = posts.find(p => p.id === subPage.id);
-      content = <BlogDetail post={post} setPage={setPage} setSubPage={setSubPage} />;
-    } else if (subPage.type === "food-detail") {
+    if (subPage.type === "food-detail") {
       const place = FOOD_PLACES.find(p => p.id === subPage.id);
       content = <FoodDetail place={place} setPage={setPage} setSubPage={setSubPage} />;
     } else if (subPage.type === "activity-detail") {
@@ -3324,7 +3190,6 @@ export default function App() {
 
   const pageMap = {
     home: <HomePage setPage={setPage} />,
-    blog: <BlogPage setPage={setPage} posts={posts} setPosts={setPosts} isAdmin={isAdmin} setSubPage={setSubPage} />,
     gallery: <GalleryPage setPage={setPage} />,
     "visitors-book": <VisitorsBookPage setPage={setPage} isAdmin={isAdmin} />,
     "eating-out": <EatingOutPage setPage={setPage} setSubPage={setSubPage} />,
