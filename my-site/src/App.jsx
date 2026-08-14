@@ -49,6 +49,7 @@ import imgHiddenHutFeast2 from "./assets/images/HiddenHutFeast2.jpeg";
 import imgHiddenHutfromBeach from "./assets/images/HiddenHutfromBeach.jpeg";
 import imgHouse from "./assets/images/House.jpg";
 import imgHouseAerial from "./assets/images/HouseAerial.jpeg";
+import imgHousePlans from "./assets/images/HousePlans.png";
 import imgJuniorRaceWeek from "./assets/images/JuniorRaceWeek.jpeg";
 import imgKelpCanteen from "./assets/images/KelpCanteen.jpg";
 import imgKingHarryFerry from "./assets/images/KingHarryFerry.jpg";
@@ -70,7 +71,6 @@ import imgPortscathoStores from "./assets/images/PortscathoStores.jpeg";
 import imgPortscathoStoresLevel from "./assets/images/PortscathoStoresLevel.jpeg";
 import imgPortscathofromtheAir2 from "./assets/images/PortscathofromtheAir2.JPG";
 import imgPotagerGarden from "./assets/images/PotagerGarden.jpeg";
-import imgPurchaseDay from "./assets/images/PurchaseDay.jpeg";
 import imgRalphs from "./assets/images/Ralphs.jpeg";
 import imgScarlet from "./assets/images/Scarlet.webp";
 import imgScathosScoops from "./assets/images/ScathosScoops.jpeg";
@@ -155,7 +155,7 @@ const ACTIVITIES = [
   { id: "maritime-museum", name: "National Maritime Museum", desc: "Falmouth's award-winning museum telling the story of small boats and Britain's seafaring history, with a striking harbourside building and a lookout tower with panoramic views.", tags: ["museum", "history", "family"], image: imgMaritimeMuseum },
   { id: "mevagissey", name: "Mevagissey", desc: "A classic working Cornish fishing village with an aquarium, a bustling harbour, narrow winding streets, and in the Teacup Tearooms, sandwiches and cake that will last you all week.", tags: ["harbour", "village", "fishing"], image: imgMevagissey },
   { id: "lamorran", name: "Lamorran House Garden", desc: "Lamorran is an Italianate terraced garden known for its sub-tropical planting and collection of palm trees, with a frost-free microclimate that shares similar conditions with Miami(!). You can stay for light lunches and teas on the terrace with views across St Mawes Bay.", image: imgLamorran, tags: ["gardens", "subtropical", "palms"], category: "garden", website: "https://www.lamorrangardens.co.uk/" },
-  { id: "trelissick-garden", name: "Trelissick Garden", desc: "Hop onto the King Harry car ferry for a short ride across the river to Trelissik National Trust garden. Enjoy stunning views over the estuary, an excellent cafe, second hand bookshop and gallery selling local arts and crafts. Join parkrun here on a Saturday morning at 9am.", image: imgTrelissick, tags: ["gardens", "national trust", "views"], category: "garden", website: "https://www.nationaltrust.org.uk/visit/cornwall/trelissick" },
+  { id: "trelissick-garden", name: "Trelissick Garden", desc: "Hop onto the King Harry car ferry for a short ride across the river to Trelissick National Trust garden. Enjoy stunning views over the estuary, an excellent cafe, second hand bookshop and gallery selling local arts and crafts. Join parkrun here on a Saturday morning at 9am.", image: imgTrelissick, tags: ["gardens", "national trust", "views"], category: "garden", website: "https://www.nationaltrust.org.uk/visit/cornwall/trelissick" },
   { id: "caerhayes", name: "Caerhayes Castle Gardens", desc: "A spectacular woodland garden famous for its world-renowned collection of magnolias, best seen in spring. The castle itself is a Nash-designed gem.", image: imgCaerhayes, tags: ["gardens", "magnolias", "castle"], category: "garden", website: "https://visit.caerhays.co.uk/" },
   { id: "trebah", name: "Trebah Garden", desc: "Trebah is set in a spectacular wooded valley on the banks of the Helford river. Originally planted 200 years ago, it has four miles of footpaths meandering through bamboo, woodland, gunnera and two acres of hydrangeas down to a private beach. Delicious vegetarian lunches available at the Potager Garden café nearby.", image: imgTrebah, tags: ["gardens", "valley", "private beach"], category: "garden", website: "https://www.trebahgarden.co.uk/" },
   { id: "burncoose", name: "Burncoose Nurseries", desc: "One of the UK's finest nurseries set in 30 acres of woodland garden. Magnificent camellias, magnolias, and rare plants.", image: imgBurncooseGoldMedal, tags: ["gardens", "plants"], category: "garden", website: "https://www.burncoose.co.uk/site/index.cfm" },
@@ -224,7 +224,7 @@ const REMEDIES = [
 ];
 
 const GALLERY_HOUSE = [
-  { id: "house-1", url: imgPurchaseDay, caption: "Purchase Day" },
+  { id: "house-1", url: imgHousePlans, caption: "Coming soon…" },
 ];
 
 const GALLERY_BUILDING_PROJECT = [
@@ -1542,7 +1542,7 @@ function GalleryPage({ setPage }) {
   const [lightbox, setLightbox] = useState(null);
   return (
     <>
-      <PageHeader title="Gallery" subtitle="Explore Chy Kernyk and the surrounding Roseland Peninsula." setPage={setPage} backTo="home" />
+      <PageHeader title="Gallery" setPage={setPage} backTo="home" />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
         <GallerySection title="House" images={GALLERY_HOUSE} onSelect={setLightbox} />
         <GallerySection title="Building Project" images={GALLERY_BUILDING_PROJECT} onSelect={setLightbox} emptyText="Photos coming soon." />
