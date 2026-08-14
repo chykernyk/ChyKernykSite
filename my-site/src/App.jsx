@@ -5,6 +5,11 @@ import imgWifiQr from "./assets/wifi-qr.svg";
 import imgBarbaraHepworthGarden from "./assets/images/BarbaraHepworthGarden.jpeg";
 import imgBarbaraHepworthStudio from "./assets/images/BarbaraHepworthStudio.jpeg";
 import imgBarbaraHepworthStudio2 from "./assets/images/BarbaraHepworthStudio2.jpeg";
+import imgBefore2 from "./assets/images/Before2.JPG";
+import imgBefore3 from "./assets/images/Before3.JPG";
+import imgBefore5 from "./assets/images/Before5.JPG";
+import imgBefore7 from "./assets/images/Before7.JPG";
+import imgBefore8 from "./assets/images/Before8.JPG";
 import imgBurncooseGoldMedal from "./assets/images/BurncooseGoldMedal.jpg";
 import imgCaerhayes from "./assets/images/Caerhayes.webp";
 import imgCafeMylor from "./assets/images/CafeMylor.jpeg";
@@ -25,13 +30,9 @@ import imgHiddenHutFeast from "./assets/images/HiddenHutFeast.jpeg";
 import imgHiddenHutFeast2 from "./assets/images/HiddenHutFeast2.jpeg";
 import imgHiddenHutfromBeach from "./assets/images/HiddenHutfromBeach.jpeg";
 import imgHouse from "./assets/images/House.jpg";
-import imgHouseEast from "./assets/images/HouseEast.jpeg";
-import imgHouseFromRoad from "./assets/images/HouseFromRoad.jpeg";
-import imgHouseNorth from "./assets/images/HouseNorth.jpeg";
 import imgJuniorRaceWeek from "./assets/images/JuniorRaceWeek.jpeg";
 import imgKelpCanteen from "./assets/images/KelpCanteen.jpg";
 import imgKingHarryFerry from "./assets/images/KingHarryFerry.jpg";
-import imgKitchenToBe from "./assets/images/KitchenToBe.jpeg";
 import imgLamorran from "./assets/images/Lamorran.jpeg";
 import imgMaritimeMuseum from "./assets/images/MaritimeMuseum.jpg";
 import imgMeatCounter from "./assets/images/MeatCounter.webp";
@@ -203,53 +204,20 @@ const REMEDIES = [
   ]},
 ];
 
-const GALLERY_IMAGES = [
-  { id: 1, url: imgBarbaraHepworthGarden, caption: "Barbara Hepworth Garden" },
-  { id: 2, url: imgBarbaraHepworthStudio, caption: "Barbara Hepworth Studio" },
-  { id: 3, url: imgBarbaraHepworthStudio2, caption: "Barbara Hepworth Studio II" },
-  { id: 4, url: imgCafeMylor, caption: "Café Mylor" },
-  { id: 5, url: imgEdenProject, caption: "Eden Project" },
-  { id: 6, url: imgFishNTrips, caption: "Fish n Trips" },
-  { id: 7, url: imgFishingOffRocks, caption: "Fishing off the Rocks" },
-  { id: 8, url: imgHarbour, caption: "The Harbour" },
-  { id: 9, url: imgHiddenHut, caption: "The Hidden Hut" },
-  { id: 10, url: imgHiddenHutAerial, caption: "The Hidden Hut from the Air" },
-  { id: 11, url: imgHiddenHutFeast, caption: "Hidden Hut Feast Night" },
-  { id: 12, url: imgHiddenHutFeast2, caption: "Hidden Hut Feast Night II" },
-  { id: 13, url: imgHiddenHutfromBeach, caption: "The Hidden Hut from the Beach" },
-  { id: 14, url: imgHouse, caption: "The House" },
-  { id: 15, url: imgHouseEast, caption: "The House, East Side" },
-  { id: 16, url: imgHouseFromRoad, caption: "The House from the Road" },
-  { id: 17, url: imgHouseNorth, caption: "The House, North Side" },
-  { id: 18, url: imgJuniorRaceWeek, caption: "Junior Race Week" },
-  { id: 19, url: imgKitchenToBe, caption: "The Kitchen-to-Be" },
-  { id: 20, url: imgNareHead, caption: "Nare Head" },
-  { id: 21, url: imgPorthcurnick, caption: "Porthcurnick Beach" },
-  { id: 22, url: imgPorthcurnickPortcatho, caption: "Porthcurnick towards Portscatho" },
-  { id: 23, url: imgPorthcurnickPortcatho2, caption: "Porthcurnick towards Portscatho II" },
-  { id: 24, url: imgPortscathoFromTheAir, caption: "Portscatho from the Air" },
-  { id: 25, url: imgPortscathoHarbour, caption: "Portscatho Harbour" },
-  { id: 26, url: imgPortscathoHarbour2, caption: "Portscatho Harbour II" },
-  { id: 27, url: imgPortscathoStores, caption: "Portscatho Stores" },
-  { id: 28, url: imgPortscathofromtheAir2, caption: "Portscatho from the Air II" },
-  { id: 29, url: imgPurchaseDay, caption: "Purchase Day" },
-  { id: 30, url: imgRalphs, caption: "Ralph's" },
-  { id: 31, url: imgScathosScoops, caption: "Scatho's Scoops" },
-  { id: 32, url: imgShillakabookyBeachHut, caption: "Shallikabooky Beach Hut" },
-  { id: 33, url: imgStIves, caption: "St Ives" },
-  { id: 34, url: imgStMawesHarbour, caption: "St Mawes Harbour" },
-  { id: 35, url: imgStMawesHarbour2, caption: "St Mawes Harbour II" },
-  { id: 36, url: imgStMawesHarbourWall, caption: "St Mawes Harbour Wall" },
-  { id: 37, url: imgStandardInnEvening, caption: "The Standard Inn — Evening" },
-  { id: 38, url: imgStandardInnGarden, caption: "The Standard Inn — Garden" },
-  { id: 39, url: imgTheStandard, caption: "The Standard Inn" },
-  { id: 40, url: imgTowanShellPicking, caption: "Shell Picking at Towan" },
-  { id: 41, url: imgTregew, caption: "Tregew" },
-  { id: 42, url: imgTregewFish, caption: "Tregew Fish" },
-  { id: 43, url: imgTregewFoodBarn, caption: "Tregew Food Barn" },
-  { id: 44, url: imgTregewToasties, caption: "Tregew Toasties" },
-  { id: 45, url: imgTrelissick, caption: "Trelissick" },
-  { id: 46, url: imgTrelissick2, caption: "Trelissick II" },
+const GALLERY_HOUSE = [
+  { id: "house-1", url: imgPurchaseDay, caption: "Purchase Day" },
+];
+
+const GALLERY_BUILDING_PROJECT = [
+  { id: "building-1", url: imgHouse, caption: "Under Construction" },
+];
+
+const GALLERY_BEFORE = [
+  { id: "before-1", url: imgBefore2, caption: "Before" },
+  { id: "before-2", url: imgBefore3, caption: "Before" },
+  { id: "before-3", url: imgBefore5, caption: "Before" },
+  { id: "before-4", url: imgBefore7, caption: "Before" },
+  { id: "before-5", url: imgBefore8, caption: "Before" },
 ];
 
 // ─── AROUND & ABOUT MAP ─────────────────────────────────────────────
@@ -770,6 +738,15 @@ const CSS = `
   }
 
   /* ── GALLERY ── */
+  .ck-gallery-section { margin-bottom:3rem; }
+  .ck-gallery-section-title {
+    font-family:var(--font-display);
+    font-size:1.6rem; color:var(--ocean);
+    margin-bottom:1rem; font-weight:500;
+  }
+  .ck-gallery-empty {
+    color:var(--text-light); font-size:0.92rem;
+  }
   .ck-gallery-grid {
     display:grid; gap:0.5rem;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -1503,20 +1480,35 @@ function HomePage({ setPage }) {
 }
 
 // GALLERY
+function GallerySection({ title, images, onSelect, emptyText }) {
+  return (
+    <div className="ck-gallery-section">
+      <h2 className="ck-gallery-section-title">{title}</h2>
+      {images.length > 0 ? (
+        <div className="ck-gallery-grid">
+          {images.map(img => (
+            <div key={img.id} className="ck-gallery-item" data-caption={img.caption}
+              onClick={() => onSelect(img)}>
+              <img src={img.url} alt={img.caption} loading="lazy" />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="ck-gallery-empty">{emptyText}</p>
+      )}
+    </div>
+  );
+}
+
 function GalleryPage({ setPage }) {
   const [lightbox, setLightbox] = useState(null);
   return (
     <>
       <PageHeader title="Gallery" subtitle="Explore Chy Kernyk and the surrounding Roseland Peninsula." setPage={setPage} backTo="home" />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
-        <div className="ck-gallery-grid">
-          {GALLERY_IMAGES.map(img => (
-            <div key={img.id} className="ck-gallery-item" data-caption={img.caption}
-              onClick={() => setLightbox(img)}>
-              <img src={img.url} alt={img.caption} loading="lazy" />
-            </div>
-          ))}
-        </div>
+        <GallerySection title="House" images={GALLERY_HOUSE} onSelect={setLightbox} />
+        <GallerySection title="Building Project" images={GALLERY_BUILDING_PROJECT} onSelect={setLightbox} emptyText="Photos coming soon." />
+        <GallerySection title="Before" images={GALLERY_BEFORE} onSelect={setLightbox} />
       </section>
       {lightbox && (
         <div className="ck-lightbox" onClick={() => setLightbox(null)} role="dialog" aria-label="Image lightbox">
