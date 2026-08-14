@@ -32,6 +32,7 @@ import imgJuniorRaceWeek from "./assets/images/JuniorRaceWeek.jpeg";
 import imgKelpCanteen from "./assets/images/KelpCanteen.jpg";
 import imgKingHarryFerry from "./assets/images/KingHarryFerry.jpg";
 import imgKitchenToBe from "./assets/images/KitchenToBe.jpeg";
+import imgLamorran from "./assets/images/Lamorran.jpeg";
 import imgMaritimeMuseum from "./assets/images/MaritimeMuseum.jpg";
 import imgMeatCounter from "./assets/images/MeatCounter.webp";
 import imgMevagissey from "./assets/images/Mevagissey.jpg";
@@ -132,7 +133,7 @@ const ACTIVITIES = [
   ] },
   { id: "maritime-museum", name: "National Maritime Museum", desc: "Falmouth's award-winning museum telling the story of small boats and Britain's seafaring history, with a striking harbourside building and a lookout tower with panoramic views.", tags: ["museum", "history", "family"], image: imgMaritimeMuseum },
   { id: "mevagissey", name: "Mevagissey", desc: "A classic working Cornish fishing village with an aquarium, a bustling harbour, narrow winding streets, and in the Teacup Tearooms, sandwiches and cake that will last you all week.", tags: ["harbour", "village", "fishing"], image: imgMevagissey },
-  { id: "lamorran", name: "Lamorran House Garden", desc: "Lamorran is an Italianate terraced garden known for its sub-tropical planting and collection of palm trees, with a frost-free microclimate that shares similar conditions with Miami(!). You can stay for light lunches and teas on the terrace with views across St Mawes Bay.", tags: ["gardens", "subtropical", "palms"], category: "garden", website: "https://www.lamorrangardens.co.uk/" },
+  { id: "lamorran", name: "Lamorran House Garden", desc: "Lamorran is an Italianate terraced garden known for its sub-tropical planting and collection of palm trees, with a frost-free microclimate that shares similar conditions with Miami(!). You can stay for light lunches and teas on the terrace with views across St Mawes Bay.", image: imgLamorran, tags: ["gardens", "subtropical", "palms"], category: "garden", website: "https://www.lamorrangardens.co.uk/" },
   { id: "trelissick-garden", name: "Trelissick Garden", desc: "A National Trust garden overlooking the Fal estuary, with sub-tropical planting, woodland walks, and a wonderful walled garden and, of course, a café.", image: imgTrelissick, tags: ["gardens", "national trust", "views"], category: "garden", website: "https://www.nationaltrust.org.uk/visit/cornwall/trelissick" },
   { id: "caerhayes", name: "Caerhayes Castle Gardens", desc: "A spectacular woodland garden famous for its world-renowned collection of magnolias, best seen in spring. The castle itself is a Nash-designed gem.", image: imgCaerhayes, tags: ["gardens", "magnolias", "castle"], category: "garden", website: "https://visit.caerhays.co.uk/" },
   { id: "burncoose", name: "Burncoose Nurseries", desc: "One of the UK's finest nurseries set in 30 acres of woodland garden. Magnificent camellias, magnolias, and rare plants.", image: imgBurncooseGoldMedal, tags: ["gardens", "plants"], category: "garden", website: "https://www.burncoose.co.uk/site/index.cfm" },
