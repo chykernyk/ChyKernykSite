@@ -20,6 +20,14 @@ import imgBuild2 from "./assets/images/Build2.JPG";
 import imgBuild3 from "./assets/images/Build3.JPG";
 import imgBuild5 from "./assets/images/Build5.JPG";
 import imgBuild6 from "./assets/images/Build6.JPG";
+import imgBuild7 from "./assets/images/Build7.JPG";
+import imgBuild8 from "./assets/images/Build8.JPG";
+import imgBuild9 from "./assets/images/Build9.JPG";
+import imgBuild10 from "./assets/images/Build10.JPG";
+import imgBuild11 from "./assets/images/Build11.JPG";
+import imgBuild12 from "./assets/images/Build12.JPG";
+import imgBuild13 from "./assets/images/Build13.JPG";
+import imgBuild14 from "./assets/images/Build14.JPG";
 import imgBurncooseGoldMedal from "./assets/images/BurncooseGoldMedal.jpg";
 import imgCaerhayes from "./assets/images/Caerhayes.webp";
 import imgCafeMylor from "./assets/images/CafeMylor.jpeg";
@@ -223,9 +231,18 @@ const GALLERY_BUILDING_PROJECT = [
   { id: "building-1", url: imgBuild1, caption: "Building Project" },
   { id: "building-2", url: imgBuild2, caption: "Building Project" },
   { id: "building-3", url: imgBuild3, caption: "Building Project" },
-  { id: "building-4", url: imgBuild5, caption: "Building Project" },
-  { id: "building-5", url: imgBuild6, caption: "Building Project" },
-  { id: "building-6", url: imgHouse, caption: "Under Construction" },
+  { id: "building-5", url: imgBuild5, caption: "Building Project" },
+  { id: "building-6", url: imgBuild6, caption: "Building Project" },
+  { id: "building-7", url: imgBuild7, caption: "Building Project" },
+  { id: "building-8", url: imgBuild8, caption: "Building Project" },
+  { id: "building-9", url: imgBuild9, caption: "Building Project" },
+  { id: "building-9.5", url: imgHouse, caption: "Building Project" },
+  { id: "building-10", url: imgBuild10, caption: "Building Project" },
+  { id: "building-11", url: imgBuild11, caption: "Building Project" },
+  { id: "building-12", url: imgBuild12, caption: "Building Project" },
+  { id: "building-13", url: imgBuild13, caption: "Building Project" },
+  { id: "building-14", url: imgBuild14, caption: "Building Project" },
+  { id: "building-15", url: imgHouseAerial, caption: "Building Project" },
 ];
 
 const GALLERY_BEFORE = [
