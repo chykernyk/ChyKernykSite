@@ -5,6 +5,7 @@ import imgWifiQr from "./assets/wifi-qr.svg";
 import imgBarbaraHepworthGarden from "./assets/images/BarbaraHepworthGarden.jpeg";
 import imgBarbaraHepworthStudio from "./assets/images/BarbaraHepworthStudio.jpeg";
 import imgBarbaraHepworthStudio2 from "./assets/images/BarbaraHepworthStudio2.jpeg";
+import imgBefore1 from "./assets/images/Before1.JPG";
 import imgBefore2 from "./assets/images/Before2.JPG";
 import imgBefore3 from "./assets/images/Before3.JPG";
 import imgBefore5 from "./assets/images/Before5.JPG";
@@ -213,11 +214,12 @@ const GALLERY_BUILDING_PROJECT = [
 ];
 
 const GALLERY_BEFORE = [
-  { id: "before-1", url: imgBefore2, caption: "Before" },
-  { id: "before-2", url: imgBefore3, caption: "Before" },
-  { id: "before-3", url: imgBefore5, caption: "Before" },
-  { id: "before-4", url: imgBefore7, caption: "Before" },
-  { id: "before-5", url: imgBefore8, caption: "Before" },
+  { id: "before-1", url: imgBefore1, caption: "Before" },
+  { id: "before-2", url: imgBefore2, caption: "Before" },
+  { id: "before-3", url: imgBefore3, caption: "Before" },
+  { id: "before-4", url: imgBefore5, caption: "Before" },
+  { id: "before-5", url: imgBefore7, caption: "Before" },
+  { id: "before-6", url: imgBefore8, caption: "Before" },
 ];
 
 // ─── AROUND & ABOUT MAP ─────────────────────────────────────────────
