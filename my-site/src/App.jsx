@@ -15,6 +15,11 @@ import imgBefore7 from "./assets/images/Before7.JPG";
 import imgBefore8 from "./assets/images/Before8.JPG";
 import imgBefore9 from "./assets/images/Before9.JPG";
 import imgBefore10 from "./assets/images/Before10.JPG";
+import imgBuild1 from "./assets/images/Build1.jpeg";
+import imgBuild2 from "./assets/images/Build2.JPG";
+import imgBuild3 from "./assets/images/Build3.JPG";
+import imgBuild5 from "./assets/images/Build5.JPG";
+import imgBuild6 from "./assets/images/Build6.JPG";
 import imgBurncooseGoldMedal from "./assets/images/BurncooseGoldMedal.jpg";
 import imgCaerhayes from "./assets/images/Caerhayes.webp";
 import imgCafeMylor from "./assets/images/CafeMylor.jpeg";
@@ -215,7 +220,12 @@ const GALLERY_HOUSE = [
 ];
 
 const GALLERY_BUILDING_PROJECT = [
-  { id: "building-1", url: imgHouse, caption: "Under Construction" },
+  { id: "building-1", url: imgBuild1, caption: "Building Project" },
+  { id: "building-2", url: imgBuild2, caption: "Building Project" },
+  { id: "building-3", url: imgBuild3, caption: "Building Project" },
+  { id: "building-4", url: imgBuild5, caption: "Building Project" },
+  { id: "building-5", url: imgBuild6, caption: "Building Project" },
+  { id: "building-6", url: imgHouse, caption: "Under Construction" },
 ];
 
 const GALLERY_BEFORE = [
