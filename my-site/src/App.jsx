@@ -15,6 +15,7 @@ import imgBefore7 from "./assets/images/Before7.JPG";
 import imgBefore8 from "./assets/images/Before8.JPG";
 import imgBefore9 from "./assets/images/Before9.JPG";
 import imgBefore10 from "./assets/images/Before10.JPG";
+import imgBefore11 from "./assets/images/Before11.JPG";
 import imgBuild1 from "./assets/images/Build1.jpeg";
 import imgBuild2 from "./assets/images/Build2.JPG";
 import imgBuild3 from "./assets/images/Build3.JPG";
@@ -28,6 +29,7 @@ import imgBuild11 from "./assets/images/Build11.JPG";
 import imgBuild12 from "./assets/images/Build12.JPG";
 import imgBuild13 from "./assets/images/Build13.JPG";
 import imgBuild14 from "./assets/images/Build14.JPG";
+import imgBuild16 from "./assets/images/Build16.JPG";
 import imgBurncooseGoldMedal from "./assets/images/BurncooseGoldMedal.jpg";
 import imgCaerhayes from "./assets/images/Caerhayes.webp";
 import imgCafeMylor from "./assets/images/CafeMylor.jpeg";
@@ -243,6 +245,7 @@ const GALLERY_BUILDING_PROJECT = [
   { id: "building-13", url: imgBuild13, caption: "Building Project" },
   { id: "building-14", url: imgBuild14, caption: "Building Project" },
   { id: "building-15", url: imgHouseAerial, caption: "Building Project" },
+  { id: "building-16", url: imgBuild16, caption: "Building Project" },
 ];
 
 const GALLERY_BEFORE = [
@@ -256,6 +259,7 @@ const GALLERY_BEFORE = [
   { id: "before-8", url: imgBefore8, caption: "Before" },
   { id: "before-9", url: imgBefore9, caption: "Before" },
   { id: "before-10", url: imgBefore10, caption: "Before" },
+  { id: "before-11", url: imgBefore11, caption: "Before" },
 ];
 
 // ─── AROUND & ABOUT MAP ─────────────────────────────────────────────
@@ -1524,9 +1528,9 @@ function GallerySection({ title, images, onSelect, emptyText }) {
       <h2 className="ck-gallery-section-title">{title}</h2>
       {images.length > 0 ? (
         <div className="ck-gallery-grid">
-          {images.map(img => (
+          {images.map((img, i) => (
             <div key={img.id} className="ck-gallery-item" data-caption={img.caption}
-              onClick={() => onSelect(img)}>
+              onClick={() => onSelect(images, i)}>
               <img src={img.url} alt={img.caption} loading="lazy" />
             </div>
           ))}
@@ -1540,19 +1544,32 @@ function GallerySection({ title, images, onSelect, emptyText }) {
 
 function GalleryPage({ setPage }) {
   const [lightbox, setLightbox] = useState(null);
+  const openLightbox = (images, index) => setLightbox({ images, index });
   return (
     <>
       <PageHeader title="Gallery" setPage={setPage} backTo="home" />
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
-        <GallerySection title="House" images={GALLERY_HOUSE} onSelect={setLightbox} />
-        <GallerySection title="Building Project" images={GALLERY_BUILDING_PROJECT} onSelect={setLightbox} emptyText="Photos coming soon." />
-        <GallerySection title="Before" images={GALLERY_BEFORE} onSelect={setLightbox} />
+        <GallerySection title="House" images={GALLERY_HOUSE} onSelect={openLightbox} />
+        <GallerySection title="Building Project" images={GALLERY_BUILDING_PROJECT} onSelect={openLightbox} emptyText="Photos coming soon." />
+        <GallerySection title="Before" images={GALLERY_BEFORE} onSelect={openLightbox} />
       </section>
       {lightbox && (
         <div className="ck-lightbox" onClick={() => setLightbox(null)} role="dialog" aria-label="Image lightbox">
           <button className="ck-lightbox-close" onClick={() => setLightbox(null)} aria-label="Close lightbox">×</button>
-          <img src={lightbox.url} alt={lightbox.caption} />
-          <div className="ck-lightbox-caption">{lightbox.caption}</div>
+          {lightbox.images.length > 1 && (
+            <button className="ck-lightbox-arrow prev" aria-label="Previous photo"
+              onClick={e => { e.stopPropagation(); setLightbox(lb => ({ ...lb, index: (lb.index - 1 + lb.images.length) % lb.images.length })); }}>
+              ‹
+            </button>
+          )}
+          <img src={lightbox.images[lightbox.index].url} alt={lightbox.images[lightbox.index].caption} onClick={e => e.stopPropagation()} />
+          {lightbox.images.length > 1 && (
+            <button className="ck-lightbox-arrow next" aria-label="Next photo"
+              onClick={e => { e.stopPropagation(); setLightbox(lb => ({ ...lb, index: (lb.index + 1) % lb.images.length })); }}>
+              ›
+            </button>
+          )}
+          <div className="ck-lightbox-caption">{lightbox.images[lightbox.index].caption}</div>
         </div>
       )}
     </>
