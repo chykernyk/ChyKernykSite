@@ -967,21 +967,10 @@ const CSS = `
   .ck-cal-day.empty:hover { background:transparent; }
   .ck-cal-day.today { font-weight:600; box-shadow:inset 0 0 0 2px var(--ocean); }
   .ck-cal-day.booked { background:#fde8e8; color:#a33; }
-  .ck-cal-day-star {
-    position:absolute; top:2px; right:4px;
-    font-size:0.6rem; color:var(--gold); line-height:1;
-  }
-  .ck-cal-day-flag {
-    position:absolute; top:2px; left:4px;
-    font-size:0.6rem; line-height:1;
-  }
-  .ck-cal-day-crown {
-    position:absolute; top:2px; left:50%; transform:translateX(-50%);
-    font-size:0.6rem; line-height:1;
-  }
-  .ck-cal-day-wedding {
-    position:absolute; bottom:2px; left:50%; transform:translateX(-50%);
-    font-size:0.6rem; line-height:1;
+  .ck-cal-day-rate {
+    position:absolute; top:3px; left:50%; transform:translateX(-50%);
+    font-size:0.55rem; font-weight:600; color:var(--ocean); line-height:1;
+    white-space:nowrap;
   }
   .ck-cal-legend {
     display:flex; flex-direction:column; gap:0.6rem; margin-top:1.5rem;
@@ -999,6 +988,22 @@ const CSS = `
   .ck-cal-legend-note {
     font-size:0.82rem; color:var(--text-light);
   }
+
+  /* ── RATES ── */
+  .ck-rates-table { width:100%; border-collapse:collapse; margin-top:1rem; }
+  .ck-rates-table th, .ck-rates-table td {
+    text-align:left; padding:0.6rem 1rem; border-bottom:1px solid var(--sand-dark);
+    font-size:0.9rem;
+  }
+  .ck-rates-table th {
+    font-weight:600; color:var(--ocean); text-transform:uppercase;
+    font-size:0.72rem; letter-spacing:0.04em;
+  }
+  .ck-rates-input {
+    width:90px; padding:0.4rem 0.6rem; border:1px solid var(--sand-dark);
+    border-radius:6px; font-size:0.9rem; font-family:inherit;
+  }
+  .ck-rates-note { margin-top:1.5rem; font-size:0.82rem; color:var(--text-light); }
 
   /* ── PARKRUN ── */
   .ck-parkrun-card {
@@ -1425,6 +1430,7 @@ function Nav({ page, setPage, isAdmin, onLoginClick, onLogout, mobileOpen, setMo
     { id: "visitors-book", label: "Visitors Book" },
     { id: "calendar", label: "Calendar" },
     { id: "contact", label: "Contact" },
+    ...(isAdmin ? [{ id: "rates", label: "Rates" }] : []),
   ];
 
   const navigate = (id) => { setPage(id); setMobileOpen(false); window.scrollTo(0, 0); };
@@ -3107,6 +3113,101 @@ const WEDDINGS = {
   "2027-09-04": "Beanie & Gabe",
 };
 
+// RATES
+// Default per-season rates, editable on the admin-only Rates page.
+// Most rows are keyed by calendar month; the last four are overrides
+// that take priority over their month's rate for specific weeks (see
+// getRateForDate below) — Easter and Christmas/New Year move every
+// year, so they're computed rather than hardcoded. Summer/Autumn Half
+// Term are approximated as the week containing the last Monday of
+// May/October, which lines up with English school half-terms closely
+// enough for this purpose but won't be exact every year.
+const DEFAULT_RATES = [
+  { season: "January", tier: "Low", rate: 75 },
+  { season: "February", tier: "Low", rate: 75 },
+  { season: "March", tier: "Low", rate: 75 },
+  { season: "April", tier: "Medium", rate: 100 },
+  { season: "May", tier: "Medium", rate: 100 },
+  { season: "June", tier: "High", rate: 1000 },
+  { season: "July", tier: "High", rate: 1000 },
+  { season: "August", tier: "High", rate: 1000 },
+  { season: "September", tier: "Medium", rate: 100 },
+  { season: "October", tier: "Low", rate: 75 },
+  { season: "November", tier: "Low", rate: 75 },
+  { season: "December", tier: "Low", rate: 75 },
+  { season: "Easter", tier: "High", rate: 1000 },
+  { season: "Summer Half Term", tier: "High", rate: 1000 },
+  { season: "Autumn Half Term", tier: "Medium", rate: 100 },
+  { season: "Christmas/New Year", tier: "High", rate: 1000 },
+];
+
+// Easter Sunday for a given year (Meeus/Jones/Butcher Gregorian algorithm).
+function getEasterSunday(year) {
+  const a = year % 19;
+  const b = Math.floor(year / 100);
+  const c = year % 100;
+  const d = Math.floor(b / 4);
+  const e = b % 4;
+  const f = Math.floor((b + 8) / 25);
+  const g = Math.floor((b - f + 1) / 3);
+  const h = (19 * a + b - d - g + 15) % 30;
+  const i = Math.floor(c / 4);
+  const k = c % 4;
+  const l = (32 + 2 * e + 2 * i - h - k) % 7;
+  const m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const month = Math.floor((h + l - 7 * m + 114) / 31);
+  const day = ((h + l - 7 * m + 114) % 31) + 1;
+  return new Date(year, month - 1, day);
+}
+
+function weekStart(date) {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  const day = d.getDay();
+  d.setDate(d.getDate() + (day === 0 ? -6 : 1 - day)); // Monday start
+  return d;
+}
+
+function sameDay(a, b) {
+  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+}
+
+function lastMondayOfMonth(year, monthIndex) {
+  const d = new Date(year, monthIndex + 1, 0); // last day of month
+  while (d.getDay() !== 1) d.setDate(d.getDate() - 1);
+  return d;
+}
+
+// Looks up the rate that applies to a given date, checking the
+// Easter/Christmas/half-term overrides before falling back to the
+// date's calendar month.
+function getRateForDate(date, rates) {
+  const year = date.getFullYear();
+  const ws = weekStart(date);
+  const bySeason = name => rates.find(r => r.season === name);
+
+  const christmasWeek = weekStart(new Date(year, 11, 25));
+  const newYearWeekThisYear = weekStart(new Date(year, 0, 1));
+  const newYearWeekNextYear = weekStart(new Date(year + 1, 0, 1));
+  const christmasWeekPrevYear = weekStart(new Date(year - 1, 11, 25));
+  if ([christmasWeek, newYearWeekThisYear, newYearWeekNextYear, christmasWeekPrevYear].some(w => sameDay(w, ws))) {
+    return bySeason("Christmas/New Year");
+  }
+
+  const easterWeek = weekStart(getEasterSunday(year));
+  const easterFollowingWeek = new Date(easterWeek);
+  easterFollowingWeek.setDate(easterFollowingWeek.getDate() + 7);
+  if (sameDay(ws, easterWeek) || sameDay(ws, easterFollowingWeek)) {
+    return bySeason("Easter");
+  }
+
+  if (sameDay(ws, lastMondayOfMonth(year, 4))) return bySeason("Summer Half Term"); // May
+  if (sameDay(ws, lastMondayOfMonth(year, 9))) return bySeason("Autumn Half Term"); // October
+
+  const monthName = date.toLocaleDateString("en-GB", { month: "long" });
+  return bySeason(monthName);
+}
+
 // CALENDAR
 // Every date from today until this cutoff is marked booked/unavailable.
 const UNAVAILABLE_UNTIL = new Date(2027, 1, 1); // 1 Feb 2027
@@ -3131,7 +3232,56 @@ function buildInitialBookings() {
   return bookings;
 }
 
-function CalendarPage({ setPage, isAdmin }) {
+// RATES (admin only)
+function RatesPage({ setPage, isAdmin, rates, setRates }) {
+  useEffect(() => {
+    if (!isAdmin) { setPage("home"); window.scrollTo(0, 0); }
+  }, [isAdmin, setPage]);
+
+  if (!isAdmin) return null;
+
+  const updateRate = (season, value) => {
+    setRates(rs => rs.map(r => r.season === season ? { ...r, rate: value === "" ? "" : Number(value) } : r));
+  };
+
+  return (
+    <>
+      <PageHeader title="Rates" subtitle="Admin only — edit the seasonal rates used to price the availability calendar." setPage={setPage} backTo="home" />
+      <section className="ck-section" style={{ paddingTop: "1rem", maxWidth: 700 }}>
+        <table className="ck-rates-table">
+          <thead>
+            <tr>
+              <th>Season</th>
+              <th>Tier</th>
+              <th>Rate (£)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rates.map(r => (
+              <tr key={r.season}>
+                <td>{r.season}</td>
+                <td>{r.tier}</td>
+                <td>
+                  <input type="number" className="ck-rates-input" value={r.rate}
+                    onChange={e => updateRate(r.season, e.target.value)} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p className="ck-rates-note">
+          High-tier weeks show their rate on the Sunday only (the weekly figure); Low and Medium weeks show
+          their rate every day. Easter and Christmas/New Year are computed automatically each year; Summer
+          and Autumn Half Term are approximated as the week containing the last Monday of May and October.
+          Edits here update the calendar immediately but aren't saved permanently — reloading the page
+          resets rates to their defaults.
+        </p>
+      </section>
+    </>
+  );
+}
+
+function CalendarPage({ setPage, isAdmin, rates }) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [bookings, setBookings] = useState(buildInitialBookings);
   const [weddingPopup, setWeddingPopup] = useState(null);
@@ -3201,13 +3351,22 @@ function CalendarPage({ setPage, isAdmin }) {
               const isFalmouthWeek = FALMOUTH_WEEK.has(dateStr);
               const isPortscathoRegatta = PORTSCATHO_REGATTA.has(dateStr);
               const wedding = WEDDINGS[dateStr];
+              const dateObj = new Date(year, month, d);
+              const dayRate = getRateForDate(dateObj, rates);
+              const isSunday = dateObj.getDay() === 0;
+              const showRate = dayRate && (dayRate.tier === "High" ? isSunday : true);
               return (
                 <div key={dateStr}
                   className={`ck-cal-day ${status} ${isToday ? "today" : ""}`}
                   onClick={() => handleDayClick(dateStr)}
                   role={(isAdmin || wedding) ? "button" : undefined}
-                  aria-label={`${d} ${currentMonth.toLocaleDateString("en-GB", { month: "long" })} ${status || "available"}${isPortscathoRegatta ? ", Portscatho Regatta" : ""}${isFeastNight ? ", Feast Night" : ""}${isFalmouthWeek ? ", Falmouth Week" : ""}${wedding ? ", Wedding" : ""}`}
+                  aria-label={`${d} ${currentMonth.toLocaleDateString("en-GB", { month: "long" })} ${status || "available"}${isPortscathoRegatta ? ", Portscatho Regatta" : ""}${isFeastNight ? ", Feast Night" : ""}${isFalmouthWeek ? ", Falmouth Week" : ""}${wedding ? ", Wedding" : ""}${showRate ? `, £${dayRate.rate} ${dayRate.tier === "High" ? "per week" : "per night"}` : ""}`}
                 >
+                  {showRate && (
+                    <span className="ck-cal-day-rate" title={dayRate.tier === "High" ? "Weekly rate" : "Nightly rate"}>
+                      £{dayRate.rate}
+                    </span>
+                  )}
                   {d}
                 </div>
               );
@@ -3274,6 +3433,7 @@ export default function App() {
   const [adminUser, setAdminUser] = useState(null);
   const [showLogin, setShowLogin] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [rates, setRates] = useState(DEFAULT_RATES);
 
   const isAdmin = !!adminUser;
 
@@ -3356,7 +3516,8 @@ export default function App() {
     around: <AroundAboutPage setPage={setPage} setSubPage={setSubPage} isAdmin={isAdmin} />,
     fishing: <FishingPage setPage={setPage} isAdmin={isAdmin} />,
     parkrun: <ParkrunPage setPage={setPage} setSubPage={setSubPage} />,
-    calendar: <CalendarPage setPage={setPage} isAdmin={isAdmin} />,
+    calendar: <CalendarPage setPage={setPage} isAdmin={isAdmin} rates={rates} />,
+    rates: <RatesPage setPage={setPage} isAdmin={isAdmin} rates={rates} setRates={setRates} />,
     remedies: <RemediesPage setPage={setPage} />,
     tides: <TidesPage setPage={setPage} />,
     contact: <ContactPage setPage={setPage} />,
