@@ -198,22 +198,22 @@ const REMEDIES = [
   { category: "Useful Numbers", items: [
     { name: "Dom & Davina", detail: "Contact for any issues — Dom 07976 732303 — Davina 07967 135 480", icon: "🏠" },
   ]},
-  { category: "House Rules", items: [
-    { name: "Dogs", detail: "Well behaved dogs welcome downstairs only.", icon: "🐾" },
+  { category: "Dogs", items: [
+    { name: "Dogs", detail: "Dogs are very welcome to stay downstairs (only) at Chy Kernyk. There is an outdoor shower for sandy paws and dog blankets for the sofa (stored in the utility room). Please note there is no gate, dogs will need to be watched when let out.", icon: "🐾" },
   ]},
-  { category: "Amenities", items: [
+  { category: "Amenities & Maintenance", items: [
+    { name: "Parking", detail: "Off-road parking for 2-3 cars. EV car charging point available. Further parking on road outside.", icon: "🅿️" },
+    { name: "Cleaning", detail: "There is no cleaning service. Please leave the house as you found it and replace any damaged/finished items. A hoover and mini Vax upholstery cleaner (for spills) are stored in the utility room.", icon: "🧹" },
     { name: "Amenities", detail: "Washing machine, tumble dryer & WiFi", icon: "🧺" },
     { name: "WiFi Password", detail: "Network: ChyKernyk-Guest / Password: HiddenHut", icon: "📶", qr: imgWifiQr },
     { name: "Nearest Petrol Station", detail: "Roseland Local, Ruan High Lanes, TR2 5JY", icon: "⛽", url: "https://www.google.com/maps/search/?api=1&query=Roseland+Local+Ruan+High+Lanes" },
     { name: "Bin Day", detail: "Bin day is Monday.", binCollection: true, url: "https://www.cornwall.gov.uk/media/rggnvze3/monfort1new.pdf" },
-  ]},
-  { category: "Church Services", items: [
-    { name: "St Just-in-Roseland", detail: "Services at 8am and 11am.", icon: "⛪", url: "https://stjustandstmawes.org.uk/whats-on/parish-calendar/" },
-    { name: "Portscatho", detail: "Service at 10:30am.", icon: "⛪", url: "https://portscathounitedchurch.wordpress.com/" },
-  ]},
-  { category: "House Maintenance", items: [
     { name: "Stopcock Location", detail: "Under the kitchen sink, left side. Turn clockwise to close.", icon: "🚰" },
     { name: "Fusebox Location", detail: "Utility room, wall-mounted to the right of the door.", icon: "🔌" },
+  ]},
+  { category: "Church Services", items: [
+    { name: "St Just-in-Roseland (Church of England)", detail: "Services at 8am and 11am.", icon: "⛪", url: "https://stjustandstmawes.org.uk/whats-on/parish-calendar/" },
+    { name: "Portscatho (United Reformed Church)", detail: "Service at 10:30am.", icon: "⛪", url: "https://portscathounitedchurch.wordpress.com/" },
   ]},
   { category: "Medical", items: [
     { name: "Treliske Hospital (Royal Cornwall)", detail: "Truro — 01872 250000 — A&E available 24hrs", icon: "🚑" },
