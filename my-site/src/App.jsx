@@ -167,7 +167,7 @@ const ACTIVITIES = [
   { id: "the-scarlet", name: "The Scarlet", desc: "An adults-only eco-spa hotel perched on the cliffs above Mawgan Porth. Outdoor hot tubs, a wood-fired sauna, and a natural reed-filtered pool overlooking the beach.", tags: ["spa", "clifftop", "adults-only"], image: imgScarlet },
   { id: "st-ives", name: "St Ives", desc: "St Ives is the artist's mecca of Cornwall. Visit Barbara Hepworth's house and museum (book in advance), local galleries and Tate St Ives. The cobbled lanes are lined with independent food, craft, clothing and homeware shops. Limited parking is available in town - arrive early.", image: imgBarbaraHepworthGarden, tags: ["town", "art", "culture"] },
   { id: "harbour-wall-jumping-portscatho", name: "Harbour Wall Jumping (Portscatho)", desc: "Harbour wall jumping is a rite of passage for all children. Portscatho offers a gentler introduction for newcomers and better viewing for parents. This is a high tide only activity!", image: imgHarbourWallJumpingPortscatho, imagePosition: "center 33%", tags: ["harbour", "jumping", "family"], category: "beach" },
-  { id: "porthcurnick", name: "Porthcurnick", desc: "Our local beach, over the road then follow the path down from the car park. Good for a long swim to Portscatho at high tide or a scramble at low tide, it is served by the Hidden Hut with great food, drinks and ice cream.", image: imgPorthcurnick, tags: ["beach", "walking", "family"], category: "beach" },
+  { id: "porthcurnick", name: "Porthcurnick", desc: "Our local dog friendly beach owned by the National Trust. Cross over the road then follow the path left down from the car park. Good for a long swim back to Portscatho at high tide or a scramble around the rock pools at low tide. It is served by the famous Hidden Hut with great food, drinks and ice cream.", image: imgPorthcurnick, tags: ["beach", "walking", "family"], category: "beach", website: "https://hiddenhut.co.uk/", address: ["Porthcurnick Beach", "Portscatho", "The Roseland", "Cornwall", "TR2 5EW"] },
   { id: "towan", name: "Towan Beach", desc: "A National Trust beach, so there is a small car park nearby, but better reached by a walk from Portscatho which takes about ¾ of an hour. Nice swimming, traditionally the top beach for shell hunting — there is the Thirstea café across the road from the car park.", image: imgTowanShellPicking, tags: ["beach", "rockpools", "family"], category: "beach" },
   { id: "pendower", name: "Pendower Beach", desc: "A mile long, gently shelving sandy beach next to Carne. Great starting point for the Nare's Head walk or just a day building sandcastles. Excellent Shallikabooky café at the Pendower.", image: imgCarneBeach, tags: ["beach", "walking", "family"], category: "beach" },
   { id: "harbour-wall-jumping-st-mawes", name: "Harbour Wall Jumping (St Mawes)", desc: "Harbour wall jumping is a rite of passage for all children. St Mawes is not for the faint of heart and have a look at whether we are on spring or neap tides, it is a long way down on neaps!", image: imgHarbourWallJumpingStMawes, imagePosition: "center 30%", tags: ["harbour", "jumping"], category: "beach" },
@@ -176,13 +176,13 @@ const ACTIVITIES = [
 ];
 
 const WALKS = [
-  { id: "curgurrell", name: "Curgurrell Creek", desc: "A circular walk north from Portscatho along the coast, past the weather station and along hidden beaches with views out towards Gull Rock. Enjoy lunch or coffee at the famous Hidden Hut cafe above Porthcurnick beach.", length: "3.1 miles", difficulty: "Easy", parking: "Limited roadside parking near Curgurrell Farm. Please park considerately and respect local residents.", eating: "Curgurrell Farm Shop for provisions, or continue to Portscatho for the full range of options.", image: imgCurgurrellWalk, stravaRouteId: "3508117142736593884" },
-  { id: "st-anthony-light", name: "St Anthony Short", desc: "You can drive to St Anthony where there is some parking, then walk anti-clockwise along the coastal path to Bohortha, then over the hill to Place. Stop to look at St Anthony's Church, sign the visitors book (it helps support the church) then over the hill again to look across at St Mawes, Falmouth and finish with the lighthouse, the home of the Fraggles of Fraggle Rock (Davina's favourite program as a child).", length: "3.6 miles", difficulty: "Easy-Moderate", parking: "Small car park at St Anthony — limited spaces, arrive early in summer.", eating: "The Place restaurant (seasonal), or continue on to St Mawes for the Tresanton or the pub on the quay.", image: imgStAnthonyLight, stravaRouteId: "3512380107759473190" },
-  { id: "nare", name: "Nare Head", desc: "Drive to Pendower Beach for a spectacular circular walk around Nare Head with panoramic views of the coast. Reward yourself with coffee and ice cream at the Shallikabooky Beach Hut at the end. Moderate difficulty with some steep sections.", length: "4 miles", difficulty: "Moderate", parking: "Park at Carne Beach car park (free for National Trust members). Can get busy in summer — arrive before 10am.", eating: "The Shallikabooky Beach Hut is a perfect post-walk stop for something simple and delicious right by the water.", image: imgNareHead, stravaRouteId: "3507453955926855126" },
-  { id: "st-mawes", name: "St Mawes Castle Walk", desc: "A gentle walk around St Mawes taking in the castle, harbour, and stunning views of the Fal estuary and Pendennis Castle opposite.", length: "4 miles", difficulty: "Easy", parking: "St Mawes main car park (pay and display). Free in winter months.", eating: "Spoilt for choice — the Tresanton for something special, the Watch House for fish and chips, or the Rising Sun for a proper pub lunch.", image: imgStMawesCastle, stravaRouteId: "3508117047959651292" },
-  { id: "towan", name: "Towan Beach Circuit", desc: "A circular walk south from Portscatho along the coast and back through pretty farmland and quiet country roads. Spot Towan's resident seals and enjoy delicious toasties and refreshments at Towan beach cafe. A great circuit for runners.", length: "4.3 miles", difficulty: "Easy-Moderate", parking: "Towan Beach car park. Honesty box payment.", eating: "Pack a picnic from Portscatho Stores — Towan Beach is a perfect lunch spot.", image: imgTowanShellPicking, stravaRouteId: "3508117195142270626" },
-  { id: "percuil-boatyard", name: "Percuil Boatyard Loop", desc: "A circular walk from Portscatho along the Roseland coast, through fields of sunflowers, down to Percuil boatyard. Return to Portscatho for ice cream at Scatho's Scoops, or tea and pastries at Tide and Thyme coffee hut.", length: "4.5 miles", difficulty: "Moderate", parking: "Free roadside parking in Portscatho village.", eating: "Scatho's Scoops or the Tide and Thyme coffee hut in Portscatho are perfect for a treat at the end.", image: imgPercuilBoatyard, stravaRouteId: "3510178570089264786" },
-  { id: "st-anthony", name: "St Anthony Long", desc: "Walk to St Anthony's lighthouse, the inspiration for Fraggle Rock (Davina's favourite childhood TV programme!) with views across Falmouth Bay.", length: "10 miles", difficulty: "Moderate-Hard", parking: "National Trust car park at Place. Follow signs carefully — the lanes are narrow.", eating: "The Place restaurant (seasonal) or head to St Mawes for the Tresanton or the pub on the quay.", image: imgStAnthony, stravaRouteId: "3508119257673450600" },
+  { id: "curgurrell", name: "Curgurrell Creek", desc: "A circular walk north from Portscatho along the coast, past the weather station and down to hidden beaches with views out towards Gull Rock. Enjoy lunch or coffee and cake at the famous Hidden Hut cafe above Porthcurnick beach.", length: "3.1 miles", eating: "Hidden Hut", eatingUrl: "https://hiddenhut.co.uk/", image: imgCurgurrellWalk, stravaRouteId: "3508117142736593884" },
+  { id: "st-anthony-light", name: "St Anthony Head (short route)", desc: "Drive through beautiful farmland to St Anthony Head at the tip of the Roseland peninsula. There is a small National Trust car park. Walk anti-clockwise along the coastal path to Bohortha and over the hill to Place. Sign the visitor's book at St Anthony's Church (each signature helps increase funding) then over the hill with views over to St Mawes and Falmouth. Finish at the lighthouse, the home of Fraggle Rock, Davina's favourite TV program as a child!", length: "3.6 miles", parking: "St Anthony Head, nr Portscatho, Truro, Cornwall, TR2 5HA", furtherInfoUrl: "https://www.nationaltrust.org.uk/visit/cornwall/st-anthony-head", image: imgStAnthonyLight, stravaRouteId: "3512380107759473190" },
+  { id: "nare", name: "Nare Head", desc: "Drive to Pendower Beach for a spectacular circular walk around Nare Head with panoramic views of the coast. Reward yourself with coffee and ice cream at the Shallikabooky Beach Hut at the end. Moderate difficulty with some steep sections.", length: "4 miles", parking: "Park at Carne Beach car park (free for National Trust members). Can get busy in summer — arrive before 10am.", eating: "The Shallikabooky Beach Hut is a perfect post-walk stop for something simple and delicious right by the water.", image: imgNareHead, stravaRouteId: "3507453955926855126" },
+  { id: "st-mawes", name: "St Mawes Castle Walk", desc: "A gentle walk around St Mawes taking in the castle, harbour, and stunning views of the Fal estuary and Pendennis Castle opposite.", length: "4 miles", parking: "St Mawes main car park (pay and display). Free in winter months.", eating: "Spoilt for choice — the Tresanton for something special, the Watch House for fish and chips, or the Rising Sun for a proper pub lunch.", image: imgStMawesCastle, stravaRouteId: "3508117047959651292" },
+  { id: "towan", name: "Towan Beach Circuit", desc: "A circular walk south from Portscatho along the coast and back through pretty farmland and quiet country roads. Spot Towan's resident seals and enjoy delicious toasties and refreshments at Towan beach cafe. A great circuit for runners.", length: "4.3 miles", parking: "Towan Beach car park. Honesty box payment.", eating: "Pack a picnic from Portscatho Stores — Towan Beach is a perfect lunch spot.", image: imgTowanShellPicking, stravaRouteId: "3508117195142270626" },
+  { id: "percuil-boatyard", name: "Percuil Boatyard Loop", desc: "A circular walk from Portscatho along the Roseland coast, through fields of sunflowers, down to Percuil boatyard. Return to Portscatho for ice cream at Scatho's Scoops, or tea and pastries at Tide and Thyme coffee hut.", length: "4.5 miles", parking: "Free roadside parking in Portscatho village.", eating: "Scatho's Scoops or the Tide and Thyme coffee hut in Portscatho are perfect for a treat at the end.", image: imgPercuilBoatyard, stravaRouteId: "3510178570089264786" },
+  { id: "st-anthony", name: "St Anthony Long", desc: "Walk to St Anthony's lighthouse, the inspiration for Fraggle Rock (Davina's favourite childhood TV programme!) with views across Falmouth Bay.", length: "10 miles", parking: "National Trust car park at Place. Follow signs carefully — the lanes are narrow.", eating: "The Place restaurant (seasonal) or head to St Mawes for the Tresanton or the pub on the quay.", image: imgStAnthony, stravaRouteId: "3508119257673450600" },
 ];
 
 const PARKRUNS = [
@@ -196,7 +196,7 @@ const PARKRUNS = [
 
 const REMEDIES = [
   { category: "Useful Numbers", items: [
-    { name: "Dom & Davina", detail: "Contact for any issues — 07976 732303", icon: "🏠" },
+    { name: "Dom & Davina", detail: "Contact for any issues — Dom 07976 732303 — Davina 07967 135 480", icon: "🏠" },
   ]},
   { category: "House Rules", items: [
     { name: "Dogs", detail: "Well behaved dogs welcome downstairs only.", icon: "🐾" },
@@ -204,7 +204,7 @@ const REMEDIES = [
   { category: "Amenities", items: [
     { name: "Amenities", detail: "Washing machine, tumble dryer & WiFi", icon: "🧺" },
     { name: "WiFi Password", detail: "Network: ChyKernyk-Guest / Password: HiddenHut", icon: "📶", qr: imgWifiQr },
-    { name: "Nearest Petrol Station", detail: "Roseland Local, Ruan High Lanes", icon: "⛽", url: "https://www.google.com/maps/search/?api=1&query=Roseland+Local+Ruan+High+Lanes" },
+    { name: "Nearest Petrol Station", detail: "Roseland Local, Ruan High Lanes, TR2 5JY", icon: "⛽", url: "https://www.google.com/maps/search/?api=1&query=Roseland+Local+Ruan+High+Lanes" },
     { name: "Bin Day", detail: "Bin day is Monday.", binCollection: true, url: "https://www.cornwall.gov.uk/media/rggnvze3/monfort1new.pdf" },
   ]},
   { category: "Church Services", items: [
@@ -218,6 +218,7 @@ const REMEDIES = [
   { category: "Medical", items: [
     { name: "Treliske Hospital (Royal Cornwall)", detail: "Truro — 01872 250000 — A&E available 24hrs", icon: "🚑" },
     { name: "NHS 111", detail: "Call 111 for non-emergency medical advice", icon: "📞" },
+    { name: "St Mawes Pharmacy", detail: "Prescriptions & pharmacy services", icon: "💊", url: "https://www.stmawespharmacy.co.uk/" },
   ]},
   { category: "Emergency Services", items: [
     { name: "Emergency", detail: "999 — Police, Fire, Ambulance, Coastguard", icon: "🆘" },
@@ -2002,6 +2003,14 @@ function ActivityDetail({ activity, setPage, setSubPage }) {
             Visit Website
           </a>
         )}
+        {activity.address && (
+          <div className="ck-detail-info">
+            <h3>Address</h3>
+            <p>{activity.address.map((line, i) => (
+              <Fragment key={i}>{i > 0 && <br />}{line}</Fragment>
+            ))}</p>
+          </div>
+        )}
       </div>
     </>
   );
@@ -2023,8 +2032,11 @@ function WalksPage({ setPage, setSubPage }) {
                   <p className="ck-card-text">{w.desc}</p>
                   <div className="ck-card-tags">
                     <span className="ck-tag">{w.length}</span>
-                    <span className="ck-tag">{w.difficulty}</span>
                   </div>
+                  <button className="ck-btn ck-btn-secondary ck-btn-sm" style={{ marginTop: "0.75rem" }}
+                    onClick={e => { e.stopPropagation(); setSubPage({ type: "walk-detail", id: w.id }); window.scrollTo(0, 0); }}>
+                    Click here for map
+                  </button>
                 </div>
               </div>
             ))}
@@ -2074,7 +2086,6 @@ function WalkDetail({ walk, setPage, setSubPage }) {
         <h1 className="ck-detail-title">{walk.name}</h1>
         <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.5rem", flexWrap: "wrap" }}>
           <span className="ck-detail-badge">{walk.length}</span>
-          <span className="ck-detail-badge">{walk.difficulty}</span>
         </div>
         <div className="ck-detail-body"><p>{walk.desc}</p></div>
 
@@ -2103,14 +2114,29 @@ function WalkDetail({ walk, setPage, setSubPage }) {
           </div>
         </div>
 
-        <div className="ck-detail-info">
-          <h3>Parking</h3>
-          <p>{walk.parking}</p>
-        </div>
-        <div className="ck-detail-info">
-          <h3>Where to Eat</h3>
-          <p>{walk.eating}</p>
-        </div>
+        {walk.parking && (
+          <div className="ck-detail-info">
+            <h3>Parking</h3>
+            <p>{walk.parking}</p>
+          </div>
+        )}
+        {walk.eating && (
+          <div className="ck-detail-info">
+            <h3>Where to Eat</h3>
+            <p>{walk.eatingUrl
+              ? <a href={walk.eatingUrl} target="_blank" rel="noopener noreferrer">{walk.eating}</a>
+              : walk.eating}</p>
+          </div>
+        )}
+        {walk.furtherInfoUrl && (
+          <div className="ck-detail-info">
+            <h3>Further information</h3>
+            <a className="ck-btn ck-btn-primary" style={{ marginTop: "0.5rem", display: "inline-block", textDecoration: "none" }}
+              href={walk.furtherInfoUrl} target="_blank" rel="noopener noreferrer">
+              Visit Website
+            </a>
+          </div>
+        )}
       </div>
     </>
   );
