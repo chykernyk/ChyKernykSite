@@ -333,6 +333,28 @@ async function deleteFishingSpotById(id) {
   if (!res.ok) throw new Error("Failed to delete fishing spot");
 }
 
+async function fetchRates() {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rates?select=season,tier,rate`, {
+    headers: SUPABASE_HEADERS,
+  });
+  if (!res.ok) throw new Error("Failed to load rates");
+  return res.json();
+}
+
+async function commitRates(rates) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rates?on_conflict=season`, {
+    method: "POST",
+    headers: {
+      ...SUPABASE_HEADERS,
+      "Content-Type": "application/json",
+      Prefer: "resolution=merge-duplicates,return=representation",
+    },
+    body: JSON.stringify(rates.map(({ season, tier, rate }) => ({ season, tier, rate: rate === "" ? 0 : Number(rate) }))),
+  });
+  if (!res.ok) throw new Error("Failed to commit rates");
+  return res.json();
+}
+
 // ─── VISITORS BOOK ───────────────────────────────────────────────────
 // Entries (and their photos) live in Supabase for the same reason pins do —
 // this is a static site with no server of its own. Photos go to a separate
@@ -3119,9 +3141,9 @@ const WEDDINGS = {
 // that take priority over their month's rate for specific weeks (see
 // getRateForDate below) — Easter and Christmas/New Year move every
 // year, so they're computed rather than hardcoded. Summer/Autumn Half
-// Term are approximated as the week containing the last Monday of
-// May/October, which lines up with English school half-terms closely
-// enough for this purpose but won't be exact every year.
+// Term use real dates below, sourced from Abingdon School's term
+// calendar (the nearest published school half-term dates), since school
+// half-terms are what drives demand for the property.
 const DEFAULT_RATES = [
   { season: "January", tier: "Low", rate: 75 },
   { season: "February", tier: "Low", rate: 75 },
@@ -3172,10 +3194,27 @@ function sameDay(a, b) {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 }
 
-function lastMondayOfMonth(year, monthIndex) {
-  const d = new Date(year, monthIndex + 1, 0); // last day of month
-  while (d.getDay() !== 1) d.setDate(d.getDate() - 1);
-  return d;
+// Summer (late May) and Autumn (October) half-term breaks, sourced from
+// Abingdon School's published term dates —
+// https://www.abingdon.org.uk/whats-on/term-and-key-dates/ — since it's
+// a well-documented English school calendar and half-terms are broadly
+// aligned across schools. Each range is inclusive, covering the days
+// school is out (breakup day through the day before return).
+const SUMMER_HALF_TERM_RANGES = [
+  ["2026-05-23", "2026-06-07"],
+  ["2027-05-29", "2027-06-06"],
+];
+const AUTUMN_HALF_TERM_RANGES = [
+  ["2025-10-25", "2025-11-03"],
+  ["2026-10-24", "2026-11-01"],
+];
+
+function toDateStr(date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+function inDateRanges(dateStr, ranges) {
+  return ranges.some(([start, end]) => dateStr >= start && dateStr <= end);
 }
 
 // Looks up the rate that applies to a given date, checking the
@@ -3201,8 +3240,9 @@ function getRateForDate(date, rates) {
     return bySeason("Easter");
   }
 
-  if (sameDay(ws, lastMondayOfMonth(year, 4))) return bySeason("Summer Half Term"); // May
-  if (sameDay(ws, lastMondayOfMonth(year, 9))) return bySeason("Autumn Half Term"); // October
+  const dateStr = toDateStr(date);
+  if (inDateRanges(dateStr, SUMMER_HALF_TERM_RANGES)) return bySeason("Summer Half Term");
+  if (inDateRanges(dateStr, AUTUMN_HALF_TERM_RANGES)) return bySeason("Autumn Half Term");
 
   const monthName = date.toLocaleDateString("en-GB", { month: "long" });
   return bySeason(monthName);
@@ -3234,6 +3274,9 @@ function buildInitialBookings() {
 
 // RATES (admin only)
 function RatesPage({ setPage, isAdmin, rates, setRates }) {
+  const [committing, setCommitting] = useState(false);
+  const [commitState, setCommitState] = useState(null); // "ok" | "error" | null
+
   useEffect(() => {
     if (!isAdmin) { setPage("home"); window.scrollTo(0, 0); }
   }, [isAdmin, setPage]);
@@ -3241,7 +3284,17 @@ function RatesPage({ setPage, isAdmin, rates, setRates }) {
   if (!isAdmin) return null;
 
   const updateRate = (season, value) => {
+    setCommitState(null);
     setRates(rs => rs.map(r => r.season === season ? { ...r, rate: value === "" ? "" : Number(value) } : r));
+  };
+
+  const handleCommit = () => {
+    setCommitting(true);
+    setCommitState(null);
+    commitRates(rates)
+      .then(() => setCommitState("ok"))
+      .catch(() => setCommitState("error"))
+      .finally(() => setCommitting(false));
   };
 
   return (
@@ -3272,10 +3325,16 @@ function RatesPage({ setPage, isAdmin, rates, setRates }) {
         <p className="ck-rates-note">
           High-tier weeks show their rate on the Sunday only (the weekly figure); Low and Medium weeks show
           their rate every day. Easter and Christmas/New Year are computed automatically each year; Summer
-          and Autumn Half Term are approximated as the week containing the last Monday of May and October.
-          Edits here update the calendar immediately but aren't saved permanently — reloading the page
-          resets rates to their defaults.
+          and Autumn Half Term use real dates from Abingdon School's term calendar. Edits here update the
+          calendar immediately for this browser, but aren't shared with other visitors until committed.
         </p>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginTop: "1rem" }}>
+          <button type="button" className="ck-btn" onClick={handleCommit} disabled={committing}>
+            {committing ? "Committing…" : "Commit to calendar"}
+          </button>
+          {commitState === "ok" && <span style={{ color: "var(--ocean)" }}>Saved — the calendar now shows these rates for everyone.</span>}
+          {commitState === "error" && <span style={{ color: "#c0392b" }}>Couldn't save — please try again.</span>}
+        </div>
       </section>
     </>
   );
@@ -3434,6 +3493,18 @@ export default function App() {
   const [showLogin, setShowLogin] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [rates, setRates] = useState(DEFAULT_RATES);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchRates()
+      .then(rows => {
+        if (cancelled || rows.length === 0) return;
+        const bySeason = Object.fromEntries(rows.map(r => [r.season, r]));
+        setRates(DEFAULT_RATES.map(r => bySeason[r.season] ? { ...r, ...bySeason[r.season] } : r));
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
 
   const isAdmin = !!adminUser;
 
