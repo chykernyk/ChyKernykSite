@@ -3209,10 +3209,6 @@ function CalendarPage({ setPage, isAdmin }) {
                   aria-label={`${d} ${currentMonth.toLocaleDateString("en-GB", { month: "long" })} ${status || "available"}${isPortscathoRegatta ? ", Portscatho Regatta" : ""}${isFeastNight ? ", Feast Night" : ""}${isFalmouthWeek ? ", Falmouth Week" : ""}${wedding ? ", Wedding" : ""}`}
                 >
                   {d}
-                  {isFalmouthWeek && <span className="ck-cal-day-flag" title="Falmouth Week">🚩</span>}
-                  {isFeastNight && <span className="ck-cal-day-star" title="Feast Night">★</span>}
-                  {isPortscathoRegatta && <span className="ck-cal-day-crown" title="Portscatho Regatta">👑</span>}
-                  {wedding && <span className="ck-cal-day-wedding" title="Wedding">👰🤵</span>}
                 </div>
               );
             })}
