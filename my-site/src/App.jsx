@@ -176,7 +176,7 @@ const ACTIVITIES = [
 ];
 
 const WALKS = [
-  { id: "curgurrell", name: "Curgurrell Creek", desc: "A circular walk north from Portscatho along the coast, past the weather station and down to hidden beaches with views out towards Gull Rock. Enjoy lunch or coffee and cake at the famous Hidden Hut cafe above Porthcurnick beach.", length: "3.1 miles", eating: "Hidden Hut", eatingUrl: "https://hiddenhut.co.uk/", image: imgCurgurrellWalk, stravaRouteId: "3508117142736593884" },
+  { id: "curgurrell", name: "Curgurrell Creek", desc: "A circular walk north from Portscatho along the coast, past the weather station and down to hidden beaches with views out towards Gull Rock. Enjoy lunch or coffee and cake at the famous Hidden Hut cafe above Porthcurnick beach.", length: "3.1 miles", eating: "Hidden Hut", eatingUrl: "https://hiddenhut.co.uk/", eatingImage: imgHiddenHut, image: imgCurgurrellWalk, stravaRouteId: "3508117142736593884" },
   { id: "st-anthony-light", name: "St Anthony Head (short route)", desc: "Drive through beautiful farmland to St Anthony Head at the tip of the Roseland peninsula. There is a small National Trust car park. Walk anti-clockwise along the coastal path to Bohortha and over the hill to Place. Sign the visitor's book at St Anthony's Church (each signature helps increase funding) then over the hill with views over to St Mawes and Falmouth. Finish at the lighthouse, the home of Fraggle Rock, Davina's favourite TV program as a child!", length: "3.6 miles", parking: "St Anthony Head, nr Portscatho, Truro, Cornwall, TR2 5HA", furtherInfoUrl: "https://www.nationaltrust.org.uk/visit/cornwall/st-anthony-head", image: imgStAnthonyLight, stravaRouteId: "3512380107759473190" },
   { id: "nare", name: "Nare Head", desc: "Drive to Pendower Beach for a spectacular circular walk around Nare Head with panoramic views of the coast. Reward yourself with coffee and ice cream at the Shallikabooky Beach Hut at the end. Moderate difficulty with some steep sections.", length: "4 miles", parking: "Park at Carne Beach car park (free for National Trust members). Can get busy in summer — arrive before 10am.", eating: "The Shallikabooky Beach Hut is a perfect post-walk stop for something simple and delicious right by the water.", image: imgNareHead, stravaRouteId: "3507453955926855126" },
   { id: "st-mawes", name: "St Mawes Castle Walk", desc: "A gentle walk around St Mawes taking in the castle, harbour, and stunning views of the Fal estuary and Pendennis Castle opposite.", length: "4 miles", parking: "St Mawes main car park (pay and display). Free in winter months.", eating: "Spoilt for choice — the Tresanton for something special, the Watch House for fish and chips, or the Rising Sun for a proper pub lunch.", image: imgStMawesCastle, stravaRouteId: "3508117047959651292" },
@@ -1189,6 +1189,19 @@ const CSS = `
     font-family:var(--font-body); font-size:0.72rem; color:var(--text);
     padding:0.25rem 0.4rem; text-align:center; line-height:1.15;
   }
+  .ck-walk-eat-chip {
+    display:flex; flex-direction:column;
+    width:140px; aspect-ratio:1; padding:0; overflow:hidden;
+    border-radius:10px; border:1px solid var(--sand-dark); background:white;
+    cursor:pointer; transition: all 0.2s; text-decoration:none; margin-top:0.5rem;
+  }
+  .ck-walk-eat-chip:hover { border-color:var(--ocean); box-shadow:0 6px 16px rgba(0,0,0,0.1); transform:translateY(-2px); }
+  .ck-walk-eat-chip-img { width:100%; height:75%; object-fit:cover; display:block; }
+  .ck-walk-eat-chip-label {
+    flex:1; display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-body); font-size:0.8rem; color:var(--text);
+    text-align:center; padding:0.25rem;
+  }
   @media(max-width:560px) {
     .ck-map-jump-chip-label-text { display:none; }
     .ck-map-jump-chip-label .ck-map-legend-diamond { width:18px; height:18px; }
@@ -2123,9 +2136,16 @@ function WalkDetail({ walk, setPage, setSubPage }) {
         {walk.eating && (
           <div className="ck-detail-info">
             <h3>Where to Eat</h3>
-            <p>{walk.eatingUrl
-              ? <a href={walk.eatingUrl} target="_blank" rel="noopener noreferrer">{walk.eating}</a>
-              : walk.eating}</p>
+            {walk.eatingUrl && walk.eatingImage ? (
+              <a href={walk.eatingUrl} target="_blank" rel="noopener noreferrer" className="ck-walk-eat-chip">
+                <img src={walk.eatingImage} alt="" className="ck-walk-eat-chip-img" />
+                <div className="ck-walk-eat-chip-label">{walk.eating}</div>
+              </a>
+            ) : (
+              <p>{walk.eatingUrl
+                ? <a href={walk.eatingUrl} target="_blank" rel="noopener noreferrer">{walk.eating}</a>
+                : walk.eating}</p>
+            )}
           </div>
         )}
         {walk.furtherInfoUrl && (
