@@ -34,6 +34,7 @@ import imgCaerhayes from "./assets/images/Caerhayes.webp";
 import imgCafeMylor from "./assets/images/CafeMylor.jpeg";
 import imgCarneBeach from "./assets/images/CarneBeach.jpg";
 import imgCurgurrellWalk from "./assets/images/CurgurrellWalk.jpg";
+import imgDartsFarm from "./assets/images/DartsFarm.jpeg";
 import imgEdenProject from "./assets/images/EdenProject.jpeg";
 import imgFishNTrips from "./assets/images/FishNTrips.jpeg";
 import imgFishingOffRocks from "./assets/images/FishingOffRocks.jpeg";
@@ -205,6 +206,9 @@ const REMEDIES = [
   { category: "Amenities & Maintenance", items: [
     { name: "Parking", detail: "Off-road parking for 2-3 cars. EV car charging point available. Further parking on road outside.", icon: "🅿️" },
     { name: "Cleaning", detail: "There is no cleaning service. Please leave the house as you found it and replace any damaged/finished items. A hoover and mini Vax upholstery cleaner (for spills) are stored in the utility room.", icon: "🧹" },
+    { name: "Bedding & towels", detail: "Bedding is available at the house. Please wash and dry all bedding before leaving. You may find it easier to bring your own pillow cases and duvet covers etc to wash at home. There are 3 king size beds and two single beds. Please bring towels.", icon: "🛏️" },
+    { name: "Check-in and out", detail: "Please leave before, and arrive after, 12 noon. Changeover day for full week stays is Sunday.", icon: "🕛" },
+    { name: "Keys", detail: "We will let you know the location of keys before your stay. Please do not take keys home with you.", icon: "🔑" },
     { name: "Amenities", detail: "Washing machine, tumble dryer & WiFi", icon: "🧺" },
     { name: "WiFi Password", detail: "Network: ChyKernyk-Guest / Password: HiddenHut", icon: "📶", qr: imgWifiQr },
     { name: "Nearest Petrol Station", detail: "Roseland Local, Ruan High Lanes, TR2 5JY", icon: "⛽", url: "https://www.google.com/maps/search/?api=1&query=Roseland+Local+Ruan+High+Lanes" },
@@ -3215,6 +3219,16 @@ function CalendarPage({ setPage, isAdmin }) {
                 Booked
               </div>
             </div>
+          </div>
+          <div className="ck-detail-info" style={{ margin: "1.5rem 0 0" }}>
+            <h3>Check-in and out</h3>
+            <p>Please leave before, and arrive after, 12 noon. Changeover day for full week stays is Sunday. If you drive early to miss the rush, we can recommend Darts Farm for breakfast from 9:30am on Sundays (ten minutes from the Exeter junction).</p>
+            <a href="https://www.dartsfarm.co.uk/discover-darts/food-hall/delicatessen" target="_blank" rel="noopener noreferrer" className="ck-walk-eat-chip" style={{ marginTop: "1rem" }}>
+              <img src={imgDartsFarm} alt="" className="ck-walk-eat-chip-img" />
+              <div className="ck-walk-eat-chip-label">Darts Farm</div>
+            </a>
+          </div>
+          <div className="ck-cal-legend">
             <div className="ck-cal-legend-row">
               <p className="ck-cal-legend-note">June, July and August - booking for full weeks only.</p>
             </div>
