@@ -1015,15 +1015,17 @@ const CSS = `
   }
   .ck-cal-day {
     aspect-ratio:1; display:flex; align-items:center; justify-content:center;
-    font-size:0.9rem; border-radius:8px;
+    font-size:0.9rem; border-radius:8px; background:white;
     cursor:pointer; transition: all 0.2s;
     position:relative;
   }
   .ck-cal-day:hover { background:var(--sand); }
-  .ck-cal-day.empty { cursor:default; }
+  .ck-cal-day.empty { cursor:default; background:transparent; }
   .ck-cal-day.empty:hover { background:transparent; }
   .ck-cal-day.today { font-weight:600; box-shadow:inset 0 0 0 2px var(--ocean); }
   .ck-cal-day.booked { background:#fde8e8; color:#a33; }
+  .ck-cal-day.booked-start { background:linear-gradient(135deg, white 50%, #fde8e8 50%); }
+  .ck-cal-day.booked-end { background:linear-gradient(135deg, #fde8e8 50%, white 50%); }
   .ck-cal-day-rate {
     position:absolute; top:3px; left:50%; transform:translateX(-50%);
     font-size:0.55rem; font-weight:600; color:var(--ocean); line-height:1;
@@ -3464,9 +3466,21 @@ function CalendarPage({ setPage, isAdmin, rates }) {
               const dayRate = getRateForDate(dateObj, rates);
               const isSunday = dateObj.getDay() === 0;
               const showRate = dayRate && status !== "booked" && (dayRate.tier === "High" ? isSunday : true);
+              // Booking blocks get a diagonal split on their first/last day —
+              // arriving on the first day only takes the bottom-right half,
+              // leaving on the last day only takes the top-left half — so
+              // adjoining blocks read as distinct rather than one solid run.
+              let bookingClass = "";
+              if (status === "booked") {
+                const prevBooked = bookings[toDateStr(new Date(year, month, d - 1))] === "booked";
+                const nextBooked = bookings[toDateStr(new Date(year, month, d + 1))] === "booked";
+                if (!prevBooked && nextBooked) bookingClass = "booked-start";
+                else if (prevBooked && !nextBooked) bookingClass = "booked-end";
+                else bookingClass = "booked";
+              }
               return (
                 <div key={dateStr}
-                  className={`ck-cal-day ${status} ${isToday ? "today" : ""}`}
+                  className={`ck-cal-day ${bookingClass} ${isToday ? "today" : ""}`}
                   onClick={() => handleDayClick(dateStr)}
                   role={(isAdmin || wedding) ? "button" : undefined}
                   aria-label={`${d} ${currentMonth.toLocaleDateString("en-GB", { month: "long" })} ${status || "available"}${isPortscathoRegatta ? ", Portscatho Regatta" : ""}${isFeastNight ? ", Feast Night" : ""}${isFalmouthWeek ? ", Falmouth Week" : ""}${wedding ? ", Wedding" : ""}${showRate ? `, £${dayRate.rate} ${dayRate.tier === "High" ? "per week" : "per night"}` : ""}`}
