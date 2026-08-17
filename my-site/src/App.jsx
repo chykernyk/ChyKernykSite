@@ -215,6 +215,7 @@ const REMEDIES = [
     { name: "Bin Day", detail: "Bin day is Monday.", binCollection: true, url: "https://www.cornwall.gov.uk/media/rggnvze3/monfort1new.pdf" },
     { name: "Stopcock Location", detail: "Under the kitchen sink, left side. Turn clockwise to close.", icon: "🚰" },
     { name: "Fusebox Location", detail: "Utility room, wall-mounted to the right of the door.", icon: "🔌" },
+    { name: "Travelling to Cornwall", detail: "Darts Farm (5 mins off the motorway, near Exeter services) has a large farm shop, deli, butcher, wine merchant, cafe and chocolate maker(!) on site. Stock up on the cheap petrol available on your way back to the motorway.", icon: "🚗", chip: { label: "Darts Farm", url: "https://www.dartsfarm.co.uk/discover-darts/food-hall/delicatessen", image: imgDartsFarm } },
   ]},
   { category: "Church Services", items: [
     { name: "St Just-in-Roseland (Church of England)", detail: "Services at 8am and 11am.", icon: "⛪", url: "https://stjustandstmawes.org.uk/whats-on/parish-calendar/" },
@@ -353,6 +354,40 @@ async function commitRates(rates) {
   });
   if (!res.ok) throw new Error("Failed to commit rates");
   return res.json();
+}
+
+async function fetchBookingOverrides() {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/bookings?select=date,status`, {
+    headers: SUPABASE_HEADERS,
+  });
+  if (!res.ok) throw new Error("Failed to load bookings");
+  return res.json();
+}
+
+async function setBookingOverride(date, status) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/bookings?on_conflict=date`, {
+    method: "POST",
+    headers: {
+      ...SUPABASE_HEADERS,
+      "Content-Type": "application/json",
+      Prefer: "resolution=merge-duplicates,return=representation",
+    },
+    body: JSON.stringify([{ date, status }]),
+  });
+  if (!res.ok) throw new Error("Failed to save booking");
+  return res.json();
+}
+
+// Layers persisted admin overrides on top of the computed default
+// availability — an "available" override clears a default-booked date,
+// a "booked" override marks a default-available date as booked.
+function applyBookingOverrides(base, overrides) {
+  const merged = { ...base };
+  overrides.forEach(o => {
+    if (o.status === "booked") merged[o.date] = "booked";
+    else delete merged[o.date];
+  });
+  return merged;
 }
 
 // ─── VISITORS BOOK ───────────────────────────────────────────────────
@@ -2999,6 +3034,12 @@ function RemediesPage({ setPage }) {
                     <div className="ck-remedy-name">{item.name}</div>
                     <div className="ck-remedy-detail">{item.detail}</div>
                     {item.binCollection && <BinCollection />}
+                    {item.chip && (
+                      <a href={item.chip.url} target="_blank" rel="noopener noreferrer" className="ck-walk-eat-chip" style={{ marginTop: "0.75rem" }}>
+                        <img src={item.chip.image} alt="" className="ck-walk-eat-chip-img" />
+                        <div className="ck-walk-eat-chip-label">{item.chip.label}</div>
+                      </a>
+                    )}
                   </div>
                   {item.qr && <img className="ck-remedy-qr" src={item.qr} alt="QR code to join WiFi" />}
                 </Tag>
@@ -3345,6 +3386,14 @@ function CalendarPage({ setPage, isAdmin, rates }) {
   const [bookings, setBookings] = useState(buildInitialBookings);
   const [weddingPopup, setWeddingPopup] = useState(null);
 
+  useEffect(() => {
+    let cancelled = false;
+    fetchBookingOverrides()
+      .then(overrides => { if (!cancelled) setBookings(applyBookingOverrides(buildInitialBookings(), overrides)); })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
+
   const year = currentMonth.getFullYear();
   const month = currentMonth.getMonth();
   const firstDay = new Date(year, month, 1).getDay();
@@ -3368,6 +3417,7 @@ function CalendarPage({ setPage, isAdmin, rates }) {
     } else {
       setBookings({ ...bookings, [dateStr]: next });
     }
+    setBookingOverride(dateStr, next === "booked" ? "booked" : "available").catch(() => {});
   };
 
   const handleDayClick = (dateStr) => {
@@ -3386,7 +3436,7 @@ function CalendarPage({ setPage, isAdmin, rates }) {
   return (
     <>
       <PageHeader title="Availability"
-        subtitle={isAdmin ? "Click on dates to toggle: available → booked." : "Check when Chy Kernyk is available for your visit."}
+        subtitle={isAdmin ? "Click on dates to toggle: available → booked." : undefined}
         setPage={setPage} backTo="home" />
       <section className="ck-section" style={{ paddingTop: "1rem", maxWidth: 700 }}>
         <div className="ck-cal">
@@ -3413,7 +3463,7 @@ function CalendarPage({ setPage, isAdmin, rates }) {
               const dateObj = new Date(year, month, d);
               const dayRate = getRateForDate(dateObj, rates);
               const isSunday = dateObj.getDay() === 0;
-              const showRate = dayRate && (dayRate.tier === "High" ? isSunday : true);
+              const showRate = dayRate && status !== "booked" && (dayRate.tier === "High" ? isSunday : true);
               return (
                 <div key={dateStr}
                   className={`ck-cal-day ${status} ${isToday ? "today" : ""}`}
@@ -3445,16 +3495,11 @@ function CalendarPage({ setPage, isAdmin, rates }) {
           </div>
           <div className="ck-detail-info" style={{ margin: "1.5rem 0 0" }}>
             <h3>Check-in and out</h3>
-            <p>Please leave before, and arrive after, 12 noon. Changeover day for full week stays is Sunday. If you drive early to miss the rush, we can recommend Darts Farm for breakfast from 9:30am on Sundays (ten minutes from the Exeter junction).</p>
-            <a href="https://www.dartsfarm.co.uk/discover-darts/food-hall/delicatessen" target="_blank" rel="noopener noreferrer" className="ck-walk-eat-chip" style={{ marginTop: "1rem" }}>
-              <img src={imgDartsFarm} alt="" className="ck-walk-eat-chip-img" />
-              <div className="ck-walk-eat-chip-label">Darts Farm</div>
-            </a>
+            <p>Please leave before, and arrive after, 12 noon. Changeover day for full week stays is Sunday.</p>
           </div>
-          <div className="ck-cal-legend">
-            <div className="ck-cal-legend-row">
-              <p className="ck-cal-legend-note">June, July and August - booking for full weeks only.</p>
-            </div>
+          <div className="ck-detail-info" style={{ margin: "1.5rem 0 0" }}>
+            <h3>Length of stay</h3>
+            <p>June, July, August, Easter and school holidays - booking for full weeks only.</p>
           </div>
         </div>
       </section>
