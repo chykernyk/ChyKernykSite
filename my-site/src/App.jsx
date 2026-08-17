@@ -1016,16 +1016,17 @@ const CSS = `
   .ck-cal-day {
     aspect-ratio:1; display:flex; align-items:center; justify-content:center;
     font-size:0.9rem; border-radius:8px; background:white;
+    border:1px solid var(--sand-dark);
     cursor:pointer; transition: all 0.2s;
     position:relative;
   }
   .ck-cal-day:hover { background:var(--sand); }
-  .ck-cal-day.empty { cursor:default; background:transparent; }
+  .ck-cal-day.empty { cursor:default; background:transparent; border-color:transparent; }
   .ck-cal-day.empty:hover { background:transparent; }
   .ck-cal-day.today { font-weight:600; box-shadow:inset 0 0 0 2px var(--ocean); }
-  .ck-cal-day.booked { background:#fde8e8; color:#a33; }
-  .ck-cal-day.booked-start { background:linear-gradient(135deg, white 50%, #fde8e8 50%); color:#a33; }
-  .ck-cal-day.booked-end { background:linear-gradient(135deg, #fde8e8 50%, white 50%); }
+  .ck-cal-day.booked { background:#fde8e8; color:#a33; border-color:transparent; }
+  .ck-cal-day.booked-start { background:linear-gradient(135deg, white 50%, #fde8e8 50%); color:#a33; border-color:transparent; }
+  .ck-cal-day.booked-end { background:linear-gradient(135deg, #fde8e8 50%, white 50%); border-color:transparent; }
   .ck-cal-day-rate {
     position:absolute; top:3px; left:50%; transform:translateX(-50%);
     font-size:0.55rem; font-weight:600; color:var(--ocean); line-height:1;
