@@ -1024,7 +1024,7 @@ const CSS = `
   .ck-cal-day.empty:hover { background:transparent; }
   .ck-cal-day.today { font-weight:600; box-shadow:inset 0 0 0 2px var(--ocean); }
   .ck-cal-day.booked { background:#fde8e8; color:#a33; }
-  .ck-cal-day.booked-start { background:linear-gradient(135deg, white 50%, #fde8e8 50%); }
+  .ck-cal-day.booked-start { background:linear-gradient(135deg, white 50%, #fde8e8 50%); color:#a33; }
   .ck-cal-day.booked-end { background:linear-gradient(135deg, #fde8e8 50%, white 50%); }
   .ck-cal-day-rate {
     position:absolute; top:3px; left:50%; transform:translateX(-50%);
@@ -3465,7 +3465,6 @@ function CalendarPage({ setPage, isAdmin, rates }) {
               const dateObj = new Date(year, month, d);
               const dayRate = getRateForDate(dateObj, rates);
               const isSunday = dateObj.getDay() === 0;
-              const showRate = dayRate && status !== "booked" && (dayRate.tier === "High" ? isSunday : true);
               // Booking blocks get a diagonal split on their first/last day —
               // arriving on the first day only takes the bottom-right half,
               // leaving on the last day only takes the top-left half — so
@@ -3478,6 +3477,9 @@ function CalendarPage({ setPage, isAdmin, rates }) {
                 else if (prevBooked && !nextBooked) bookingClass = "booked-end";
                 else bookingClass = "booked";
               }
+              // The last day of a booking is a changeover day (guests leave
+              // in the morning), so it's still worth showing a rate for.
+              const showRate = dayRate && (status !== "booked" || bookingClass === "booked-end") && (dayRate.tier === "High" ? isSunday : true);
               return (
                 <div key={dateStr}
                   className={`ck-cal-day ${bookingClass} ${isToday ? "today" : ""}`}
