@@ -3567,20 +3567,19 @@ export default function App() {
 
   const isAdmin = !!adminUser;
 
-  // Reset subpage when main page changes
-  useEffect(() => { setSubPage(null); }, [page]);
-
-  // Sync page navigation with browser history, so the back button steps
-  // back through pages instead of leaving the site.
+  // Sync page and subpage navigation with browser history, so the back
+  // button steps back through detail views (e.g. a walk) to the list they
+  // were opened from, then back through pages, instead of skipping straight
+  // past them.
   const isPopState = useRef(false);
   const isFirstRender = useRef(true);
   useEffect(() => {
     const handlePopState = e => {
       isPopState.current = true;
-      setSubPage(null);
       setPage((e.state && e.state.page) || "home");
+      setSubPage((e.state && e.state.subPage) || null);
     };
-    window.history.replaceState({ page: "home" }, "");
+    window.history.replaceState({ page: "home", subPage: null }, "");
     window.scrollTo(0, 0);
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
@@ -3588,8 +3587,8 @@ export default function App() {
   useEffect(() => {
     if (isFirstRender.current) { isFirstRender.current = false; return; }
     if (isPopState.current) { isPopState.current = false; return; }
-    window.history.pushState({ page }, "");
-  }, [page]);
+    window.history.pushState({ page, subPage }, "");
+  }, [page, subPage]);
 
   // Render sub-pages (detail views)
   if (subPage) {
