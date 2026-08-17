@@ -3086,7 +3086,7 @@ function TidesPage({ setPage }) {
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
         <div className="ck-webcam-grid">
           <div className="ck-webcam-tile">
-            <h3 className="ck-webcam-title">Portscatho Harbour Webcam (With thanks to the Harbour Club, Portscatho)</h3>
+            <h3 className="ck-webcam-title">Portscatho Harbour Webcam</h3>
             <div className="ck-webcam-frame">
               <iframe title="Portscatho Harbour webcam" src="https://camsecure.uk/httpswebcam/truro/truro.html" loading="lazy" allowFullScreen />
             </div>
