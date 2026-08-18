@@ -60,6 +60,8 @@ import imgLamorran from "./assets/images/Lamorran.jpeg";
 import imgMaritimeMuseum from "./assets/images/MaritimeMuseum.jpg";
 import imgMeatCounter from "./assets/images/MeatCounter.webp";
 import imgMevagissey from "./assets/images/Mevagissey.jpg";
+import imgMevagisseyAquarium from "./assets/images/MevagisseyAquarium.jpeg";
+import imgMevagisseyMuseum from "./assets/images/MevagisseyMuseum.jpeg";
 import imgNareHead from "./assets/images/NareHead.jpeg";
 import imgNativeGrain from "./assets/images/NativeGrain.jpg";
 import imgPendowerFarmShop from "./assets/images/PendowerFarmShop.webp";
@@ -156,8 +158,9 @@ const ACTIVITIES = [
   ] },
   { id: "maritime-museum", name: "National Maritime Museum", desc: "Falmouth's award-winning museum telling the story of small boats and Britain's seafaring history, with a striking harbourside building and a lookout tower with panoramic views.", tags: ["museum", "history", "family"], image: imgMaritimeMuseum },
   { id: "mevagissey", name: "Mevagissey", desc: "A classic working Cornish fishing village with a small aquarium in the former lifeboat shed, an excellent museum of local history, a bustling harbour, narrow winding streets, and independent shops. The dog friendly Teacup Tearooms serves enormous portions of sandwiches and cake that will last you all week! A good trip for rainy days.", tags: ["harbour", "village", "fishing"], image: imgMevagissey, chips: [
-    { label: "Aquarium", url: "https://www.mevagisseyharbour.co.uk/aquarium/" },
-    { label: "Teacup Tearooms", url: "https://teacuptearoom.com/" },
+    { label: "Aquarium", url: "https://www.mevagisseyharbour.co.uk/aquarium/", image: imgMevagisseyAquarium },
+    { label: "Museum", url: "https://www.mevagisseymuseum.com/", image: imgMevagisseyMuseum },
+    { label: "Teacup Tearooms", url: "https://teacuptearoom.com/", image: imgTeacupTearoom },
   ] },
   { id: "lamorran", name: "Lamorran House Garden", desc: "Lamorran is an Italianate terraced garden known for its sub-tropical planting and collection of palm trees, with a frost-free microclimate that shares similar conditions with Miami(!). You can stay for light lunches and teas on the terrace with views across St Mawes Bay.", image: imgLamorran, tags: ["gardens", "subtropical", "palms"], category: "garden", website: "https://www.lamorrangardens.co.uk/" },
   { id: "trelissick-garden", name: "Trelissick Garden", desc: "Hop onto the King Harry car ferry for a short ride across the river to Trelissick National Trust garden. Enjoy stunning views over the estuary, an excellent cafe, second hand bookshop and gallery selling local arts and crafts. Join parkrun here on a Saturday morning at 9am.", image: imgTrelissick, tags: ["gardens", "national trust", "views"], category: "garden", website: "https://www.nationaltrust.org.uk/visit/cornwall/trelissick" },
