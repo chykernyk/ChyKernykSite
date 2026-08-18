@@ -149,13 +149,16 @@ const FOOD_PLACES = [
 
 const ACTIVITIES = [
   { id: "falmouth-by-ferry", name: "Falmouth by Ferry", desc: "Drive to St Mawes and catch the ferry to Falmouth for a day of shopping or visit the Maritime Museum. Ferries run regularly through the year except in bad weather.", image: imgStMawesFerry, tags: ["ferry", "day trip", "shopping"], timetableUrl: "https://www.falriver.co.uk/ferries/st-mawes-ferry/timetable", ferryStatus: true },
-  { id: "fish-n-trips", name: "Fish n Trips", desc: "Join James Brown for a couple of hours of mackerel fishing with the occasional cod or gurnard and maybe a lobster if you're very lucky", image: imgFishNTrips, tags: ["fishing", "boat"], website: "http://www.fishandtripstmawes.co.uk/" },
+  { id: "fish-n-trips", name: "Fish n Trips", desc: "Join James Brown for a couple of hours of mackerel fishing with the occasional cod or gurnard and maybe a lobster if you're very lucky. Book a few weeks ahead to avoid disappointment.", image: imgFishNTrips, tags: ["fishing", "boat"], website: "http://www.fishandtripstmawes.co.uk/" },
   { id: "king-harry-ferry", name: "King Harry Ferry", desc: "A historic chain ferry crossing the River Fal, in operation since 1888. A scenic and surprisingly fun way to explore the Roseland and beyond.", image: imgKingHarryFerry, tags: ["ferry", "river", "scenic"], departureClocks: [
     { label: "Philleigh → Feock", minutes: [10, 30, 50] },
     { label: "Feock → Philleigh", minutes: [0, 20, 40] },
   ] },
   { id: "maritime-museum", name: "National Maritime Museum", desc: "Falmouth's award-winning museum telling the story of small boats and Britain's seafaring history, with a striking harbourside building and a lookout tower with panoramic views.", tags: ["museum", "history", "family"], image: imgMaritimeMuseum },
-  { id: "mevagissey", name: "Mevagissey", desc: "A classic working Cornish fishing village with an aquarium, a bustling harbour, narrow winding streets, and in the Teacup Tearooms, sandwiches and cake that will last you all week.", tags: ["harbour", "village", "fishing"], image: imgMevagissey },
+  { id: "mevagissey", name: "Mevagissey", desc: "A classic working Cornish fishing village with a small aquarium in the former lifeboat shed, an excellent museum of local history, a bustling harbour, narrow winding streets, and independent shops. The dog friendly Teacup Tearooms serves enormous portions of sandwiches and cake that will last you all week! A good trip for rainy days.", tags: ["harbour", "village", "fishing"], image: imgMevagissey, chips: [
+    { label: "Aquarium", url: "https://www.mevagisseyharbour.co.uk/aquarium/" },
+    { label: "Teacup Tearooms", url: "https://teacuptearoom.com/" },
+  ] },
   { id: "lamorran", name: "Lamorran House Garden", desc: "Lamorran is an Italianate terraced garden known for its sub-tropical planting and collection of palm trees, with a frost-free microclimate that shares similar conditions with Miami(!). You can stay for light lunches and teas on the terrace with views across St Mawes Bay.", image: imgLamorran, tags: ["gardens", "subtropical", "palms"], category: "garden", website: "https://www.lamorrangardens.co.uk/" },
   { id: "trelissick-garden", name: "Trelissick Garden", desc: "Hop onto the King Harry car ferry for a short ride across the river to Trelissick National Trust garden. Enjoy stunning views over the estuary, an excellent cafe, second hand bookshop and gallery selling local arts and crafts. Join parkrun here on a Saturday morning at 9am.", image: imgTrelissick, tags: ["gardens", "national trust", "views"], category: "garden", website: "https://www.nationaltrust.org.uk/visit/cornwall/trelissick" },
   { id: "caerhayes", name: "Caerhayes Castle Gardens", desc: "A spectacular woodland garden famous for its world-renowned collection of magnolias, best seen in spring. The castle itself is a Nash-designed gem.", image: imgCaerhayes, tags: ["gardens", "magnolias", "castle"], category: "garden", website: "https://visit.caerhays.co.uk/" },
@@ -215,6 +218,10 @@ const REMEDIES = [
     { name: "Stopcock Location", detail: "Under the kitchen sink, left side. Turn clockwise to close.", icon: "🚰" },
     { name: "Fusebox Location", detail: "Utility room, wall-mounted to the right of the door.", icon: "🔌" },
     { name: "Travelling to Cornwall", detail: "Darts Farm (5 mins off the motorway, near Exeter services) has a large farm shop, deli, butcher, wine merchant, cafe and chocolate maker(!) on site. Stock up on the cheap petrol available on your way back to the motorway.", icon: "🚗", chip: { label: "Darts Farm", url: "https://www.dartsfarm.co.uk/discover-darts/food-hall/delicatessen", image: imgDartsFarm } },
+  ]},
+  { category: "Spa Treatments", items: [
+    { name: "Hotel Tresanton Spa", detail: "Spa treatments are available at the Hotel Tresanton in St Mawes. Book a few weeks ahead to avoid disappointment: 01326 270055", icon: "💆" },
+    { name: "Treatment List", detail: "Full list of spa treatments and prices.", icon: "📋", url: "https://thepolizzicollection.com/app/uploads/2026/05/Treatments-Hotel-Tresanton.pdf" },
   ]},
   { category: "Church Services", items: [
     { name: "St Just-in-Roseland (Church of England)", detail: "Services at 8am and 11am.", icon: "⛪", url: "https://stjustandstmawes.org.uk/whats-on/parish-calendar/" },
@@ -1841,9 +1848,10 @@ function FoodListPage({ setPage, setSubPage, foodType, linkType, title, subtitle
                   <p className="ck-card-meta">{place.location}</p>
                   <h3 className="ck-card-title">{place.name}</h3>
                   <p className="ck-card-text">{place.desc}</p>
-                  <div className="ck-card-tags">
-                    {place.tags.map(t => <span key={t} className="ck-tag">{t}</span>)}
-                  </div>
+                  <button className="ck-btn ck-btn-secondary ck-btn-sm" style={{ marginTop: "0.75rem" }}
+                    onClick={e => { e.stopPropagation(); setSubPage({ type: "food-detail", id: place.id }); window.scrollTo(0, 0); }}>
+                    INFO
+                  </button>
                 </div>
               </div>
             ))}
@@ -1893,9 +1901,6 @@ function FoodDetail({ place, setPage, setSubPage }) {
           <span> / {place.name}</span>
         </div>
         <h1 className="ck-detail-title">{place.name}</h1>
-        <div className="ck-card-tags" style={{ marginBottom: "1.5rem" }}>
-          {place.tags.map(t => <span key={t} className="ck-tag">{t}</span>)}
-        </div>
         <div className="ck-detail-body"><p>{place.desc}</p></div>
         {place.website && place.website !== "#" && (
           <a className="ck-btn ck-btn-primary" style={{ marginBottom: "1.5rem", display: "inline-block", textDecoration: "none" }}
@@ -1935,9 +1940,10 @@ function ActivityListPage({ setPage, setSubPage, items, linkType, title, subtitl
                   )}
                   <h3 className="ck-card-title">{a.name}</h3>
                   <p className="ck-card-text">{a.desc}</p>
-                  <div className="ck-card-tags">
-                    {a.tags.map(t => <span key={t} className="ck-tag">{t}</span>)}
-                  </div>
+                  <button className="ck-btn ck-btn-secondary ck-btn-sm" style={{ marginTop: "0.75rem" }}
+                    onClick={e => { e.stopPropagation(); setSubPage({ type: "activity-detail", id: a.id }); window.scrollTo(0, 0); }}>
+                    INFO
+                  </button>
                 </div>
               </div>
             ))}
@@ -2067,9 +2073,6 @@ function ActivityDetail({ activity, setPage, setSubPage }) {
           <span> / {activity.name}</span>
         </div>
         <h1 className="ck-detail-title">{activity.name}</h1>
-        <div className="ck-card-tags" style={{ marginBottom: "1.5rem" }}>
-          {activity.tags.map(t => <span key={t} className="ck-tag">{t}</span>)}
-        </div>
         <div className="ck-detail-body"><p>{activity.desc}</p></div>
         {activity.departureClocks && (
           <div className="ck-departure-clocks">
@@ -2104,6 +2107,21 @@ function ActivityDetail({ activity, setPage, setSubPage }) {
               <img src={activity.eatingImage} alt="" className="ck-walk-eat-chip-img" />
               <div className="ck-walk-eat-chip-label">{activity.eating}</div>
             </a>
+          </div>
+        )}
+        {activity.chips && (
+          <div className="ck-detail-info">
+            <h3>Nearby</h3>
+            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+              {activity.chips.map(c => (
+                <a key={c.label} href={c.url} target="_blank" rel="noopener noreferrer" className="ck-walk-eat-chip">
+                  {c.image
+                    ? <img src={c.image} alt="" className="ck-walk-eat-chip-img" />
+                    : <PlaceholderPhoto className="ck-walk-eat-chip-img" />}
+                  <div className="ck-walk-eat-chip-label">{c.label}</div>
+                </a>
+              ))}
+            </div>
           </div>
         )}
       </div>
