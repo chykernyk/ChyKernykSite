@@ -138,7 +138,7 @@ const FOOD_PLACES = [
   { id: "waitrose", name: "Waitrose", desc: "I know I know, you all know Waitrose is a supermarket, but this one has another shop on the side called Great Cornish Food with a fabulous selection of Cornish food, books, pottery, booze, etc.", image: imgWaitrose2, tags: ["supermarket", "groceries"], website: "http://www.greatcornishfood.co.uk/", location: "Truro", foodType: "buying" },
   { id: "scathos-scoops", name: "Scatho's Scoops", desc: "Artisan ice cream made in Portscatho by Helen. Hazelnut Wow, Mint Choc Chip and White Chocolate, Pomegranate and Pistachio are the current favourites.", image: imgScathosScoops, tags: ["ice cream", "treats"], website: "https://www.scathos.co.uk/", location: "Portscatho", foodType: "eating" },
   { id: "hidden-hut", name: "Hidden Hut", desc: "Cornwall's most famous beach café. Their feast nights are the stuff of legend — booking opens midday on the first of each month and is closed (literally) seconds later. By day, superb lunches, cakes and coffee on Porthcurnick Beach.", image: imgHiddenHut, imagePosition: "center 15%", tags: ["restaurant", "beach", "feast nights"], website: "https://hiddenhut.co.uk/", location: "Porthcurnick Beach", foodType: "eating" },
-  { id: "standard", name: "The Standard", desc: "Contemporary dining with impeccable local sourcing. It is widely celebrated for its welcoming atmosphere, locally sourced Cornish drinks, and seasonal dishes cooked over a wood-fired grill. It is very busy so book early.", image: imgTheStandard, imagePosition: "center 63%", tags: ["restaurant", "fine dining"], website: "https://www.standardinn.co.uk/", location: "Gerrans", foodType: "eating" },
+  { id: "standard", name: "The Standard", desc: "Enjoy a locally sourced menu and wood fired roasts by the owner of the Hidden Hut. Bookings for the restaurant open 60 days in advance and fill up quickly during the summer months. The pavilion is open for outdoor drinks and a garden menu is available during the summer for walk in customers. Dog friendly inside and out.", image: imgTheStandard, imagePosition: "center 63%", tags: ["restaurant", "fine dining"], website: "https://www.standardinn.co.uk/", location: "Gerrans", foodType: "eating" },
   { id: "shillakabooky-beach-hut", name: "Shallikabooky Beach Hut", desc: "A charming beach hut serving simple, delicious food right by the water. A perfect stop before or after a walk along the coast path.", image: imgShillakabookyBeachHut, tags: ["beach hut", "casual", "coastal"], website: "https://m.facebook.com/shallikabooky/", location: "Roseland Peninsula", foodType: "eating" },
   { id: "the-watchtower", name: "The Watch House", desc: "Fish and chips in St Mawes, freshly cooked and perfect eaten looking out over the harbour.", image: imgTheWatchHouse, tags: ["fish and chips", "takeaway", "harbourside"], website: "#", location: "St Mawes", foodType: "eating" },
   { id: "tresanton", name: "Hotel Tresanton", desc: "Olga Polizzi's celebrated hotel restaurant in St Mawes. Mediterranean-influenced cooking with stunning harbour views and a cocktail terrace that wouldn't be out of place in the med.", image: imgTresanton, tags: ["restaurant", "hotel", "harbour views"], website: "https://thepolizzicollection.com/hotel-tresanton/", location: "St Mawes", foodType: "eating" },
@@ -223,8 +223,7 @@ const REMEDIES = [
     { name: "Travelling to Cornwall", detail: "Darts Farm (5 mins off the motorway, near Exeter services) has a large farm shop, deli, butcher, wine merchant, cafe and chocolate maker(!) on site. Stock up on the cheap petrol available on your way back to the motorway.", icon: "🚗", chip: { label: "Darts Farm", url: "https://www.dartsfarm.co.uk/discover-darts/food-hall/delicatessen", image: imgDartsFarm } },
   ]},
   { category: "Spa Treatments", items: [
-    { name: "Hotel Tresanton Spa", detail: "Spa treatments are available at the Hotel Tresanton in St Mawes. Book a few weeks ahead to avoid disappointment: 01326 270055", icon: "💆" },
-    { name: "Treatment List", detail: "Full list of spa treatments and prices.", icon: "📋", url: "https://thepolizzicollection.com/app/uploads/2026/05/Treatments-Hotel-Tresanton.pdf" },
+    { name: "Hotel Tresanton Spa", detail: "Spa treatments are available at the Hotel Tresanton in St Mawes. Book ahead of your stay to avoid disappointment: 01326 270055. Click here for the treatment list.", icon: "💆", url: "https://thepolizzicollection.com/app/uploads/2026/05/Treatments-Hotel-Tresanton.pdf" },
   ]},
   { category: "Church Services", items: [
     { name: "St Just-in-Roseland (Church of England)", detail: "Services at 8am and 11am.", icon: "⛪", url: "https://stjustandstmawes.org.uk/whats-on/parish-calendar/" },
@@ -236,7 +235,7 @@ const REMEDIES = [
     { name: "St Mawes Pharmacy", detail: "Prescriptions & pharmacy services", icon: "💊", url: "https://www.stmawespharmacy.co.uk/" },
   ]},
   { category: "Emergency Services", items: [
-    { name: "Emergency", detail: "999 — Police, Fire, Ambulance, Coastguard", icon: "🆘" },
+    { name: "Emergency", detail: "999 — Police, Fire, Ambulance", icon: "🆘" },
     { name: "Coastguard", detail: "999 and ask for Coastguard", icon: "⚓" },
   ]},
 ];
@@ -3501,19 +3500,31 @@ function CalendarPage({ setPage, isAdmin, rates }) {
                 else if (prevBooked && !nextBooked) bookingClass = "booked-end";
                 else bookingClass = "booked";
               }
+              // A High-tier week that's only partly booked can no longer be
+              // let as a whole week, so its still-available days show a
+              // per-day price instead of the usual Sunday-only weekly figure.
+              const weekMonday = weekStart(dateObj);
+              const weekHasBooking = Array.from({ length: 7 }, (_, i) => {
+                const wd = new Date(weekMonday);
+                wd.setDate(wd.getDate() + i);
+                return bookings[toDateStr(wd)] === "booked";
+              }).some(Boolean);
+              const isPartialWeek = dayRate?.tier === "High" && status !== "booked" && weekHasBooking;
               // The last day of a booking is a changeover day (guests leave
               // in the morning), so it's still worth showing a rate for.
-              const showRate = dayRate && (status !== "booked" || bookingClass === "booked-end") && (dayRate.tier === "High" ? isSunday : true);
+              const showRate = dayRate && (status !== "booked" || bookingClass === "booked-end") && (dayRate.tier === "High" ? (isSunday || isPartialWeek) : true);
+              const displayRate = isPartialWeek ? Math.round(dayRate.rate / 7) : dayRate?.rate;
+              const rateUnit = dayRate?.tier === "High" && !isPartialWeek ? "week" : "night";
               return (
                 <div key={dateStr}
                   className={`ck-cal-day ${bookingClass} ${isToday ? "today" : ""}`}
                   onClick={() => handleDayClick(dateStr)}
                   role={(isAdmin || wedding) ? "button" : undefined}
-                  aria-label={`${d} ${currentMonth.toLocaleDateString("en-GB", { month: "long" })} ${status || "available"}${isPortscathoRegatta ? ", Portscatho Regatta" : ""}${isFeastNight ? ", Feast Night" : ""}${isFalmouthWeek ? ", Falmouth Week" : ""}${wedding ? ", Wedding" : ""}${showRate ? `, £${dayRate.rate} ${dayRate.tier === "High" ? "per week" : "per night"}` : ""}`}
+                  aria-label={`${d} ${currentMonth.toLocaleDateString("en-GB", { month: "long" })} ${status || "available"}${isPortscathoRegatta ? ", Portscatho Regatta" : ""}${isFeastNight ? ", Feast Night" : ""}${isFalmouthWeek ? ", Falmouth Week" : ""}${wedding ? ", Wedding" : ""}${showRate ? `, £${displayRate} per ${rateUnit}` : ""}`}
                 >
                   {showRate && (
-                    <span className="ck-cal-day-rate" title={dayRate.tier === "High" ? "Weekly rate" : "Nightly rate"}>
-                      £{dayRate.rate}
+                    <span className="ck-cal-day-rate" title={rateUnit === "week" ? "Weekly rate" : "Nightly rate"}>
+                      £{displayRate}
                     </span>
                   )}
                   {d}
