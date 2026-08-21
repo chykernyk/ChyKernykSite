@@ -206,7 +206,7 @@ const REMEDIES = [
     { name: "Dom & Davina", detail: "Contact for any issues — Dom 07976 732303 — Davina 07967 135 480", icon: "🏠" },
   ]},
   { category: "Dogs", items: [
-    { name: "Dogs", detail: "Dogs are very welcome to stay downstairs (only) at Chy Kernyk. There is an outdoor shower for sandy paws and dog blankets for the sofa (stored in the utility room). Please note there is no gate, dogs will need to be watched when let out.", icon: "🐾" },
+    { name: "Dogs", detail: "Dogs are very welcome to stay downstairs (only) at Chy Kernyk. There is an outdoor shower for sandy paws and dog blankets for the sofa (stored in the utility room). Please note there is no gate, dogs will need to be watched when let out.\nClick here for a list of dog friendly Cornish attractions.", icon: "🐾", url: "https://bestdaysoutcornwall.co.uk/dog-friendly-tourist-attractions-cornwall/" },
   ]},
   { category: "Amenities & Maintenance", items: [
     { name: "Parking", detail: "Off-road parking for 2-3 cars. EV car charging point available. Further parking on road outside.", icon: "🅿️" },
@@ -1109,7 +1109,7 @@ const CSS = `
   .ck-remedy-icon { font-size:1.5rem; flex-shrink:0; }
   .ck-remedy-text { flex:1; }
   .ck-remedy-name { font-weight:500; color:var(--ocean); margin-bottom:0.2rem; }
-  .ck-remedy-detail { font-size:0.9rem; color:var(--text-light); }
+  .ck-remedy-detail { font-size:0.9rem; color:var(--text-light); white-space:pre-line; }
   .ck-remedy-qr { width:56px; height:56px; flex-shrink:0; border-radius:4px; }
 
   /* ── TIDES ── */
