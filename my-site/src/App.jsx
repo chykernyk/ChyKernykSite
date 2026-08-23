@@ -35,6 +35,8 @@ import imgCafeMylor from "./assets/images/CafeMylor.jpeg";
 import imgCarneBeach from "./assets/images/CarneBeach.jpg";
 import imgCurgurrellWalk from "./assets/images/CurgurrellWalk.jpg";
 import imgDartsFarm from "./assets/images/DartsFarm.jpeg";
+import imgDownstairsBathroom1 from "./assets/images/DownstairsBathroom1.jpg";
+import imgDownstairsBathroom2 from "./assets/images/DownstairsBathroom2.jpg";
 import imgEdenProject from "./assets/images/EdenProject.jpeg";
 import imgFishNTrips from "./assets/images/FishNTrips.jpeg";
 import imgFishingOffRocks from "./assets/images/FishingOffRocks.jpeg";
@@ -243,6 +245,8 @@ const REMEDIES = [
 const GALLERY_HOUSE = [
   { id: "house-1", url: imgHousePlans2026, caption: "Coming soon…" },
   { id: "house-2", url: imgHouseComingSoon, caption: "Coming January 2027…" },
+  { id: "house-3", url: imgDownstairsBathroom1, caption: "Downstairs bathroom" },
+  { id: "house-4", url: imgDownstairsBathroom2, caption: "Downstairs bathroom" },
 ];
 
 const GALLERY_BUILDING_PROJECT = [
