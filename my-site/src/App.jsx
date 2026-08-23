@@ -111,6 +111,8 @@ import imgTregewToasties from "./assets/images/TregewToasties.jpeg";
 import imgTrelissick from "./assets/images/Trelissick.jpeg";
 import imgTrelissick2 from "./assets/images/Trelissick2.jpeg";
 import imgTresanton from "./assets/images/Tresanton.webp";
+import imgTwinBedroom1 from "./assets/images/TwinBedroom1.jpg";
+import imgTwinBedroom2 from "./assets/images/TwinBedroom2.jpg";
 import imgWaitrose2 from "./assets/images/Waitrose2.jpg";
 
 // ─── DATA & CONSTANTS ────────────────────────────────────────────────
@@ -255,6 +257,8 @@ const GALLERY_HOUSE = [
   { id: "house-6", url: imgFamilyBathroom2, caption: "Family bathroom" },
   { id: "house-7", url: imgMasterEnsuite1, caption: "Master en-suite bathroom" },
   { id: "house-8", url: imgMasterEnsuite2, caption: "Master en-suite bathroom" },
+  { id: "house-9", url: imgTwinBedroom1, caption: "Twin bedroom" },
+  { id: "house-10", url: imgTwinBedroom2, caption: "Twin bedroom" },
 ];
 
 const GALLERY_BUILDING_PROJECT = [
