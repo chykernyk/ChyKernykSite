@@ -38,6 +38,8 @@ import imgDartsFarm from "./assets/images/DartsFarm.jpeg";
 import imgDownstairsBathroom1 from "./assets/images/DownstairsBathroom1.jpg";
 import imgDownstairsBathroom2 from "./assets/images/DownstairsBathroom2.jpg";
 import imgEdenProject from "./assets/images/EdenProject.jpeg";
+import imgFamilyBathroom1 from "./assets/images/FamilyBathroom1.jpg";
+import imgFamilyBathroom2 from "./assets/images/FamilyBathroom2.jpg";
 import imgFishNTrips from "./assets/images/FishNTrips.jpeg";
 import imgFishingOffRocks from "./assets/images/FishingOffRocks.jpeg";
 import imgFistralBeach from "./assets/images/FistralBeach.jpg";
@@ -247,6 +249,8 @@ const GALLERY_HOUSE = [
   { id: "house-2", url: imgHouseComingSoon, caption: "Coming January 2027…" },
   { id: "house-3", url: imgDownstairsBathroom1, caption: "Downstairs bathroom" },
   { id: "house-4", url: imgDownstairsBathroom2, caption: "Downstairs bathroom" },
+  { id: "house-5", url: imgFamilyBathroom1, caption: "Family bathroom" },
+  { id: "house-6", url: imgFamilyBathroom2, caption: "Family bathroom" },
 ];
 
 const GALLERY_BUILDING_PROJECT = [
