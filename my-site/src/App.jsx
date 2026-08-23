@@ -249,8 +249,8 @@ const REMEDIES = [
 ];
 
 const GALLERY_HOUSE = [
-  { id: "house-1", url: imgHousePlans2026, caption: "Coming soon…" },
   { id: "house-2", url: imgHouseComingSoon, caption: "Coming January 2027…" },
+  { id: "house-1", url: imgHousePlans2026, caption: "Coming soon…" },
   { id: "house-3", url: imgDownstairsBathroom1, caption: "Downstairs bathroom" },
   { id: "house-4", url: imgDownstairsBathroom2, caption: "Downstairs bathroom" },
   { id: "house-5", url: imgFamilyBathroom1, caption: "Family bathroom" },
@@ -911,19 +911,21 @@ const CSS = `
     object-fit:contain; border-radius:8px;
   }
   .ck-lightbox-close {
-    position:absolute; top:1.5rem; right:1.5rem;
-    background:none; border:none; color:white;
-    font-size:2rem; cursor:pointer; opacity:0.7;
-    transition: opacity 0.3s;
+    position:absolute; top:1.5rem; right:1.5rem; z-index:1;
+    background:rgba(0,0,0,0.45); border:none; border-radius:50%;
+    width:2.5rem; height:2.5rem; display:flex; align-items:center; justify-content:center;
+    color:white; font-size:1.6rem; cursor:pointer; opacity:0.85;
+    transition: opacity 0.3s, background 0.3s;
   }
-  .ck-lightbox-close:hover { opacity:1; }
+  .ck-lightbox-close:hover { opacity:1; background:rgba(0,0,0,0.65); }
   .ck-lightbox-arrow {
-    position:absolute; top:50%; transform:translateY(-50%);
-    background:none; border:none; color:white;
-    font-size:2.5rem; line-height:1; cursor:pointer; opacity:0.7;
-    padding:0.5rem 1rem; transition: opacity 0.3s;
+    position:absolute; top:50%; transform:translateY(-50%); z-index:1;
+    background:rgba(0,0,0,0.45); border:none; border-radius:50%;
+    width:3rem; height:3rem; display:flex; align-items:center; justify-content:center;
+    color:white; font-size:1.8rem; line-height:1; cursor:pointer; opacity:0.85;
+    transition: opacity 0.3s, background 0.3s;
   }
-  .ck-lightbox-arrow:hover { opacity:1; }
+  .ck-lightbox-arrow:hover { opacity:1; background:rgba(0,0,0,0.65); }
   .ck-lightbox-arrow.prev { left:0.5rem; }
   .ck-lightbox-arrow.next { right:0.5rem; }
   .ck-lightbox-caption {
