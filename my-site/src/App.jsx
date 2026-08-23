@@ -62,6 +62,8 @@ import imgKelpCanteen from "./assets/images/KelpCanteen.jpg";
 import imgKingHarryFerry from "./assets/images/KingHarryFerry.jpg";
 import imgLamorran from "./assets/images/Lamorran.jpeg";
 import imgMaritimeMuseum from "./assets/images/MaritimeMuseum.jpg";
+import imgMasterEnsuite1 from "./assets/images/MasterEnsuite1.jpg";
+import imgMasterEnsuite2 from "./assets/images/MasterEnsuite2.jpg";
 import imgMeatCounter from "./assets/images/MeatCounter.webp";
 import imgMevagissey from "./assets/images/Mevagissey.jpg";
 import imgMevagisseyAquarium from "./assets/images/MevagisseyAquarium.jpeg";
@@ -251,6 +253,8 @@ const GALLERY_HOUSE = [
   { id: "house-4", url: imgDownstairsBathroom2, caption: "Downstairs bathroom" },
   { id: "house-5", url: imgFamilyBathroom1, caption: "Family bathroom" },
   { id: "house-6", url: imgFamilyBathroom2, caption: "Family bathroom" },
+  { id: "house-7", url: imgMasterEnsuite1, caption: "Master en-suite bathroom" },
+  { id: "house-8", url: imgMasterEnsuite2, caption: "Master en-suite bathroom" },
 ];
 
 const GALLERY_BUILDING_PROJECT = [
