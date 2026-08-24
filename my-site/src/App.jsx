@@ -58,6 +58,7 @@ import imgHouseAerial from "./assets/images/HouseAerial.jpeg";
 import imgHouseComingSoon from "./assets/images/HouseComingSoon.png";
 import imgHousePlans2026 from "./assets/images/HousePlans2026.png";
 import imgJuniorRaceWeek from "./assets/images/JuniorRaceWeek.jpeg";
+import imgKitchen from "./assets/images/Kitchen.jpg";
 import imgKelpCanteen from "./assets/images/KelpCanteen.jpg";
 import imgKingHarryFerry from "./assets/images/KingHarryFerry.jpg";
 import imgLamorran from "./assets/images/Lamorran.jpeg";
@@ -259,6 +260,7 @@ const GALLERY_HOUSE = [
   { id: "house-8", url: imgMasterEnsuite2, caption: "Master en-suite bathroom" },
   { id: "house-9", url: imgTwinBedroom1, caption: "Twin bedroom" },
   { id: "house-10", url: imgTwinBedroom2, caption: "Twin bedroom" },
+  { id: "house-11", url: imgKitchen, caption: "Kitchen", linkUrl: "/documents/kitchen-presentation.pdf" },
 ];
 
 const GALLERY_BUILDING_PROJECT = [
@@ -1643,10 +1645,17 @@ function GallerySection({ title, images, onSelect, emptyText }) {
       {images.length > 0 ? (
         <div className="ck-gallery-grid">
           {images.map((img, i) => (
-            <div key={img.id} className="ck-gallery-item" data-caption={img.caption}
-              onClick={() => onSelect(images, i)}>
-              <img src={img.url} alt={img.caption} loading="lazy" />
-            </div>
+            img.linkUrl ? (
+              <a key={img.id} className="ck-gallery-item" data-caption={img.caption}
+                href={img.linkUrl} target="_blank" rel="noopener noreferrer">
+                <img src={img.url} alt={img.caption} loading="lazy" />
+              </a>
+            ) : (
+              <div key={img.id} className="ck-gallery-item" data-caption={img.caption}
+                onClick={() => onSelect(images, i)}>
+                <img src={img.url} alt={img.caption} loading="lazy" />
+              </div>
+            )
           ))}
         </div>
       ) : (
