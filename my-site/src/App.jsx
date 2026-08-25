@@ -88,6 +88,7 @@ import imgRenwicks from "./assets/images/Renwicks.jpeg";
 import imgScarlet from "./assets/images/Scarlet.webp";
 import imgScathosScoops from "./assets/images/ScathosScoops.jpeg";
 import imgShillakabookyBeachHut from "./assets/images/ShillakabookyBeachHut.jpeg";
+import imgStairs from "./assets/images/Stairs.jpg";
 import imgStAnthony from "./assets/images/StAnthony.webp";
 import imgStAnthonyLight from "./assets/images/StAnthonyLight.jpeg";
 import imgStIves from "./assets/images/StIves.jpeg";
@@ -99,6 +100,7 @@ import imgStMawesHarbour2 from "./assets/images/StMawesHarbour2.jpeg";
 import imgStMawesHarbourWall from "./assets/images/StMawesHarbourWall.jpeg";
 import imgStandardInnEvening from "./assets/images/StandardInnEvening.jpeg";
 import imgStandardInnGarden from "./assets/images/StandardInnGarden.jpeg";
+import imgStudy from "./assets/images/Study.jpg";
 import imgTeacupTearoom from "./assets/images/TeacupTearoom.jpg";
 import imgTheStandard from "./assets/images/TheStandard.jpeg";
 import imgTheWatchHouse from "./assets/images/TheWatchHouse.jpeg";
@@ -261,6 +263,8 @@ const GALLERY_HOUSE = [
   { id: "house-9", url: imgTwinBedroom1, caption: "Twin bedroom" },
   { id: "house-10", url: imgTwinBedroom2, caption: "Twin bedroom" },
   { id: "house-11", url: imgKitchen, caption: "Kitchen", linkUrl: "/documents/kitchen-presentation.pdf" },
+  { id: "house-12", url: imgStudy, caption: "Study" },
+  { id: "house-13", url: imgStairs, caption: "Stairs" },
 ];
 
 const GALLERY_BUILDING_PROJECT = [
