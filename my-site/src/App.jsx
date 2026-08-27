@@ -1961,40 +1961,37 @@ function ActivityListPage({ setPage, setSubPage, items, linkType, title, subtitl
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
         <div className="ck-category-layout">
           <div className="ck-grid">
-            {items.map(a => a.externalUrl ? (
-              <a key={a.id} className="ck-card" href={a.externalUrl} target="_blank" rel="noopener noreferrer">
-                <div className="ck-card-img-wrap">
-                  {a.image
-                    ? <img className="ck-card-img" src={a.image} alt={a.name} loading="lazy"
-                        style={a.imagePosition ? { objectPosition: a.imagePosition } : undefined} />
-                    : <PlaceholderPhoto className="ck-card-img" />}
+            {items.map(a => {
+              const goToInfo = () => {
+                if (a.externalUrl) {
+                  window.open(a.externalUrl, "_blank", "noopener,noreferrer");
+                } else {
+                  setSubPage({ type: "activity-detail", id: a.id });
+                  window.scrollTo(0, 0);
+                }
+              };
+              return (
+                <div key={a.id} className="ck-card" onClick={goToInfo}>
+                  <div className="ck-card-img-wrap">
+                    {a.image
+                      ? <img className="ck-card-img" src={a.image} alt={a.name} loading="lazy"
+                          style={a.imagePosition ? { objectPosition: a.imagePosition } : undefined} />
+                      : <PlaceholderPhoto className="ck-card-img" />}
+                  </div>
+                  <div className="ck-card-body">
+                    {a.ferryStatus && ferryStatus?.level === "red" && (
+                      <div className="ck-card-ferry-alert"><span className="ck-ferry-status-dot" />Ferry not running today</div>
+                    )}
+                    <h3 className="ck-card-title">{a.name}</h3>
+                    <p className="ck-card-text">{a.desc}</p>
+                    <button className="ck-btn ck-btn-secondary ck-btn-sm" style={{ marginTop: "0.75rem" }}
+                      onClick={e => { e.stopPropagation(); goToInfo(); }}>
+                      INFO
+                    </button>
+                  </div>
                 </div>
-                <div className="ck-card-body">
-                  <h3 className="ck-card-title">{a.name}</h3>
-                  <p className="ck-card-text">{a.desc}</p>
-                </div>
-              </a>
-            ) : (
-              <div key={a.id} className="ck-card" onClick={() => { setSubPage({ type: "activity-detail", id: a.id }); window.scrollTo(0, 0); }}>
-                <div className="ck-card-img-wrap">
-                  {a.image
-                    ? <img className="ck-card-img" src={a.image} alt={a.name} loading="lazy"
-                        style={a.imagePosition ? { objectPosition: a.imagePosition } : undefined} />
-                    : <PlaceholderPhoto className="ck-card-img" />}
-                </div>
-                <div className="ck-card-body">
-                  {a.ferryStatus && ferryStatus?.level === "red" && (
-                    <div className="ck-card-ferry-alert"><span className="ck-ferry-status-dot" />Ferry not running today</div>
-                  )}
-                  <h3 className="ck-card-title">{a.name}</h3>
-                  <p className="ck-card-text">{a.desc}</p>
-                  <button className="ck-btn ck-btn-secondary ck-btn-sm" style={{ marginTop: "0.75rem" }}
-                    onClick={e => { e.stopPropagation(); setSubPage({ type: "activity-detail", id: a.id }); window.scrollTo(0, 0); }}>
-                    INFO
-                  </button>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
           <div className="ck-category-map-wrap">
             <CategoryMap linkType={linkType} setPage={setPage} setSubPage={setSubPage} />
