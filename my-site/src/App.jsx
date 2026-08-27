@@ -169,7 +169,7 @@ const ACTIVITIES = [
     { label: "Feock → Philleigh", minutes: [0, 20, 40] },
   ] },
   { id: "maritime-museum", name: "National Maritime Museum", desc: "Falmouth's award-winning museum telling the story of small boats and Britain's seafaring history, with a striking harbourside building and a lookout tower with panoramic views.", tags: ["museum", "history", "family"], image: imgMaritimeMuseum },
-  { id: "sea-shanties", name: "Sea Shanties", desc: "The wonderful Portscatho Shantymen performed for the G7 world leaders' visit to Cornwall in 2021. Join them at the Plume of Feathers pub in Portscatho on Wednesday evenings from 7.30pm for a drink and singalong. Click here for more information on upcoming performances.", tags: ["music", "pub", "local tradition"], image: imgSeaShanties, externalUrl: "https://www.duhagowr.co.uk/" },
+  { id: "sea-shanties", name: "Sea Shanties", desc: "The wonderful Portscatho Shantymen performed for the G7 world leaders' visit to Cornwall in 2021. Join them at the Plume of Feathers pub in Portscatho on Wednesday evenings from 7.30pm for a drink and singalong. Click here for more information on upcoming performances.", tags: ["music", "pub", "local tradition"], image: imgSeaShanties, website: "https://www.duhagowr.co.uk/" },
   { id: "mevagissey", name: "Mevagissey", desc: "A classic working Cornish fishing village with a small aquarium in the former lifeboat shed, an excellent museum of local history, a bustling harbour, narrow winding streets, and independent shops. The dog friendly Teacup Tearooms serves enormous portions of sandwiches and cake that will last you all week! A good trip for rainy days.", tags: ["harbour", "village", "fishing"], image: imgMevagissey, chips: [
     { label: "Aquarium", url: "https://www.mevagisseyharbour.co.uk/aquarium/", image: imgMevagisseyAquarium },
     { label: "Museum", url: "https://www.mevagisseymuseum.com/", image: imgMevagisseyMuseum },
@@ -1961,37 +1961,27 @@ function ActivityListPage({ setPage, setSubPage, items, linkType, title, subtitl
       <section className="ck-section" style={{ paddingTop: "1rem" }}>
         <div className="ck-category-layout">
           <div className="ck-grid">
-            {items.map(a => {
-              const goToInfo = () => {
-                if (a.externalUrl) {
-                  window.open(a.externalUrl, "_blank", "noopener,noreferrer");
-                } else {
-                  setSubPage({ type: "activity-detail", id: a.id });
-                  window.scrollTo(0, 0);
-                }
-              };
-              return (
-                <div key={a.id} className="ck-card" onClick={goToInfo}>
-                  <div className="ck-card-img-wrap">
-                    {a.image
-                      ? <img className="ck-card-img" src={a.image} alt={a.name} loading="lazy"
-                          style={a.imagePosition ? { objectPosition: a.imagePosition } : undefined} />
-                      : <PlaceholderPhoto className="ck-card-img" />}
-                  </div>
-                  <div className="ck-card-body">
-                    {a.ferryStatus && ferryStatus?.level === "red" && (
-                      <div className="ck-card-ferry-alert"><span className="ck-ferry-status-dot" />Ferry not running today</div>
-                    )}
-                    <h3 className="ck-card-title">{a.name}</h3>
-                    <p className="ck-card-text">{a.desc}</p>
-                    <button className="ck-btn ck-btn-secondary ck-btn-sm" style={{ marginTop: "0.75rem" }}
-                      onClick={e => { e.stopPropagation(); goToInfo(); }}>
-                      INFO
-                    </button>
-                  </div>
+            {items.map(a => (
+              <div key={a.id} className="ck-card" onClick={() => { setSubPage({ type: "activity-detail", id: a.id }); window.scrollTo(0, 0); }}>
+                <div className="ck-card-img-wrap">
+                  {a.image
+                    ? <img className="ck-card-img" src={a.image} alt={a.name} loading="lazy"
+                        style={a.imagePosition ? { objectPosition: a.imagePosition } : undefined} />
+                    : <PlaceholderPhoto className="ck-card-img" />}
                 </div>
-              );
-            })}
+                <div className="ck-card-body">
+                  {a.ferryStatus && ferryStatus?.level === "red" && (
+                    <div className="ck-card-ferry-alert"><span className="ck-ferry-status-dot" />Ferry not running today</div>
+                  )}
+                  <h3 className="ck-card-title">{a.name}</h3>
+                  <p className="ck-card-text">{a.desc}</p>
+                  <button className="ck-btn ck-btn-secondary ck-btn-sm" style={{ marginTop: "0.75rem" }}
+                    onClick={e => { e.stopPropagation(); setSubPage({ type: "activity-detail", id: a.id }); window.scrollTo(0, 0); }}>
+                    INFO
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
           <div className="ck-category-map-wrap">
             <CategoryMap linkType={linkType} setPage={setPage} setSubPage={setSubPage} />
