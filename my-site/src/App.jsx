@@ -3289,6 +3289,17 @@ function weekStart(date) {
   return d;
 }
 
+// The most recent Sunday on or before the given date — used for the
+// calendar's High-season week/booking logic, which runs Sunday to Sunday
+// (unlike weekStart() above, which anchors to the calendar grid's
+// Monday-start rows for rate-season lookups).
+function sundayWeekStart(date) {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  d.setDate(d.getDate() - d.getDay());
+  return d;
+}
+
 function sameDay(a, b) {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 }
@@ -3536,11 +3547,25 @@ function CalendarPage({ setPage, isAdmin, rates }) {
               // A High-tier week that's only partly booked can no longer be
               // let as a whole week, so its still-available days show a
               // per-day price instead of the usual Sunday-only weekly figure.
-              const weekMonday = weekStart(dateObj);
+              // High-season bookings run Sunday to Sunday, not aligned to the
+              // calendar grid's Monday-start rows, so the 7 nights checked
+              // here must anchor to the most recent Sunday rather than
+              // weekStart() — otherwise a booked arrival Sunday leaks partial
+              // pricing onto the tail of the previous (fully free) week, and
+              // vice versa for the week after a departure Sunday.
+              const weekSunday = sundayWeekStart(dateObj);
               const weekHasBooking = Array.from({ length: 7 }, (_, i) => {
-                const wd = new Date(weekMonday);
+                const wd = new Date(weekSunday);
                 wd.setDate(wd.getDate() + i);
-                return bookings[toDateStr(wd)] === "booked";
+                if (bookings[toDateStr(wd)] !== "booked") return false;
+                // A booked day whose following day is free is just a
+                // checkout morning (guests leave, nobody occupies that
+                // night) — this matters for the shared boundary Sunday,
+                // which is both one week's checkout and the next week's
+                // check-in date.
+                const nextWd = new Date(wd);
+                nextWd.setDate(nextWd.getDate() + 1);
+                return bookings[toDateStr(nextWd)] === "booked";
               }).some(Boolean);
               const isPartialWeek = dayRate?.tier === "High" && status !== "booked" && weekHasBooking;
               // The last day of a booking is a changeover day (guests leave
