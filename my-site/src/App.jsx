@@ -3343,14 +3343,18 @@ function getRateForDate(date, rates) {
     return bySeason("Christmas/New Year");
   }
 
-  const easterWeek = weekStart(getEasterSunday(year));
-  const easterFollowingWeek = new Date(easterWeek);
-  easterFollowingWeek.setDate(easterFollowingWeek.getDate() + 7);
-  if (sameDay(ws, easterWeek) || sameDay(ws, easterFollowingWeek)) {
+  // High season for Easter runs Palm Sunday (the Sunday before Easter)
+  // through Easter Sunday itself, inclusive — matching the site's usual
+  // Sunday-to-Sunday High-season booking week. The Sunday after Easter
+  // starts a fresh, non-High week.
+  const easterSunday = getEasterSunday(year);
+  const palmSunday = new Date(easterSunday);
+  palmSunday.setDate(palmSunday.getDate() - 7);
+  const dateStr = toDateStr(date);
+  if (dateStr >= toDateStr(palmSunday) && dateStr <= toDateStr(easterSunday)) {
     return bySeason("Easter");
   }
 
-  const dateStr = toDateStr(date);
   if (inDateRanges(dateStr, SUMMER_HALF_TERM_RANGES)) return bySeason("Summer Half Term");
   if (inDateRanges(dateStr, AUTUMN_HALF_TERM_RANGES)) return bySeason("Autumn Half Term");
 
