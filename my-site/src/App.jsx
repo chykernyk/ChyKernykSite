@@ -3572,9 +3572,9 @@ function CalendarPage({ setPage, isAdmin, rates }) {
                 return bookings[toDateStr(nextWd)] === "booked";
               }).some(Boolean);
               const isPartialWeek = dayRate?.tier === "High" && status !== "booked" && weekHasBooking;
-              // The last day of a booking is a changeover day (guests leave
-              // in the morning), so it's still worth showing a rate for.
-              const showRate = dayRate && (status !== "booked" || bookingClass === "booked-end") && (dayRate.tier === "High" ? (isSunday || isPartialWeek) : true);
+              // Rates stay visible on booked days too, not just available
+              // ones, so the price is always there for reference.
+              const showRate = dayRate && (dayRate.tier === "High" ? (isSunday || isPartialWeek) : true);
               const displayRate = isPartialWeek ? Math.round(dayRate.rate / 7) : dayRate?.rate;
               const rateUnit = dayRate?.tier === "High" && !isPartialWeek ? "week" : "night";
               return (
