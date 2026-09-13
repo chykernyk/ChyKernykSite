@@ -33,6 +33,7 @@ import imgBurncooseGoldMedal from "./assets/images/BurncooseGoldMedal.jpg";
 import imgCaerhayes from "./assets/images/Caerhayes.webp";
 import imgCafeMylor from "./assets/images/CafeMylor.jpeg";
 import imgCarneBeach from "./assets/images/CarneBeach.jpg";
+import imgCoopStMawes from "./assets/images/CoopStMawes.jpg";
 import imgCurgurrellWalk from "./assets/images/CurgurrellWalk.jpg";
 import imgDartsFarm from "./assets/images/DartsFarm.jpeg";
 import imgDownstairsBathroom1 from "./assets/images/DownstairsBathroom1.jpg";
@@ -141,13 +142,17 @@ const HERO_IMAGES = [
 ];
 
 const FOOD_PLACES = [
-  { id: "vegetable-stall", name: "Vegetable Stall", desc: "Delicious local produce - take 50p and £1 coins with you for the honesty box!", tags: ["vegetables", "local produce", "honesty box"], website: "#", location: "Roseland Peninsula", foodType: "buying" },
-  { id: "portscatho-stores", name: "Portscatho Stores", desc: "The heart of the village — exceptional deli, fresh bread daily, local produce, and everything you need. Their pasties are legendary. Open 7 'til 7 daily.", image: imgPortscathoStoresLevel, tags: ["deli", "groceries", "bakery"], website: "#", location: "Portscatho", foodType: "buying" },
-  { id: "curgurrell-farm-shop", name: "Pendower Farm Shop", desc: "Family-run farm shop with their own livestock and kitchen garden produce. Also great fresh fish. Seasonal, honest, and utterly delicious. Open 10am-6pm every day except Sunday.", image: imgPendowerFarmShop, tags: ["farm shop", "meat", "seasonal"], website: "https://www.pendowerfarmshop.com/", location: "Pendower", foodType: "buying" },
-  { id: "st-mawes-fudge-shop", name: "St Mawes Fudge Shop", desc: "A traditional Cornish fudge shop with a tempting array of flavours to take home or enjoy on the harbourside.", image: imgFudgeAndMore, tags: ["fudge", "sweets", "gifts"], website: "#", location: "St Mawes", foodType: "buying" },
-  { id: "tregew-food-barn", name: "Tregew Food Barn", desc: "A weekly barn full of local food produce from Bread, Cheese, Meat, Fish, Pies, Veg and everything in between. Only open Saturday mornings, 9am - 1pm, but get there early as they do sell out.", image: imgTregewFoodBarn, tags: ["farm shop", "local produce"], website: "https://www.foodbarn-tregew.co.uk/", location: "Near Froe", foodType: "buying" },
-  { id: "native-grain-bakers", name: "Native Grain Bakers", desc: "A Truro bakery turning out beautiful sourdough pastries and viennoiserie — the Chelsea buns and laminated bakes are worth the trip alone.", image: imgNativeGrain, tags: ["bakery", "pastries"], website: "http://www.instagram.com/native.grain.bakery", location: "Truro", foodType: "buying" },
+  { id: "portscatho-stores", name: "Portscatho Stores", desc: "All your basic grocery needs, with fresh bread, pasties, newspapers, wine and cakes. We challenge visitors to come up with something that the Portscatho Stores doesn't sell!", image: imgPortscathoStoresLevel, tags: ["deli", "groceries", "bakery"], website: "#", location: "Portscatho", foodType: "buying" },
   { id: "waitrose", name: "Waitrose", desc: "I know I know, you all know Waitrose is a supermarket, but this one has another shop on the side called Great Cornish Food with a fabulous selection of Cornish food, books, pottery, booze, etc.", image: imgWaitrose2, tags: ["supermarket", "groceries"], website: "http://www.greatcornishfood.co.uk/", location: "Truro", foodType: "buying" },
+  { id: "coop-st-mawes", name: "Co-op St Mawes", desc: "Located on the harbour front, close by St Mawes Pharmacy and Mr Scorse's Gourmet Deli and Wine shop in the arcade.", image: imgCoopStMawes, tags: ["supermarket", "groceries"], location: "St Mawes", foodType: "buying", chips: [
+    { label: "Co-op St Mawes", url: "https://www.coop.co.uk/store-finder/TR2-5DH/6-7-kings-road?utm_source=gmb&utm_medium=organic&utm_campaign=gmb-St-Mawes-Truro" },
+    { label: "St Mawes Pharmacy", url: "https://www.stmawespharmacy.co.uk/" },
+    { label: "Mr Scorse's Gourmet Deli and Wine Shop", url: "https://mrscorse.com/" },
+  ] },
+  { id: "tregew-food-barn", name: "Tregew Food Barn", desc: "Weekly farmers market with views over the Fal estuary. Showcasing local produce with bread, cheese, meat, fish, pies, veg and takeaway coffees, pastries and (Finn's favourite) croque monsieurs. Only open Saturday mornings, 9am - 1pm. Why not combine with a visit to Penryn parkrun, but get there early as some stalls do sell out.", image: imgTregewFoodBarn, tags: ["farm shop", "local produce"], website: "https://www.foodbarn-tregew.co.uk/", location: "Near Froe", foodType: "buying" },
+  { id: "curgurrell-farm-shop", name: "Pendower Farm Shop", desc: "Fresh fish, shellfish, farm and garden produce from the Roseland, brought to you by three generations of the Taffinder family. Daily fishing catch comes straight from the boat.", image: imgPendowerFarmShop, tags: ["farm shop", "meat", "seasonal"], website: "https://www.pendowerfarmshop.com/", location: "Pendower", foodType: "buying" },
+  { id: "native-grain-bakers", name: "Native Grain Bakers", desc: "One of the UK's 50 top bakeries. Delicious bread and pastries, freshly baked on the premises, using local flour and seasonal ingredients. Look out for their pizza-topped focaccia. Open Monday to Saturday mornings.", image: imgNativeGrain, tags: ["bakery", "pastries"], website: "http://www.instagram.com/native.grain.bakery", location: "Truro", foodType: "buying" },
+  { id: "st-mawes-fudge-shop", name: "St Mawes Fudge Shop", desc: "A traditional Cornish fudge, sweet and ice cream shop - a favourite with visiting children!", image: imgFudgeAndMore, tags: ["fudge", "sweets", "gifts"], website: "#", location: "St Mawes", foodType: "buying" },
   { id: "scathos-scoops", name: "Scatho's Scoops", desc: "Artisan ice cream made in Portscatho by Helen. Hazelnut Wow, Mint Choc Chip and White Chocolate, Pomegranate and Pistachio are the current favourites.", image: imgScathosScoops, tags: ["ice cream", "treats"], website: "https://www.scathos.co.uk/", location: "Portscatho", foodType: "eating" },
   { id: "hidden-hut", name: "Hidden Hut", desc: "Cornwall's most famous beach café. Their feast nights are the stuff of legend — booking opens midday on the first of each month and is closed (literally) seconds later. By day, superb lunches, cakes and coffee on Porthcurnick Beach.", image: imgHiddenHut, imagePosition: "center 15%", tags: ["restaurant", "beach", "feast nights"], website: "https://hiddenhut.co.uk/", location: "Porthcurnick Beach", foodType: "eating" },
   { id: "standard", name: "The Standard", desc: "Enjoy a locally sourced menu and wood fired roasts by the owner of the Hidden Hut. Bookings for the restaurant open 60 days in advance and fill up quickly during the summer months. The pavilion is open for outdoor drinks and a garden menu is available during the summer for walk in customers. Dog friendly inside and out.", image: imgTheStandard, imagePosition: "center 63%", tags: ["restaurant", "fine dining"], website: "https://www.standardinn.co.uk/", location: "Gerrans", foodType: "eating" },
@@ -1035,6 +1040,8 @@ const CSS = `
     transition: all 0.3s;
   }
   .ck-cal-nav:hover { background:var(--sand); }
+  .ck-cal-nav:disabled { opacity:0.35; cursor:default; }
+  .ck-cal-nav:disabled:hover { background:none; }
   .ck-cal-month {
     font-family:var(--font-display);
     font-size:1.5rem; font-weight:400; color:var(--ocean);
@@ -1947,6 +1954,21 @@ function FoodDetail({ place, setPage, setSubPage }) {
           <h3>Location</h3>
           <p>{place.location}</p>
         </div>
+        {place.chips && (
+          <div className="ck-detail-info">
+            <h3>Links</h3>
+            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+              {place.chips.map(c => (
+                <a key={c.label} href={c.url} target="_blank" rel="noopener noreferrer" className="ck-walk-eat-chip">
+                  {c.image
+                    ? <img src={c.image} alt="" className="ck-walk-eat-chip-img" />
+                    : <PlaceholderPhoto className="ck-walk-eat-chip-img" />}
+                  <div className="ck-walk-eat-chip-label">{c.label}</div>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
@@ -3363,12 +3385,12 @@ function getRateForDate(date, rates) {
 }
 
 // CALENDAR
-// Every date from today until this cutoff is marked booked/unavailable.
-const UNAVAILABLE_UNTIL = new Date(2027, 1, 1); // 1 Feb 2027
+// The calendar starts from this month — nothing earlier is browsable or
+// tracked, since booking history before then has been retired.
+const CALENDAR_START_MONTH = new Date(2027, 3, 1); // April 2027
 
 function buildInitialBookings() {
   const bookings = {
-    "2026-04-25": "booked", "2026-04-26": "booked", "2026-04-27": "booked",
     // Wedding — George Mumford.
     "2027-04-24": "booked",
     // Booked by family, 11–25 Jul 2027.
@@ -3376,13 +3398,6 @@ function buildInitialBookings() {
     // Booked by family, 21 Aug – 4 Sep 2027 (includes wedding — Beanie & Gabe — on 4 Sep).
     "2027-08-21": "booked", "2027-08-22": "booked", "2027-08-23": "booked", "2027-08-24": "booked", "2027-08-25": "booked", "2027-08-26": "booked", "2027-08-27": "booked", "2027-08-28": "booked", "2027-08-29": "booked", "2027-08-30": "booked", "2027-08-31": "booked", "2027-09-01": "booked", "2027-09-02": "booked", "2027-09-03": "booked", "2027-09-04": "booked",
   };
-  const d = new Date();
-  d.setHours(0, 0, 0, 0);
-  while (d < UNAVAILABLE_UNTIL) {
-    const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-    bookings[dateStr] = "booked";
-    d.setDate(d.getDate() + 1);
-  }
   return bookings;
 }
 
@@ -3455,7 +3470,7 @@ function RatesPage({ setPage, isAdmin, rates, setRates }) {
 }
 
 function CalendarPage({ setPage, isAdmin, rates }) {
-  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [currentMonth, setCurrentMonth] = useState(CALENDAR_START_MONTH);
   const [bookings, setBookings] = useState(buildInitialBookings);
   const [weddingPopup, setWeddingPopup] = useState(null);
 
@@ -3474,7 +3489,8 @@ function CalendarPage({ setPage, isAdmin, rates }) {
   const today = new Date();
   const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
-  const prevMonth = () => setCurrentMonth(new Date(year, month - 1, 1));
+  const atStartMonth = year === CALENDAR_START_MONTH.getFullYear() && month === CALENDAR_START_MONTH.getMonth();
+  const prevMonth = () => { if (!atStartMonth) setCurrentMonth(new Date(year, month - 1, 1)); };
   const nextMonth = () => setCurrentMonth(new Date(year, month + 1, 1));
 
   const toggleDate = (dateStr) => {
@@ -3514,7 +3530,7 @@ function CalendarPage({ setPage, isAdmin, rates }) {
       <section className="ck-section" style={{ paddingTop: "1rem", maxWidth: 700 }}>
         <div className="ck-cal">
           <div className="ck-cal-header">
-            <button className="ck-cal-nav" onClick={prevMonth} aria-label="Previous month">←</button>
+            <button className="ck-cal-nav" onClick={prevMonth} aria-label="Previous month" disabled={atStartMonth}>←</button>
             <h2 className="ck-cal-month">
               {currentMonth.toLocaleDateString("en-GB", { month: "long", year: "numeric" })}
             </h2>
