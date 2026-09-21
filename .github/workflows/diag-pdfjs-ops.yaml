@@ -1,0 +1,73 @@
+name: "Diagnostic: pdfjs operator list for bin PDF"
+
+# Temporary one-off diagnostic workflow. Uses Deno + pdfjs-dist (the same
+# library unpdf wraps, and what the actual bin-collection edge function
+# runs on) to inspect the bin PDF's text content and low-level fill
+# operators, cross-checking against ground truth already established via
+# PyMuPDF on a separate runner. Not meant to be merged to main long-term.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Fetch and inspect PDF via pdfjs-dist
+        run: |
+          cat > /tmp/inspect.ts << 'EOF'
+          import { getDocumentProxy } from "npm:unpdf@0.12.1";
+          import { OPS } from "npm:pdfjs-dist@4.7.76/legacy/build/pdf.mjs";
+
+          const res = await fetch("https://www.cornwall.gov.uk/media/rggnvze3/monfort1new.pdf", {
+            headers: { "User-Agent": "Mozilla/5.0 (compatible; ChyKernykSite/1.0; +https://chykernyk.co.uk)" },
+          });
+          const bytes = new Uint8Array(await res.arrayBuffer());
+          const doc = await getDocumentProxy(bytes);
+          const page = await doc.getPage(1);
+          console.log("viewport (scale1):", JSON.stringify(page.getViewport({ scale: 1 })).slice(0, 200));
+
+          const textContent = await page.getTextContent();
+          console.log("num text items:", textContent.items.length);
+          console.log("sample text items:");
+          for (const item of textContent.items.slice(0, 10)) {
+            console.log(JSON.stringify(item));
+          }
+          // Find a known day number "1" near the December column to inspect coords
+          for (const item of textContent.items) {
+            if ("str" in item && item.str.trim() === "1") {
+              console.log("day '1' item:", JSON.stringify(item));
+            }
+            if ("str" in item && item.str.includes("December")) {
+              console.log("'December' item:", JSON.stringify(item));
+            }
+          }
+
+          const opList = await page.getOperatorList();
+          console.log("num ops:", opList.fnArray.length);
+          const opNames: Record<number, string> = {};
+          for (const [name, val] of Object.entries(OPS)) opNames[val as number] = name;
+
+          // Tally op frequency
+          const freq: Record<string, number> = {};
+          for (const fn of opList.fnArray) {
+            const name = opNames[fn] ?? `unknown(${fn})`;
+            freq[name] = (freq[name] ?? 0) + 1;
+          }
+          console.log("op frequency:", JSON.stringify(freq));
+
+          // Dump first occurrences of relevant ops with args
+          let shown = { setFillRGBColor: 0, constructPath: 0, fill: 0, transform: 0, save: 0, restore: 0 };
+          for (let i = 0; i < opList.fnArray.length; i++) {
+            const name = opNames[opList.fnArray[i]] ?? `unknown(${opList.fnArray[i]})`;
+            if (name in shown && (shown as any)[name] < 5) {
+              (shown as any)[name]++;
+              console.log(`op[${i}] ${name}:`, JSON.stringify(opList.argsArray[i]).slice(0, 300));
+            }
+          }
+          EOF
+          deno run --allow-net --allow-read --allow-env /tmp/inspect.ts
