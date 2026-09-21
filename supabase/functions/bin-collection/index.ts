@@ -229,12 +229,13 @@ Deno.serve(async req => {
 
     const bytes = new Uint8Array(await res.arrayBuffer());
 
-    // Two independent document proxies from the same bytes: calling
-    // unpdf's extractText() and then page.getOperatorList() on the SAME
-    // doc instance empties the operator list on the second call (some
-    // internal pdfjs state gets consumed by extractText), so the two
-    // parses are kept fully separate rather than sharing one doc/page.
-    const textDoc = await getDocumentProxy(bytes);
+    // Two independent document proxies, each from its own copy of the
+    // bytes: getDocumentProxy() transfers its input buffer to a worker
+    // (detaching it), and calling unpdf's extractText() then
+    // page.getOperatorList() on the SAME doc instance also empties the
+    // operator list on the second call — so the two parses use fully
+    // separate doc instances AND separate (copied) buffers.
+    const textDoc = await getDocumentProxy(new Uint8Array(bytes));
     const { text: rawText } = await extractText(textDoc, { mergePages: true });
     const text = rawText.replace(/\s+/g, " ").trim();
 
@@ -251,7 +252,7 @@ Deno.serve(async req => {
 
     // The bin type follows the ORIGINALLY scheduled Monday's shading, even
     // when an exception moves the pickup to a different day.
-    const binDoc = await getDocumentProxy(bytes);
+    const binDoc = await getDocumentProxy(new Uint8Array(bytes));
     const binTypeMap = await buildBinTypeMap(binDoc);
     const binType = binTypeMap.get(dateKey(scheduled));
 
