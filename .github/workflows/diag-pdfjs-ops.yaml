@@ -1,9 +1,10 @@
 name: "Diagnostic: pdfjs operator list for bin PDF"
 
-# Temporary one-off diagnostic workflow. Tests the bin-type detection
-# logic (copied from supabase/functions/bin-collection/index.ts, minus
-# Deno.serve so it can run as a plain script) against the real PDF, for
-# several reference dates. Not meant to be merged to main long-term.
+# Temporary one-off diagnostic workflow. Tests the consolidated
+# text+bin-type parsing logic (copied from
+# supabase/functions/bin-collection/index.ts, minus Deno.serve so it can
+# run as a plain script) against the real PDF, for several reference
+# dates. Not meant to be merged to main long-term.
 
 on:
   workflow_dispatch:
@@ -16,10 +17,10 @@ jobs:
         with:
           deno-version: v2.x
 
-      - name: Test bin-type detection against real PDF
+      - name: Test consolidated parsing against real PDF
         run: |
           cat > /tmp/test.ts << 'EOF'
-          import { extractText, getDocumentProxy } from "npm:unpdf@0.12.1";
+          import { getDocumentProxy } from "npm:unpdf@0.12.1";
           import { OPS } from "npm:pdfjs-dist@4.7.76/legacy/build/pdf.mjs";
 
           const MONTHS: Record<string, number> = {
@@ -86,19 +87,22 @@ jobs:
             return null;
           }
 
-          async function buildBinTypeMap(doc: any): Promise<Map<string, "black" | "green">> {
+          async function parsePdf(doc: any): Promise<{ text: string; binTypeMap: Map<string, "black" | "green"> }> {
             const page = await doc.getPage(1);
             const viewport = page.getViewport({ scale: 1 });
             const pageHeight = viewport.height;
 
             const textContent = await page.getTextContent();
             const items: { str: string; x: number; y: number }[] = [];
+            const rawStrings: string[] = [];
             for (const raw of textContent.items) {
               if (typeof raw?.str !== "string" || !Array.isArray(raw.transform)) continue;
+              rawStrings.push(raw.str);
               const str = raw.str.trim();
               if (!str) continue;
               items.push({ str, x: raw.transform[4], y: pageHeight - raw.transform[5] });
             }
+            const text = rawStrings.join(" ").replace(/\s+/g, " ").trim();
 
             const monthHeaders: { x: number; y: number; month: number; year: number }[] = [];
             const headerRe = new RegExp(`^(${MONTH_NAMES.join("|")})\\s+(\\d{4})$`);
@@ -156,7 +160,7 @@ jobs:
               map.set(dateKey(date), r.color);
             }
             console.log("map size:", map.size, "unmatched rects:", unmatched);
-            return map;
+            return { text, binTypeMap: map };
           }
 
           const BIN_LABEL: Record<"black" | "green", string> = { black: "Black bin", green: "Green bin" };
@@ -172,14 +176,11 @@ jobs:
             headers: { "User-Agent": "Mozilla/5.0 (compatible; ChyKernykSite/1.0; +https://chykernyk.co.uk)" },
           });
           const bytes = new Uint8Array(await res.arrayBuffer());
-          const textDoc = await getDocumentProxy(new Uint8Array(bytes));
-          const { text: rawText } = await extractText(textDoc, { mergePages: true });
-          const text = rawText.replace(/\s+/g, " ").trim();
+          const doc = await getDocumentProxy(bytes);
+          const { text, binTypeMap } = await parsePdf(doc);
 
-          const binDoc = await getDocumentProxy(new Uint8Array(bytes));
-          const binTypeMap = await buildBinTypeMap(binDoc);
+          console.log("\nreconstructed text (first 600 chars):", text.slice(0, 600));
 
-          // Print the full map sorted by date, so the alternation pattern can be eyeballed.
           const sorted = [...binTypeMap.entries()].sort((a, b) => a[0].localeCompare(b[0]));
           console.log("\nFull date -> bin type map:");
           for (const [k, v] of sorted) console.log(k, v);
@@ -187,6 +188,7 @@ jobs:
           const base = baseCollectionDay(text);
           const monthYear = buildMonthYearMap(text);
           const exceptions = findExceptions(text, monthYear);
+          console.log("\nbaseCollectionDay:", DAY_NAMES[base], "exceptions found:", exceptions.length);
 
           const testDates = [
             new Date(2026, 8, 21),  // today
