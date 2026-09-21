@@ -57,7 +57,6 @@ import imgHiddenHutfromBeach from "./assets/images/HiddenHutfromBeach.jpeg";
 import imgHouse from "./assets/images/House.jpg";
 import imgHouseAerial from "./assets/images/HouseAerial.jpeg";
 import imgHouseComingSoon from "./assets/images/HouseComingSoon.png";
-import imgHouseConstruction from "./assets/images/HouseConstruction.jpg";
 import imgHousePlans2026 from "./assets/images/HousePlans2026.png";
 import imgJuniorRaceWeek from "./assets/images/JuniorRaceWeek.jpeg";
 import imgKitchen from "./assets/images/Kitchen.jpg";
@@ -138,7 +137,7 @@ async function sha256Hex(text) {
 
 const HERO_IMAGES = [
   { url: imgPortscathofromtheAir2, caption: "Portscatho from the Air", position: "center 20%" },
-  { url: imgHouseConstruction, caption: "The House" },
+  { url: imgHouseAerial, caption: "The House" },
   { url: imgPorthcurnickPortcatho, caption: "Portscatho from Porthcurnick", position: "center 15%" },
 ];
 

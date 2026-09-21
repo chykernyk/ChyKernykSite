@@ -1,0 +1,44 @@
+name: "Diagnostic: Fetch Bin Collection PDF"
+
+# Temporary one-off diagnostic workflow. Fetches the Cornwall Council bin
+# collection PDF and dumps its extracted text, since that PDF isn't
+# reachable from the sandboxed dev session. Not meant to be merged to main.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download PDF
+        run: |
+          curl -sS -o /tmp/bins.pdf "https://www.cornwall.gov.uk/media/rggnvze3/monfort1new.pdf" \
+            -H "User-Agent: Mozilla/5.0 (compatible; ChyKernykSite/1.0; +https://chykernyk.co.uk)"
+          ls -la /tmp/bins.pdf
+          file /tmp/bins.pdf
+
+      - name: Extract text (layout preserved)
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils >/dev/null
+          echo "===== pdftotext -layout ====="
+          pdftotext -layout /tmp/bins.pdf - | head -c 20000
+          echo ""
+          echo "===== pdfinfo ====="
+          pdfinfo /tmp/bins.pdf
+
+      - name: Extract text (unpdf, matches the edge function)
+        run: |
+          cat > /tmp/extract.mjs << 'EOF'
+          import { extractText, getDocumentProxy } from "unpdf";
+          import { readFileSync } from "fs";
+          const bytes = new Uint8Array(readFileSync("/tmp/bins.pdf"));
+          const doc = await getDocumentProxy(bytes);
+          const { text } = await extractText(doc, { mergePages: true });
+          console.log("===== unpdf mergePages text (full) =====");
+          console.log(text.replace(/\s+/g, " ").trim());
+          const { text: pages } = await extractText(doc, { mergePages: false });
+          console.log("===== unpdf per-page count =====", pages.length);
+          EOF
+          npm install --no-save unpdf@0.12.1 >/dev/null 2>&1
+          node /tmp/extract.mjs
