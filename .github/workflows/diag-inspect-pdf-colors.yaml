@@ -22,7 +22,7 @@ jobs:
       - name: Inspect with PyMuPDF
         run: |
           pip install --quiet pymupdf
-          cat > /tmp/inspect.py << 'PYEOF'
+          cat > /tmp/pdf_inspect.py << 'PYEOF'
           import fitz
           doc = fitz.open("/tmp/bins.pdf")
           print("page count:", doc.page_count)
@@ -54,4 +54,4 @@ jobs:
                           if count >= 400:
                               break
           PYEOF
-          python3 /tmp/inspect.py
+          cd /tmp && python3 /tmp/pdf_inspect.py
