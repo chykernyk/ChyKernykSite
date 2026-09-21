@@ -141,30 +141,17 @@ function matchBinColor(rgb: unknown): "black" | "green" | null {
 // (for the date logic, in place of unpdf's extractText — see the header
 // comment for why) and builds the (date -> bin type) map from cell
 // shading, in the same pass.
+//
+// getOperatorList() is called BEFORE getTextContent() deliberately: doing
+// it the other way round left the operator list empty every time it was
+// tried (even with extractText() removed entirely and a single page
+// instance used throughout) — calling getTextContent() first appears to
+// disrupt some cached content-stream evaluation state that
+// getOperatorList() depends on in this pdfjs build.
 async function parsePdf(doc: any): Promise<{ text: string; binTypeMap: Map<string, "black" | "green"> }> {
   const page = await doc.getPage(1);
   const viewport = page.getViewport({ scale: 1 });
   const pageHeight = viewport.height;
-
-  const textContent = await page.getTextContent();
-  const items: { str: string; x: number; y: number }[] = [];
-  const rawStrings: string[] = [];
-  for (const raw of textContent.items) {
-    if (typeof raw?.str !== "string" || !Array.isArray(raw.transform)) continue;
-    rawStrings.push(raw.str);
-    const str = raw.str.trim();
-    if (!str) continue;
-    items.push({ str, x: raw.transform[4], y: pageHeight - raw.transform[5] });
-  }
-  const text = rawStrings.join(" ").replace(/\s+/g, " ").trim();
-
-  const monthHeaders: { x: number; y: number; month: number; year: number }[] = [];
-  const headerRe = new RegExp(`^(${MONTH_NAMES.join("|")})\\s+(\\d{4})$`);
-  for (const it of items) {
-    const m = it.str.match(headerRe);
-    if (m) monthHeaders.push({ x: it.x, y: it.y, month: MONTH_NAMES.indexOf(m[1]), year: parseInt(m[2], 10) });
-  }
-  const dayItems = items.filter(it => /^\d{1,2}$/.test(it.str));
 
   const opList = await page.getOperatorList();
   const opNames: Record<number, string> = {};
@@ -198,6 +185,26 @@ async function parsePdf(doc: any): Promise<{ text: string; binTypeMap: Map<strin
       }
     }
   }
+
+  const textContent = await page.getTextContent();
+  const items: { str: string; x: number; y: number }[] = [];
+  const rawStrings: string[] = [];
+  for (const raw of textContent.items) {
+    if (typeof raw?.str !== "string" || !Array.isArray(raw.transform)) continue;
+    rawStrings.push(raw.str);
+    const str = raw.str.trim();
+    if (!str) continue;
+    items.push({ str, x: raw.transform[4], y: pageHeight - raw.transform[5] });
+  }
+  const text = rawStrings.join(" ").replace(/\s+/g, " ").trim();
+
+  const monthHeaders: { x: number; y: number; month: number; year: number }[] = [];
+  const headerRe = new RegExp(`^(${MONTH_NAMES.join("|")})\\s+(\\d{4})$`);
+  for (const it of items) {
+    const m = it.str.match(headerRe);
+    if (m) monthHeaders.push({ x: it.x, y: it.y, month: MONTH_NAMES.indexOf(m[1]), year: parseInt(m[2], 10) });
+  }
+  const dayItems = items.filter(it => /^\d{1,2}$/.test(it.str));
 
   const map = new Map<string, "black" | "green">();
   for (const r of cellRects) {
