@@ -22,36 +22,43 @@ jobs:
       - name: Inspect with PyMuPDF
         run: |
           pip install --quiet pymupdf
-          cat > /tmp/pdf_inspect.py << 'PYEOF'
+          cat > /tmp/pdf_inspect2.py << 'PYEOF'
           import fitz
           doc = fitz.open("/tmp/bins.pdf")
-          print("page count:", doc.page_count)
           page = doc[0]
-          print("page rect:", page.rect)
-
-          print("\n===== DRAWINGS (fills) =====")
           drawings = page.get_drawings()
-          print("num drawings:", len(drawings))
-          fill_colors = {}
-          for d in drawings:
-              fill = d.get("fill")
-              if fill is not None:
-                  key = tuple(round(c, 3) for c in fill)
-                  fill_colors.setdefault(key, []).append(d["rect"])
-          for color, rects in fill_colors.items():
-              print(f"color={color} count={len(rects)} sample_rects={rects[:3]}")
 
-          print("\n===== TEXT SPANS with bbox (first 400) =====")
+          GREENS = [(0.474, 0.738, 0.262), (0.0, 0.263, 0.195)]
+
+          for target in GREENS:
+              print(f"\n===== color {target} =====")
+              for d in drawings:
+                  fill = d.get("fill")
+                  if fill is None:
+                      continue
+                  key = tuple(round(c, 3) for c in fill)
+                  if key != target:
+                      continue
+                  print(f"drawing rect(bbox)={d['rect']} num_items={len(d['items'])}")
+                  for it in d["items"]:
+                      print("  item:", it)
+
+          print("\n===== ALL text spans (day numbers only, digits) =====")
           d = page.get_text("dict")
-          count = 0
           for block in d["blocks"]:
               for line in block.get("lines", []):
                   for span in line.get("spans", []):
                       txt = span["text"].strip()
-                      if txt:
+                      if txt.isdigit():
                           print(repr(txt), span["bbox"])
-                          count += 1
-                          if count >= 400:
-                              break
+
+          print("\n===== Month header + weekday header spans =====")
+          d = page.get_text("dict")
+          for block in d["blocks"]:
+              for line in block.get("lines", []):
+                  for span in line.get("spans", []):
+                      txt = span["text"].strip()
+                      if txt in ("Mo", "Tu", "We", "Th", "Fr") or any(m in txt for m in ["2025", "2026"]):
+                          print(repr(txt), span["bbox"])
           PYEOF
-          cd /tmp && python3 /tmp/pdf_inspect.py
+          cd /tmp && python3 /tmp/pdf_inspect2.py
