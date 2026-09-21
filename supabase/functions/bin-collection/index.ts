@@ -228,8 +228,14 @@ Deno.serve(async req => {
     if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
 
     const bytes = new Uint8Array(await res.arrayBuffer());
-    const doc = await getDocumentProxy(bytes);
-    const { text: rawText } = await extractText(doc, { mergePages: true });
+
+    // Two independent document proxies from the same bytes: calling
+    // unpdf's extractText() and then page.getOperatorList() on the SAME
+    // doc instance empties the operator list on the second call (some
+    // internal pdfjs state gets consumed by extractText), so the two
+    // parses are kept fully separate rather than sharing one doc/page.
+    const textDoc = await getDocumentProxy(bytes);
+    const { text: rawText } = await extractText(textDoc, { mergePages: true });
     const text = rawText.replace(/\s+/g, " ").trim();
 
     // Europe/London wall-clock "now", so day-granularity comparisons match
@@ -245,7 +251,8 @@ Deno.serve(async req => {
 
     // The bin type follows the ORIGINALLY scheduled Monday's shading, even
     // when an exception moves the pickup to a different day.
-    const binTypeMap = await buildBinTypeMap(doc);
+    const binDoc = await getDocumentProxy(bytes);
+    const binTypeMap = await buildBinTypeMap(binDoc);
     const binType = binTypeMap.get(dateKey(scheduled));
 
     const message = shifted
