@@ -1,16 +1,22 @@
-// Supabase Edge Function: best-effort read of the next bin/waste collection
-// due for this property, from Cornwall Council's published collection round
-// PDF. Fetched and parsed server-side because that file can't be read
-// directly from the browser, and this app has no server of its own besides
-// Supabase. Deployed with --no-verify-jwt since this is public,
-// non-sensitive, read-only data.
+// Supabase Edge Function: computes the next bin/waste collection due for
+// this property. Fetched and parsed server-side because Cornwall Council's
+// PDF can't be read directly from the browser, and this app has no server
+// of its own besides Supabase. Deployed with --no-verify-jwt since this is
+// public, non-sensitive, read-only data.
 //
-// NOTE: this council PDF's exact layout hasn't been confirmed by hand (it
-// can't be fetched from the sandbox this was written in), so the date/type
-// matching below is a best-effort heuristic over the extracted text rather
-// than a known fixed format. The `debug` field always carries a slice of
-// that extracted text, specifically so the real output can be inspected and
-// the matching tuned without needing to guess blind.
+// The PDF ("Food waste, recycling and rubbish collection calendar") is a
+// plain monthly grid of weekday numbers under "Mo Tu We Th Fr" headers —
+// it does NOT print which Mondays are recycling vs rubbish weeks in text,
+// only via cell shading, which text extraction can't see. So this doesn't
+// try to recover the fortnightly recycling/rubbish alternation; it only
+// answers "which day is the next collection", which the document states
+// outright ("Your collection day is Monday") plus a short list of named
+// exceptions around Christmas (e.g. "Rubbish and food waste due on Monday
+// 29 December will be collected on Tuesday 30 December."). Those exception
+// sentences are the only place a day number sits next to a month name in
+// the whole document, which is why an earlier version of this function —
+// that scanned for any "day month" mention and took the soonest one — only
+// ever found the Christmas dates, all year round.
 import { extractText, getDocumentProxy } from "npm:unpdf@0.12.1";
 
 const SOURCE_URL = "https://www.cornwall.gov.uk/media/rggnvze3/monfort1new.pdf";
@@ -27,54 +33,77 @@ const MONTHS: Record<string, number> = {
   sep: 8, sept: 8, september: 8, oct: 9, october: 9, nov: 10, november: 10, dec: 11, december: 11,
 };
 const DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-const BIN_TYPE_RE = /(rubbish|refuse|recycling|garden waste|food waste|black bin|green bin|blue bag)/gi;
 
-function lastKeyword(str: string) {
-  let last: string | null = null, m;
-  const re = new RegExp(BIN_TYPE_RE.source, "gi");
-  while ((m = re.exec(str)) !== null) last = m[1];
-  return last;
-}
-function firstKeyword(str: string) {
-  const m = str.match(new RegExp(BIN_TYPE_RE.source, "i"));
-  return m ? m[1] : null;
+function sameDate(a: Date, b: Date) {
+  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 }
 
-// Finds every day-month(-year) date mention in the text, then returns the
-// soonest one that's today or later, along with whichever bin-type keyword
-// sits closest to it (checked after the date first, then before), bounded
-// so it can't bleed into a neighbouring date entry.
-function findNextCollection(text: string, now: Date) {
-  const dateRe = /(\d{1,2})(?:st|nd|rd|th)?\s+(jan|january|feb|february|mar|march|apr|april|may|jun|june|jul|july|aug|august|sep|sept|september|oct|october|nov|november|dec|december)\s*(\d{4})?/gi;
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const all: { date: Date; start: number; end: number }[] = [];
-  let m;
-  while ((m = dateRe.exec(text)) !== null) {
-    const day = parseInt(m[1], 10);
-    const month = MONTHS[m[2].toLowerCase()];
-    const year = m[3] ? parseInt(m[3], 10) : now.getFullYear();
-    if (month === undefined || day < 1 || day > 31) continue;
-    let date = new Date(year, month, day);
-    if (!m[3] && date < today) date = new Date(year + 1, month, day);
-    all.push({ date, start: m.index, end: m.index + m[0].length });
+// The document's own statement of the base collection weekday, e.g. "Your
+// collection day is Monday" — falls back to Monday if that sentence isn't
+// found, since that's the only weekday this property has ever been on.
+function baseCollectionDay(text: string): number {
+  const m = text.match(/collection day is (\w+)/i);
+  if (m) {
+    const idx = DAY_NAMES.findIndex(d => d.toLowerCase() === m[1].toLowerCase());
+    if (idx !== -1) return idx;
   }
-  if (all.length === 0) return null;
+  return 1;
+}
 
-  const upcoming = all.filter(c => c.date >= today).sort((a, b) => a.date.getTime() - b.date.getTime());
-  if (upcoming.length === 0) return null;
-  const best = upcoming[0];
+// The soonest date (today or later) that falls on the given weekday.
+function nextWeekday(base: number, today: Date): Date {
+  const d = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const diff = (base - d.getDay() + 7) % 7;
+  d.setDate(d.getDate() + diff);
+  return d;
+}
 
-  const byPos = [...all].sort((a, b) => a.start - b.start);
-  const posIdx = byPos.findIndex(c => c.start === best.start);
-  const prevEnd = posIdx > 0 ? byPos[posIdx - 1].end : Math.max(0, best.start - 80);
-  const nextStart = posIdx < byPos.length - 1 ? byPos[posIdx + 1].start : Math.min(text.length, best.end + 80);
-  const before = text.slice(prevEnd, best.start);
-  const after = text.slice(best.end, nextStart);
-  const binType = firstKeyword(after) || lastKeyword(before);
+// The calendar's month headers ("December 2025", "January 2026", ...) give
+// away which year each month belongs to — needed because the Christmas
+// exception sentences below name a day and month but never a year.
+function buildMonthYearMap(text: string): Record<number, number> {
+  const map: Record<number, number> = {};
+  const re = /(january|february|march|april|may|june|july|august|september|october|november|december)\s+(\d{4})/gi;
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    map[MONTHS[m[1].toLowerCase()]] = parseInt(m[2], 10);
+  }
+  return map;
+}
 
-  const dayName = DAY_NAMES[best.date.getDay()];
-  const formatted = best.date.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
-  return `Next collection: ${binType ? binType[0].toUpperCase() + binType.slice(1) + " — " : ""}${dayName} ${formatted}`;
+// Finds every "<Type> and food waste due on <Day> <D> <Month> will be
+// collected on <Day> <D> <Month>" sentence — the only holiday-shift notes
+// the document contains (typically just Christmas, but this doesn't assume
+// there's exactly one, in case a future year's PDF adds a New Year one too).
+function findExceptions(text: string, monthYear: Record<number, number>) {
+  const re = /(rubbish|recycling)\s+and\s+food\s+waste\s+due\s+on\s+\w+\s+(\d{1,2})\s+(\w+)\s+will\s+be\s+collected\s+on\s+(\w+)\s+(\d{1,2})\s+(\w+)/gi;
+  const out: { due: Date; collected: Date; binType: string }[] = [];
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    const [, binType, dueDay, dueMonthName, , newDay, newMonthName] = m;
+    const dueMonth = MONTHS[dueMonthName.toLowerCase()];
+    const newMonth = MONTHS[newMonthName.toLowerCase()];
+    if (dueMonth === undefined || newMonth === undefined) continue;
+    const dueYear = monthYear[dueMonth];
+    if (dueYear === undefined) continue;
+    const newYear = monthYear[newMonth] ?? dueYear;
+    out.push({
+      due: new Date(dueYear, dueMonth, parseInt(dueDay, 10)),
+      collected: new Date(newYear, newMonth, parseInt(newDay, 10)),
+      binType,
+    });
+  }
+  return out;
+}
+
+function formatMessage(date: Date, binType?: string, movedFrom?: Date) {
+  const dayName = DAY_NAMES[date.getDay()];
+  const formatted = date.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+  const typePart = binType ? `${binType[0].toUpperCase()}${binType.slice(1)} and food waste — ` : "";
+  const movedPart = movedFrom
+    ? ` (moved from ${DAY_NAMES[movedFrom.getDay()]} ${movedFrom.toLocaleDateString("en-GB", { day: "numeric", month: "long" })} due to Christmas)`
+    : "";
+  return `Next collection: ${typePart}${dayName} ${formatted}${movedPart}`;
 }
 
 Deno.serve(async req => {
@@ -96,10 +125,24 @@ Deno.serve(async req => {
     // Europe/London wall-clock "now", so day-granularity comparisons match
     // what a UK reader means by "today" regardless of the server's own TZ.
     const now = new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/London" }));
-    const message = findNextCollection(text, now);
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+    const base = baseCollectionDay(text);
+    const scheduled = nextWeekday(base, today);
+    const monthYear = buildMonthYearMap(text);
+    const exceptions = findExceptions(text, monthYear);
+    const shifted = exceptions.find(e => sameDate(e.due, scheduled));
+
+    const message = shifted
+      ? formatMessage(shifted.collected, shifted.binType, shifted.due)
+      : formatMessage(scheduled);
 
     return new Response(
-      JSON.stringify({ found: !!message, message, debug: text.slice(0, 4000) }),
+      JSON.stringify({
+        found: true,
+        message,
+        debug: { baseDayName: DAY_NAMES[base], scheduled: scheduled.toISOString(), exceptionsFound: exceptions.length, textLength: text.length },
+      }),
       { headers: corsHeaders },
     );
   } catch (err) {
