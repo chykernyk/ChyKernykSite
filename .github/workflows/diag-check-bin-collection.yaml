@@ -1,0 +1,20 @@
+name: "Diagnostic: Check Bin Collection Function"
+
+# Temporary one-off diagnostic workflow. Curls the deployed bin-collection
+# Edge Function and prints its JSON response, since supabase.co isn't
+# reachable from the sandboxed dev session. Not meant to be merged to main
+# long-term.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Curl bin-collection function
+        run: |
+          curl -sS "https://jcjhnscpunecubmcmkzr.supabase.co/functions/v1/bin-collection" | tee /tmp/response.json
+          echo ""
+          echo "===== pretty ====="
+          cat /tmp/response.json | python3 -m json.tool
