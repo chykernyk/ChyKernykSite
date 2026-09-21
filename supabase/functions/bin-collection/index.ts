@@ -26,14 +26,8 @@
 // the whole 12-month grid, and looks up the collection date in it.
 //
 // Both the plain text (for the date logic) and the shading map are built
-// from a SINGLE page.getTextContent()/getOperatorList() pass. An earlier
-// version called unpdf's high-level extractText() first and then read the
-// operator list separately — even from a second, independent document
-// proxy — and the operator list consistently came back empty on that
-// second pass (unpdf ships its own vendored pdfjs-dist bundle with some
-// shared/global state that a prior extractText() call leaves disrupted).
-// Reconstructing the merged text from the same textContent.items this
-// function already needs sidesteps that entirely.
+// from a single page.getTextContent()/getOperatorList() pass, reusing the
+// same text items instead of also calling unpdf's high-level extractText().
 import { getDocumentProxy } from "npm:unpdf@0.12.1";
 import { OPS } from "npm:pdfjs-dist@4.7.76/legacy/build/pdf.mjs";
 
@@ -129,25 +123,21 @@ const BIN_COLORS: Record<"black" | "green", [number, number, number]> = {
   black: [0, 67, 50], // dark green -> "Rubbish and food waste collection days."
 };
 
+// pdfjs reports setFillRGBColor's args as a Uint8ClampedArray, not a
+// plain Array, so this checks index access rather than Array.isArray
+// (an earlier version used Array.isArray and silently never matched).
 function matchBinColor(rgb: unknown): "black" | "green" | null {
-  if (!Array.isArray(rgb)) return null;
+  if (!rgb || typeof rgb !== "object" || !("length" in rgb) || (rgb as ArrayLike<number>).length < 3) return null;
+  const c = rgb as ArrayLike<number>;
   for (const [label, [r, g, b]] of Object.entries(BIN_COLORS)) {
-    if (rgb[0] === r && rgb[1] === g && rgb[2] === b) return label as "black" | "green";
+    if (c[0] === r && c[1] === g && c[2] === b) return label as "black" | "green";
   }
   return null;
 }
 
 // Parses the PDF's single page once: reconstructs the plain merged text
-// (for the date logic, in place of unpdf's extractText — see the header
-// comment for why) and builds the (date -> bin type) map from cell
-// shading, in the same pass.
-//
-// getOperatorList() is called BEFORE getTextContent() deliberately: doing
-// it the other way round left the operator list empty every time it was
-// tried (even with extractText() removed entirely and a single page
-// instance used throughout) — calling getTextContent() first appears to
-// disrupt some cached content-stream evaluation state that
-// getOperatorList() depends on in this pdfjs build.
+// (for the date logic, in place of unpdf's extractText) and builds the
+// (date -> bin type) map from cell shading, in the same pass.
 async function parsePdf(doc: any): Promise<{ text: string; binTypeMap: Map<string, "black" | "green"> }> {
   const page = await doc.getPage(1);
   const viewport = page.getViewport({ scale: 1 });
