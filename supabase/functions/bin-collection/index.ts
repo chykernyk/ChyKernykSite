@@ -24,7 +24,17 @@
 // color and position, cross-references that against the day-number and
 // month-header text positions to build a full (date -> bin type) map for
 // the whole 12-month grid, and looks up the collection date in it.
-import { extractText, getDocumentProxy } from "npm:unpdf@0.12.1";
+//
+// Both the plain text (for the date logic) and the shading map are built
+// from a SINGLE page.getTextContent()/getOperatorList() pass. An earlier
+// version called unpdf's high-level extractText() first and then read the
+// operator list separately — even from a second, independent document
+// proxy — and the operator list consistently came back empty on that
+// second pass (unpdf ships its own vendored pdfjs-dist bundle with some
+// shared/global state that a prior extractText() call leaves disrupted).
+// Reconstructing the merged text from the same textContent.items this
+// function already needs sidesteps that entirely.
+import { getDocumentProxy } from "npm:unpdf@0.12.1";
 import { OPS } from "npm:pdfjs-dist@4.7.76/legacy/build/pdf.mjs";
 
 const SOURCE_URL = "https://www.cornwall.gov.uk/media/rggnvze3/monfort1new.pdf";
@@ -127,23 +137,26 @@ function matchBinColor(rgb: unknown): "black" | "green" | null {
   return null;
 }
 
-// Walks the page's drawing operators to find every shaded Monday cell
-// (a small rectangle filled with one of the two bin colors), reads its
-// day number and month from the surrounding text, and returns a full
-// (date -> bin type) map for the whole calendar grid.
-async function buildBinTypeMap(doc: any): Promise<Map<string, "black" | "green">> {
+// Parses the PDF's single page once: reconstructs the plain merged text
+// (for the date logic, in place of unpdf's extractText — see the header
+// comment for why) and builds the (date -> bin type) map from cell
+// shading, in the same pass.
+async function parsePdf(doc: any): Promise<{ text: string; binTypeMap: Map<string, "black" | "green"> }> {
   const page = await doc.getPage(1);
   const viewport = page.getViewport({ scale: 1 });
   const pageHeight = viewport.height;
 
   const textContent = await page.getTextContent();
   const items: { str: string; x: number; y: number }[] = [];
+  const rawStrings: string[] = [];
   for (const raw of textContent.items) {
     if (typeof raw?.str !== "string" || !Array.isArray(raw.transform)) continue;
+    rawStrings.push(raw.str);
     const str = raw.str.trim();
     if (!str) continue;
     items.push({ str, x: raw.transform[4], y: pageHeight - raw.transform[5] });
   }
+  const text = rawStrings.join(" ").replace(/\s+/g, " ").trim();
 
   const monthHeaders: { x: number; y: number; month: number; year: number }[] = [];
   const headerRe = new RegExp(`^(${MONTH_NAMES.join("|")})\\s+(\\d{4})$`);
@@ -201,7 +214,7 @@ async function buildBinTypeMap(doc: any): Promise<Map<string, "black" | "green">
     map.set(dateKey(date), r.color);
   }
 
-  return map;
+  return { text, binTypeMap: map };
 }
 
 const BIN_LABEL: Record<"black" | "green", string> = { black: "Black bin", green: "Green bin" };
@@ -228,16 +241,8 @@ Deno.serve(async req => {
     if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
 
     const bytes = new Uint8Array(await res.arrayBuffer());
-
-    // Two independent document proxies, each from its own copy of the
-    // bytes: getDocumentProxy() transfers its input buffer to a worker
-    // (detaching it), and calling unpdf's extractText() then
-    // page.getOperatorList() on the SAME doc instance also empties the
-    // operator list on the second call — so the two parses use fully
-    // separate doc instances AND separate (copied) buffers.
-    const textDoc = await getDocumentProxy(new Uint8Array(bytes));
-    const { text: rawText } = await extractText(textDoc, { mergePages: true });
-    const text = rawText.replace(/\s+/g, " ").trim();
+    const doc = await getDocumentProxy(bytes);
+    const { text, binTypeMap } = await parsePdf(doc);
 
     // Europe/London wall-clock "now", so day-granularity comparisons match
     // what a UK reader means by "today" regardless of the server's own TZ.
@@ -252,8 +257,6 @@ Deno.serve(async req => {
 
     // The bin type follows the ORIGINALLY scheduled Monday's shading, even
     // when an exception moves the pickup to a different day.
-    const binDoc = await getDocumentProxy(new Uint8Array(bytes));
-    const binTypeMap = await buildBinTypeMap(binDoc);
     const binType = binTypeMap.get(dateKey(scheduled));
 
     const message = shifted
