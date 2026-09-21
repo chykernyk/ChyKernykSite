@@ -1,0 +1,57 @@
+name: "Diagnostic: Inspect Bin PDF Cell Colors"
+
+# Temporary one-off diagnostic workflow. Inspects the Cornwall Council bin
+# collection PDF's vector fills (cell shading) and text positions, to
+# figure out how to programmatically tell dark-green (black bin/rubbish)
+# Mondays apart from light-green (green bin/recycling) Mondays. Not meant
+# to be merged to main long-term.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download PDF
+        run: |
+          curl -sS -o /tmp/bins.pdf "https://www.cornwall.gov.uk/media/rggnvze3/monfort1new.pdf" \
+            -H "User-Agent: Mozilla/5.0 (compatible; ChyKernykSite/1.0; +https://chykernyk.co.uk)"
+          ls -la /tmp/bins.pdf
+
+      - name: Inspect with PyMuPDF
+        run: |
+          pip install --quiet pymupdf
+          cat > /tmp/inspect.py << 'PYEOF'
+          import fitz
+          doc = fitz.open("/tmp/bins.pdf")
+          print("page count:", doc.page_count)
+          page = doc[0]
+          print("page rect:", page.rect)
+
+          print("\n===== DRAWINGS (fills) =====")
+          drawings = page.get_drawings()
+          print("num drawings:", len(drawings))
+          fill_colors = {}
+          for d in drawings:
+              fill = d.get("fill")
+              if fill is not None:
+                  key = tuple(round(c, 3) for c in fill)
+                  fill_colors.setdefault(key, []).append(d["rect"])
+          for color, rects in fill_colors.items():
+              print(f"color={color} count={len(rects)} sample_rects={rects[:3]}")
+
+          print("\n===== TEXT SPANS with bbox (first 400) =====")
+          d = page.get_text("dict")
+          count = 0
+          for block in d["blocks"]:
+              for line in block.get("lines", []):
+                  for span in line.get("spans", []):
+                      txt = span["text"].strip()
+                      if txt:
+                          print(repr(txt), span["bbox"])
+                          count += 1
+                          if count >= 400:
+                              break
+          PYEOF
+          python3 /tmp/inspect.py
