@@ -29,45 +29,64 @@ jobs:
           const bytes = new Uint8Array(await res.arrayBuffer());
           const doc = await getDocumentProxy(bytes);
           const page = await doc.getPage(1);
-          console.log("viewport (scale1):", JSON.stringify(page.getViewport({ scale: 1 })).slice(0, 200));
-
-          const textContent = await page.getTextContent();
-          console.log("num text items:", textContent.items.length);
-          console.log("sample text items:");
-          for (const item of textContent.items.slice(0, 10)) {
-            console.log(JSON.stringify(item));
-          }
-          // Find a known day number "1" near the December column to inspect coords
-          for (const item of textContent.items) {
-            if ("str" in item && item.str.trim() === "1") {
-              console.log("day '1' item:", JSON.stringify(item));
-            }
-            if ("str" in item && item.str.includes("December")) {
-              console.log("'December' item:", JSON.stringify(item));
-            }
-          }
 
           const opList = await page.getOperatorList();
-          console.log("num ops:", opList.fnArray.length);
           const opNames: Record<number, string> = {};
           for (const [name, val] of Object.entries(OPS)) opNames[val as number] = name;
 
-          // Tally op frequency
-          const freq: Record<string, number> = {};
-          for (const fn of opList.fnArray) {
-            const name = opNames[fn] ?? `unknown(${fn})`;
-            freq[name] = (freq[name] ?? 0) + 1;
-          }
-          console.log("op frequency:", JSON.stringify(freq));
+          const TARGETS: Record<string, [number, number, number]> = {
+            light: [121, 188, 67],
+            dark: [0, 67, 50],
+          };
 
-          // Dump first occurrences of relevant ops with args
-          let shown = { setFillRGBColor: 0, constructPath: 0, fill: 0, transform: 0, save: 0, restore: 0 };
+          function colorMatch(c: any): string | null {
+            for (const [label, [r, g, b]] of Object.entries(TARGETS)) {
+              if (c && c[0] === r && c[1] === g && c[2] === b) return label;
+            }
+            return null;
+          }
+
+          let currentColor: string | null = null;
+          let sinceColorSetOps = 0;
+          const foundPaths: { color: string; subOps: number[]; coords: number[] }[] = [];
+          const transformsSeen: any[] = [];
+
           for (let i = 0; i < opList.fnArray.length; i++) {
             const name = opNames[opList.fnArray[i]] ?? `unknown(${opList.fnArray[i]})`;
-            if (name in shown && (shown as any)[name] < 5) {
-              (shown as any)[name]++;
-              console.log(`op[${i}] ${name}:`, JSON.stringify(opList.argsArray[i]).slice(0, 300));
+            const args = opList.argsArray[i];
+            if (name === "setFillRGBColor") {
+              currentColor = colorMatch(args);
+              sinceColorSetOps = 0;
+            } else if (name === "constructPath") {
+              sinceColorSetOps++;
+              if (currentColor && sinceColorSetOps <= 3) {
+                const [subOps, coords] = args;
+                // Only record "pure rectangle" paths (all subops are the same code, repeated), matching grid cells
+                const allSame = subOps.every((s: number) => s === subOps[0]);
+                if (allSame && subOps.length >= 1 && coords.length >= 4) {
+                  foundPaths.push({ color: currentColor, subOps, coords });
+                }
+              }
+            } else if (name === "transform") {
+              if (currentColor && sinceColorSetOps <= 2) {
+                transformsSeen.push({ color: currentColor, args, opIndex: i });
+              }
+            } else if (name === "save" || name === "restore") {
+              // don't reset currentColor tracking on save/restore for this heuristic scan
             }
           }
+
+          console.log("num foundPaths:", foundPaths.length);
+          for (const fp of foundPaths) {
+            console.log(`color=${fp.color} subOpsLen=${fp.subOps.length} subOp0=${fp.subOps[0]} coordsLen=${fp.coords.length}`);
+            console.log("coords:", JSON.stringify(fp.coords));
+          }
+          console.log("transformsSeen near color-set (should reveal any wrapping cm before path):", JSON.stringify(transformsSeen).slice(0, 2000));
+
+          // Also print OPS.rectangle numeric value for reference
+          console.log("OPS.rectangle =", (OPS as any).rectangle);
+          console.log("OPS.moveTo =", (OPS as any).moveTo);
+          console.log("OPS.lineTo =", (OPS as any).lineTo);
+          console.log("OPS.curveTo =", (OPS as any).curveTo);
           EOF
           deno run --allow-net --allow-read --allow-env /tmp/inspect.ts
