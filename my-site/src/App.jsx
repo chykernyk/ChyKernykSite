@@ -118,6 +118,7 @@ import imgTrelissick2 from "./assets/images/Trelissick2.jpeg";
 import imgTresanton from "./assets/images/Tresanton.webp";
 import imgTwinBedroom1 from "./assets/images/TwinBedroom1.jpg";
 import imgTwinBedroom2 from "./assets/images/TwinBedroom2.jpg";
+import imgVespaCornwallLogo from "./assets/images/VespaCornwallLogo.png";
 import imgWaitrose2 from "./assets/images/Waitrose2.jpg";
 
 // ─── DATA & CONSTANTS ────────────────────────────────────────────────
@@ -251,11 +252,19 @@ const REMEDIES = [
     { name: "Treliske Hospital (Royal Cornwall)", detail: "Truro — 01872 250000 — A&E available 24hrs", icon: "🚑" },
     { name: "NHS 111", detail: "Call 111 for non-emergency medical advice", icon: "📞" },
     { name: "St Mawes Pharmacy", detail: "Prescriptions & pharmacy services", icon: "💊", url: "https://www.stmawespharmacy.co.uk/" },
+    { name: "Defibrillator", detail: "Nearest defibrillators are located at the Harbour Club and the shop.", icon: "⚡", url: "https://www.defibfinder.uk/" },
   ]},
   { category: "Emergency Services", items: [
     { name: "Emergency", detail: "999 — Police, Fire, Ambulance", icon: "🆘" },
     { name: "Coastguard", detail: "999 and ask for Coastguard", icon: "⚓" },
   ]},
+];
+
+const THANKS_TRADES = [
+  { names: "Ed Rowe & Phil Long", business: "St Piran Electrical", url: "https://saintpiranelectrical.get-jobly.com/" },
+  { names: "Edd Redwood", business: "Redwood Plumbing & Heating", url: "https://redwoodplumbing.co.uk/" },
+  { names: "Rachel Rogers", business: "Easy Bathrooms", url: "https://www.easybathrooms.com/" },
+  { names: null, business: "Peninsula Roofing Cornwall", url: "https://peninsularoofing.co.uk/" },
 ];
 
 const GALLERY_HOUSE = [
@@ -1190,6 +1199,29 @@ const CSS = `
   .ck-contact-item a { color:var(--ocean); text-decoration:none; }
   .ck-contact-item a:hover { color:var(--gold); }
 
+  /* ── THANK YOU ── */
+  .ck-thanks-section {
+    max-width:720px; text-align:center;
+    display:flex; flex-direction:column; align-items:center;
+  }
+  .ck-thanks-logo-link { display:inline-block; margin-bottom:2rem; }
+  .ck-thanks-logo { width:220px; max-width:60vw; height:auto; }
+  .ck-thanks-quote {
+    font-size:1.05rem; line-height:1.9; color:var(--text-light);
+  }
+  .ck-thanks-quote a { color:var(--ocean); text-decoration:underline; text-underline-offset:3px; }
+  .ck-thanks-quote a:hover { color:var(--gold); }
+  .ck-thanks-gap { height:2.5rem; }
+  .ck-thanks-trades-intro {
+    font-family:var(--font-display); font-size:1.2rem; color:var(--ocean); margin-bottom:1rem;
+  }
+  .ck-thanks-trades-list {
+    list-style:none; padding:0; margin:0;
+    font-size:1rem; color:var(--text-light); line-height:2.2;
+  }
+  .ck-thanks-trades-list a { color:var(--ocean); text-decoration:underline; text-underline-offset:3px; }
+  .ck-thanks-trades-list a:hover { color:var(--gold); }
+
   /* ── AROUND & ABOUT MAP ── */
   .ck-map-wrap {
     position:relative; z-index:0; isolation:isolate;
@@ -1531,6 +1563,7 @@ function Nav({ page, setPage, isAdmin, onLoginClick, onLogout, mobileOpen, setMo
     { id: "visitors-book", label: "Visitors Book" },
     { id: "calendar", label: "Calendar" },
     { id: "contact", label: "Contact" },
+    { id: "thanks", label: "Thank You" },
     ...(isAdmin ? [{ id: "rates", label: "Rates" }] : []),
   ];
 
@@ -3132,6 +3165,35 @@ function RemediesPage({ setPage }) {
   );
 }
 
+// THANK YOU
+function ThankYouPage({ setPage }) {
+  return (
+    <>
+      <PageHeader title="Thank You" setPage={setPage} backTo="home" />
+      <section className="ck-section ck-thanks-section">
+        <a href="https://vespacornwall.com/index.html" target="_blank" rel="noopener noreferrer" className="ck-thanks-logo-link">
+          <img src={imgVespaCornwallLogo} alt="Vespa Cornwall Developments Ltd" className="ck-thanks-logo" />
+        </a>
+        <p className="ck-thanks-quote">
+          With thanks to <a href="https://vespacornwall.com/index.html" target="_blank" rel="noopener noreferrer">Ashley Riches and the team at Vespa Cornwall Developments Ltd</a>, who have brought our plans to life at Chy Kernyk. We are immensely grateful for their extraordinary level of care, professionalism and expertise. The quality of their building construction and workmanship is second to none. We did not imagine it possible to partner with such a fantastic team.
+        </p>
+
+        <div className="ck-thanks-gap" />
+
+        <p className="ck-thanks-trades-intro">With thanks too to:</p>
+        <ul className="ck-thanks-trades-list">
+          {THANKS_TRADES.map(t => (
+            <li key={t.business}>
+              {t.names && `${t.names} at `}
+              <a href={t.url} target="_blank" rel="noopener noreferrer">{t.business}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </>
+  );
+}
+
 // A simple Leaflet map centered on the property, with a single marker —
 // used on the Contact page instead of an embedded Google Map.
 function PropertyMap() {
@@ -3765,6 +3827,7 @@ export default function App() {
     remedies: <RemediesPage setPage={setPage} />,
     tides: <TidesPage setPage={setPage} />,
     contact: <ContactPage setPage={setPage} />,
+    thanks: <ThankYouPage setPage={setPage} />,
   };
 
   return (
