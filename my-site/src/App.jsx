@@ -38,10 +38,8 @@ import imgCoopStMawes from "./assets/images/CoopStMawes.jpg";
 import imgCurgurrellWalk from "./assets/images/CurgurrellWalk.jpg";
 import imgDartsFarm from "./assets/images/DartsFarm.jpeg";
 import imgDownstairsBathroom1 from "./assets/images/DownstairsBathroom1.jpg";
-import imgDownstairsBathroom2 from "./assets/images/DownstairsBathroom2.jpg";
 import imgEdenProject from "./assets/images/EdenProject.jpeg";
 import imgFamilyBathroom1 from "./assets/images/FamilyBathroom1.jpg";
-import imgFamilyBathroom2 from "./assets/images/FamilyBathroom2.jpg";
 import imgFishNTrips from "./assets/images/FishNTrips.jpeg";
 import imgFishingOffRocks from "./assets/images/FishingOffRocks.jpeg";
 import imgFistralBeach from "./assets/images/FistralBeach.jpg";
@@ -58,7 +56,6 @@ import imgHiddenHutfromBeach from "./assets/images/HiddenHutfromBeach.jpeg";
 import imgHouse from "./assets/images/House.jpg";
 import imgHouseAerial from "./assets/images/HouseAerial.jpeg";
 import imgHouseComingSoon from "./assets/images/HouseComingSoon.png";
-import imgHousePlans2026 from "./assets/images/HousePlans2026.png";
 import imgJuniorRaceWeek from "./assets/images/JuniorRaceWeek.jpeg";
 import imgKitchen from "./assets/images/Kitchen.jpg";
 import imgKelpCanteen from "./assets/images/KelpCanteen.jpg";
@@ -66,7 +63,6 @@ import imgKingHarryFerry from "./assets/images/KingHarryFerry.jpg";
 import imgLamorran from "./assets/images/Lamorran.jpeg";
 import imgMaritimeMuseum from "./assets/images/MaritimeMuseum.jpg";
 import imgMasterEnsuite1 from "./assets/images/MasterEnsuite1.jpg";
-import imgMasterEnsuite2 from "./assets/images/MasterEnsuite2.jpg";
 import imgMeatCounter from "./assets/images/MeatCounter.webp";
 import imgMevagissey from "./assets/images/Mevagissey.jpg";
 import imgMevagisseyAquarium from "./assets/images/MevagisseyAquarium.jpeg";
@@ -118,7 +114,6 @@ import imgTregewToasties from "./assets/images/TregewToasties.jpeg";
 import imgTrelissick from "./assets/images/Trelissick.jpeg";
 import imgTrelissick2 from "./assets/images/Trelissick2.jpeg";
 import imgTresanton from "./assets/images/Tresanton.webp";
-import imgTwinBedroom1 from "./assets/images/TwinBedroom1.jpg";
 import imgTwinBedroom2 from "./assets/images/TwinBedroom2.jpg";
 import imgVespaCornwallLogo from "./assets/images/VespaCornwallLogo.png";
 import imgWaitrose2 from "./assets/images/Waitrose2.jpg";
@@ -271,14 +266,9 @@ const THANKS_TRADES = [
 
 const GALLERY_HOUSE = [
   { id: "house-2", url: imgHouseComingSoon, caption: "Coming January 2027…" },
-  { id: "house-1", url: imgHousePlans2026, caption: "Coming soon…" },
   { id: "house-3", url: imgDownstairsBathroom1, caption: "Downstairs bathroom" },
-  { id: "house-4", url: imgDownstairsBathroom2, caption: "Downstairs bathroom" },
   { id: "house-5", url: imgFamilyBathroom1, caption: "Family bathroom" },
-  { id: "house-6", url: imgFamilyBathroom2, caption: "Family bathroom" },
   { id: "house-7", url: imgMasterEnsuite1, caption: "Master en-suite bathroom" },
-  { id: "house-8", url: imgMasterEnsuite2, caption: "Master en-suite bathroom" },
-  { id: "house-9", url: imgTwinBedroom1, caption: "Twin bedroom" },
   { id: "house-10", url: imgTwinBedroom2, caption: "Twin bedroom" },
   { id: "house-11", url: imgKitchen, caption: "Kitchen", linkUrl: "/documents/kitchen-presentation.pdf" },
   { id: "house-12", url: imgStudy, caption: "Study" },
