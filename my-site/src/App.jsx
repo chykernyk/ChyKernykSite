@@ -1563,7 +1563,6 @@ function Nav({ page, setPage, isAdmin, onLoginClick, onLogout, mobileOpen, setMo
     { id: "visitors-book", label: "Visitors Book" },
     { id: "calendar", label: "Calendar" },
     { id: "contact", label: "Contact" },
-    { id: "thanks", label: "Thank You" },
     ...(isAdmin ? [{ id: "rates", label: "Rates" }] : []),
   ];
 
@@ -1721,6 +1720,26 @@ function GalleryPage({ setPage }) {
         <GallerySection title="House" images={GALLERY_HOUSE} onSelect={openLightbox} />
         <GallerySection title="Building Project" images={GALLERY_BUILDING_PROJECT} onSelect={openLightbox} emptyText="Photos coming soon." />
         <GallerySection title="Before" images={GALLERY_BEFORE} onSelect={openLightbox} />
+      </section>
+      <section className="ck-section ck-thanks-section" style={{ paddingTop: 0 }}>
+        <a href="https://vespacornwall.com/index.html" target="_blank" rel="noopener noreferrer" className="ck-thanks-logo-link">
+          <img src={imgVespaCornwallLogo} alt="Vespa Cornwall Developments Ltd" className="ck-thanks-logo" />
+        </a>
+        <p className="ck-thanks-quote">
+          With thanks to <a href="https://vespacornwall.com/index.html" target="_blank" rel="noopener noreferrer">Ashley Riches and the team at Vespa Cornwall Developments Ltd</a>, who have brought our plans to life at Chy Kernyk. We are immensely grateful for their extraordinary level of care, professionalism and expertise. The quality of their building construction and workmanship is second to none. We did not imagine it possible to partner with such a fantastic team.
+        </p>
+
+        <div className="ck-thanks-gap" />
+
+        <p className="ck-thanks-trades-intro">With thanks too to:</p>
+        <ul className="ck-thanks-trades-list">
+          {THANKS_TRADES.map(t => (
+            <li key={t.business}>
+              {t.names && `${t.names} at `}
+              <a href={t.url} target="_blank" rel="noopener noreferrer">{t.business}</a>
+            </li>
+          ))}
+        </ul>
       </section>
       {lightbox && (
         <div className="ck-lightbox" onClick={() => setLightbox(null)} role="dialog" aria-label="Image lightbox">
@@ -3165,35 +3184,6 @@ function RemediesPage({ setPage }) {
   );
 }
 
-// THANK YOU
-function ThankYouPage({ setPage }) {
-  return (
-    <>
-      <PageHeader title="Thank You" setPage={setPage} backTo="home" />
-      <section className="ck-section ck-thanks-section">
-        <a href="https://vespacornwall.com/index.html" target="_blank" rel="noopener noreferrer" className="ck-thanks-logo-link">
-          <img src={imgVespaCornwallLogo} alt="Vespa Cornwall Developments Ltd" className="ck-thanks-logo" />
-        </a>
-        <p className="ck-thanks-quote">
-          With thanks to <a href="https://vespacornwall.com/index.html" target="_blank" rel="noopener noreferrer">Ashley Riches and the team at Vespa Cornwall Developments Ltd</a>, who have brought our plans to life at Chy Kernyk. We are immensely grateful for their extraordinary level of care, professionalism and expertise. The quality of their building construction and workmanship is second to none. We did not imagine it possible to partner with such a fantastic team.
-        </p>
-
-        <div className="ck-thanks-gap" />
-
-        <p className="ck-thanks-trades-intro">With thanks too to:</p>
-        <ul className="ck-thanks-trades-list">
-          {THANKS_TRADES.map(t => (
-            <li key={t.business}>
-              {t.names && `${t.names} at `}
-              <a href={t.url} target="_blank" rel="noopener noreferrer">{t.business}</a>
-            </li>
-          ))}
-        </ul>
-      </section>
-    </>
-  );
-}
-
 // A simple Leaflet map centered on the property, with a single marker —
 // used on the Contact page instead of an embedded Google Map.
 function PropertyMap() {
@@ -3827,7 +3817,6 @@ export default function App() {
     remedies: <RemediesPage setPage={setPage} />,
     tides: <TidesPage setPage={setPage} />,
     contact: <ContactPage setPage={setPage} />,
-    thanks: <ThankYouPage setPage={setPage} />,
   };
 
   return (
