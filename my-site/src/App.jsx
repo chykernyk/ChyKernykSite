@@ -90,7 +90,6 @@ import imgScarlet from "./assets/images/Scarlet.webp";
 import imgScathosScoops from "./assets/images/ScathosScoops.jpeg";
 import imgSeaShanties from "./assets/images/SeaShanties.jpg";
 import imgShillakabookyBeachHut from "./assets/images/ShillakabookyBeachHut.jpeg";
-import imgStairs from "./assets/images/Stairs.jpg";
 import imgStAnthony from "./assets/images/StAnthony.webp";
 import imgStAnthonyLight from "./assets/images/StAnthonyLight.jpeg";
 import imgStIves from "./assets/images/StIves.jpeg";
@@ -280,7 +279,6 @@ const GALLERY_HOUSE = [
   { id: "house-10", url: imgTwinBedroom2, caption: "Twin bedroom" },
   { id: "house-11", url: imgKitchen, caption: "Kitchen", linkUrl: "/documents/kitchen-presentation.pdf" },
   { id: "house-12", url: imgStudy, caption: "Study" },
-  { id: "house-13", url: imgStairs, caption: "Stairs" },
 ];
 
 const GALLERY_BUILDING_PROJECT = [
@@ -1716,7 +1714,7 @@ function GalleryPage({ setPage }) {
   return (
     <>
       <PageHeader title="Gallery" setPage={setPage} backTo="home" />
-      <section className="ck-section" style={{ paddingTop: "1rem" }}>
+      <section className="ck-section" style={{ paddingTop: "1rem", paddingBottom: 0 }}>
         <GallerySection title="House" images={GALLERY_HOUSE} onSelect={openLightbox} />
         <GallerySection title="Building Project" images={GALLERY_BUILDING_PROJECT} onSelect={openLightbox} emptyText="Photos coming soon." />
         <GallerySection title="Before" images={GALLERY_BEFORE} onSelect={openLightbox} />
