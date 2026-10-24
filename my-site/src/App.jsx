@@ -33,6 +33,7 @@ import imgBurncooseGoldMedal from "./assets/images/BurncooseGoldMedal.jpg";
 import imgCaerhayes from "./assets/images/Caerhayes.webp";
 import imgCafeMylor from "./assets/images/CafeMylor.jpeg";
 import imgCarneBeach from "./assets/images/CarneBeach.jpg";
+import imgCoopLogo from "./assets/images/CoopLogo.jpg";
 import imgCoopStMawes from "./assets/images/CoopStMawes.jpg";
 import imgCurgurrellWalk from "./assets/images/CurgurrellWalk.jpg";
 import imgDartsFarm from "./assets/images/DartsFarm.jpeg";
@@ -70,6 +71,7 @@ import imgMeatCounter from "./assets/images/MeatCounter.webp";
 import imgMevagissey from "./assets/images/Mevagissey.jpg";
 import imgMevagisseyAquarium from "./assets/images/MevagisseyAquarium.jpeg";
 import imgMevagisseyMuseum from "./assets/images/MevagisseyMuseum.jpeg";
+import imgMrScorseLogo from "./assets/images/MrScorseLogo.jpg";
 import imgNareHead from "./assets/images/NareHead.jpeg";
 import imgNativeGrain from "./assets/images/NativeGrain.jpg";
 import imgPendowerFarmShop from "./assets/images/PendowerFarmShop.webp";
@@ -99,6 +101,7 @@ import imgStMawesFerry from "./assets/images/StMawesFerry.jpeg";
 import imgStMawesHarbour from "./assets/images/StMawesHarbour.jpeg";
 import imgStMawesHarbour2 from "./assets/images/StMawesHarbour2.jpeg";
 import imgStMawesHarbourWall from "./assets/images/StMawesHarbourWall.jpeg";
+import imgStMawesPharmacyStorefront from "./assets/images/StMawesPharmacyStorefront.jpg";
 import imgStandardInnEvening from "./assets/images/StandardInnEvening.jpeg";
 import imgStandardInnGarden from "./assets/images/StandardInnGarden.jpeg";
 import imgStudy from "./assets/images/Study.jpg";
@@ -145,9 +148,9 @@ const FOOD_PLACES = [
   { id: "portscatho-stores", name: "Portscatho Stores", desc: "All your basic grocery needs, with fresh bread, pasties, newspapers, wine and cakes. We challenge visitors to come up with something that the Portscatho Stores doesn't sell!", image: imgPortscathoStoresLevel, tags: ["deli", "groceries", "bakery"], website: "#", location: "Portscatho", foodType: "buying" },
   { id: "waitrose", name: "Waitrose", desc: "I know I know, you all know Waitrose is a supermarket, but this one has another shop on the side called Great Cornish Food with a fabulous selection of Cornish food, books, pottery, booze, etc.", image: imgWaitrose2, tags: ["supermarket", "groceries"], website: "http://www.greatcornishfood.co.uk/", location: "Truro", foodType: "buying" },
   { id: "coop-st-mawes", name: "Co-op St Mawes", desc: "Located on the harbour front, close by St Mawes Pharmacy and Mr Scorse's Gourmet Deli and Wine shop in the arcade.", image: imgCoopStMawes, tags: ["supermarket", "groceries"], location: "St Mawes", foodType: "buying", chips: [
-    { label: "Co-op St Mawes", url: "https://www.coop.co.uk/store-finder/TR2-5DH/6-7-kings-road?utm_source=gmb&utm_medium=organic&utm_campaign=gmb-St-Mawes-Truro" },
-    { label: "St Mawes Pharmacy", url: "https://www.stmawespharmacy.co.uk/" },
-    { label: "Mr Scorse's Gourmet Deli and Wine Shop", url: "https://mrscorse.com/" },
+    { label: "Co-op St Mawes", url: "https://www.coop.co.uk/store-finder/TR2-5DH/6-7-kings-road?utm_source=gmb&utm_medium=organic&utm_campaign=gmb-St-Mawes-Truro", image: imgCoopLogo },
+    { label: "St Mawes Pharmacy", url: "https://www.stmawespharmacy.co.uk/", image: imgStMawesPharmacyStorefront },
+    { label: "Mr Scorse's Gourmet Deli and Wine Shop", url: "https://mrscorse.com/", image: imgMrScorseLogo },
   ] },
   { id: "tregew-food-barn", name: "Tregew Food Barn", desc: "Weekly farmers market with views over the Fal estuary. Showcasing local produce with bread, cheese, meat, fish, pies, veg and takeaway coffees, pastries and (Finn's favourite) croque monsieurs. Only open Saturday mornings, 9am - 1pm. Why not combine with a visit to Penryn parkrun, but get there early as some stalls do sell out.", image: imgTregewFoodBarn, tags: ["farm shop", "local produce"], website: "https://www.foodbarn-tregew.co.uk/", location: "Near Froe", foodType: "buying" },
   { id: "curgurrell-farm-shop", name: "Pendower Farm Shop", desc: "Fresh fish, shellfish, farm and garden produce from the Roseland, brought to you by three generations of the Taffinder family. Daily fishing catch comes straight from the boat.", image: imgPendowerFarmShop, tags: ["farm shop", "meat", "seasonal"], website: "https://www.pendowerfarmshop.com/", location: "Pendower", foodType: "buying" },
