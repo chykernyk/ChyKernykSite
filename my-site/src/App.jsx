@@ -35,6 +35,7 @@ import imgCafeMylor from "./assets/images/CafeMylor.jpeg";
 import imgCarneBeach from "./assets/images/CarneBeach.jpg";
 import imgCoopLogo from "./assets/images/CoopLogo.jpg";
 import imgCoopStMawes from "./assets/images/CoopStMawes.jpg";
+import imgCornishItalian from "./assets/images/CornishItalian.jpg";
 import imgCurgurrellWalk from "./assets/images/CurgurrellWalk.jpg";
 import imgDartsFarm from "./assets/images/DartsFarm.jpeg";
 import imgDownstairsBathroom2 from "./assets/images/DownstairsBathroom2.jpg";
@@ -162,6 +163,7 @@ const FOOD_PLACES = [
   { id: "the-meat-counter", name: "The Meat Counter", desc: "Falmouth's finest burger bar. They cater for everyone from the vegan Pumpkin up the Yam to glorious Double Bacon Cheese with chicken and pulled in between. Don't miss their cajun fries.", image: imgMeatCounter, tags: ["burgers", "takeaway", "cajun fries"], website: "https://meatcounterfalmouth.uk/", location: "Falmouth", foodType: "eating" },
   { id: "potager-garden", name: "Potager Garden", desc: "A vegetarian gem sitting the other side of Falmouth serving a range of delicious vege bites. Their pickles are amazing. Open Thursday to Sunday from 10am to 3pm.", image: imgPotagerGarden, tags: ["vegetarian", "cafe", "garden"], website: "https://www.potagergarden.org/", location: "Constantine", foodType: "eating" },
   { id: "teacup-tearoom", name: "Teacup Tearoom", desc: "Quintessentially traditional Cornish tea shop located in the historic fishing village of Mevagissey, Cornwall. Highly rated for its homemade cream teas, welcoming atmosphere, and exceptional allergy-friendly and dog-friendly options.", image: imgTeacupTearoom, tags: ["tearoom", "cake", "cream tea"], website: "http://teacuptearoom.com/", location: "Mevagissey", foodType: "eating" },
+  { id: "cornish-italian", name: "The Cornish Italian", desc: "Just up the road before the petrol station there is a hidden gem in the form of the Cornish Italian. Ugo Massabò started selling jars of tiramisu at local farmers markets and has now created a little corner of Italy with a delicious pasta restaurant. A short but delicious menu tells you that every sauce has been created with fresh seasonal ingredients and they all hit the mark, and for pudding don't miss out on his award winning tiramisu!!", image: imgCornishItalian, tags: ["restaurant", "pasta", "italian"], website: "https://cornishitalian.com/", location: "Tregony", foodType: "eating" },
 ];
 
 const ACTIVITIES = [
