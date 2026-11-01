@@ -57,6 +57,7 @@ import imgHouseAerial from "./assets/images/HouseAerial.jpeg";
 import imgHouseComingSoon from "./assets/images/HouseComingSoon.png";
 import imgHousePlans2026 from "./assets/images/HousePlans2026.png";
 import imgHouseTourPoster from "./assets/images/HouseTourPoster.jpg";
+import imgHouseTourPoster2 from "./assets/images/HouseTourPoster2.jpg";
 import imgHouseUnderConstruction from "./assets/images/HouseUnderConstruction.jpg";
 import imgJuniorRaceWeek from "./assets/images/JuniorRaceWeek.jpeg";
 import imgKelpCanteen from "./assets/images/KelpCanteen.jpg";
@@ -268,6 +269,7 @@ const GALLERY_HOUSE = [
   { id: "house-1", url: imgHousePlans2026, caption: "Coming soon…" },
   { id: "house-13", url: imgHouseUnderConstruction, caption: "Under construction" },
   { id: "house-14", url: imgHouseTourPoster, caption: "Construction progress", type: "video", video: "/videos/HouseTour.mp4" },
+  { id: "house-15", url: imgHouseTourPoster2, caption: "Construction progress", type: "video", video: "/videos/HouseTour2.mp4" },
 ];
 
 const GALLERY_BUILDING_PROJECT = [
