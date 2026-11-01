@@ -38,9 +38,7 @@ import imgCoopStMawes from "./assets/images/CoopStMawes.jpg";
 import imgCornishItalian from "./assets/images/CornishItalian.jpg";
 import imgCurgurrellWalk from "./assets/images/CurgurrellWalk.jpg";
 import imgDartsFarm from "./assets/images/DartsFarm.jpeg";
-import imgDownstairsBathroom2 from "./assets/images/DownstairsBathroom2.jpg";
 import imgEdenProject from "./assets/images/EdenProject.jpeg";
-import imgFamilyBathroom2 from "./assets/images/FamilyBathroom2.jpg";
 import imgFishNTrips from "./assets/images/FishNTrips.jpeg";
 import imgFishingOffRocks from "./assets/images/FishingOffRocks.jpeg";
 import imgFistralBeach from "./assets/images/FistralBeach.jpg";
@@ -58,13 +56,13 @@ import imgHouse from "./assets/images/House.jpg";
 import imgHouseAerial from "./assets/images/HouseAerial.jpeg";
 import imgHouseComingSoon from "./assets/images/HouseComingSoon.png";
 import imgHousePlans2026 from "./assets/images/HousePlans2026.png";
+import imgHouseTourPoster from "./assets/images/HouseTourPoster.jpg";
+import imgHouseUnderConstruction from "./assets/images/HouseUnderConstruction.jpg";
 import imgJuniorRaceWeek from "./assets/images/JuniorRaceWeek.jpeg";
-import imgKitchen from "./assets/images/Kitchen.jpg";
 import imgKelpCanteen from "./assets/images/KelpCanteen.jpg";
 import imgKingHarryFerry from "./assets/images/KingHarryFerry.jpg";
 import imgLamorran from "./assets/images/Lamorran.jpeg";
 import imgMaritimeMuseum from "./assets/images/MaritimeMuseum.jpg";
-import imgMasterEnsuite2 from "./assets/images/MasterEnsuite2.jpg";
 import imgMeatCounter from "./assets/images/MeatCounter.webp";
 import imgMevagissey from "./assets/images/Mevagissey.jpg";
 import imgMevagisseyAquarium from "./assets/images/MevagisseyAquarium.jpeg";
@@ -102,7 +100,6 @@ import imgStMawesHarbourWall from "./assets/images/StMawesHarbourWall.jpeg";
 import imgStMawesPharmacyStorefront from "./assets/images/StMawesPharmacyStorefront.jpg";
 import imgStandardInnEvening from "./assets/images/StandardInnEvening.jpeg";
 import imgStandardInnGarden from "./assets/images/StandardInnGarden.jpeg";
-import imgStudy from "./assets/images/Study.jpg";
 import imgTeacupTearoom from "./assets/images/TeacupTearoom.jpg";
 import imgTheStandard from "./assets/images/TheStandard.jpeg";
 import imgTheWatchHouse from "./assets/images/TheWatchHouse.jpeg";
@@ -157,13 +154,13 @@ const FOOD_PLACES = [
   { id: "standard", name: "The Standard", desc: "Enjoy a locally sourced menu and wood fired roasts by the owner of the Hidden Hut. Bookings for the restaurant open 60 days in advance and fill up quickly during the summer months. The pavilion is open for outdoor drinks and a garden menu is available during the summer for walk in customers. Dog friendly inside and out.", image: imgTheStandard, imagePosition: "center 63%", tags: ["restaurant", "fine dining"], website: "https://www.standardinn.co.uk/", location: "Gerrans", foodType: "eating" },
   { id: "shillakabooky-beach-hut", name: "Shallikabooky Beach Hut", desc: "A charming beach hut serving simple, delicious food right by the water. A perfect stop before or after a walk along the coast path.", image: imgShillakabookyBeachHut, tags: ["beach hut", "casual", "coastal"], website: "https://m.facebook.com/shallikabooky/", location: "Roseland Peninsula", foodType: "eating" },
   { id: "the-watchtower", name: "The Watch House", desc: "Fish and chips in St Mawes, freshly cooked and perfect eaten looking out over the harbour.", image: imgTheWatchHouse, tags: ["fish and chips", "takeaway", "harbourside"], website: "#", location: "St Mawes", foodType: "eating" },
+  { id: "cornish-italian", name: "The Cornish Italian", desc: "Ugo Massabò started selling jars of tiramisu at local farmers markets during Covid and has now created a little corner of Italy with a delicious pasta restaurant. A short but delicious menu tells you that every sauce has been created with fresh seasonal ingredients and they all hit the mark, and for pudding don't miss out on his award winning \"Tiramisugo\"!!", image: imgCornishItalian, tags: ["restaurant", "pasta", "italian"], website: "https://cornishitalian.com/", location: "Tregony", foodType: "eating" },
   { id: "tresanton", name: "Hotel Tresanton", desc: "Olga Polizzi's celebrated hotel restaurant in St Mawes. Mediterranean-influenced cooking with stunning harbour views and a cocktail terrace that wouldn't be out of place in the med.", image: imgTresanton, tags: ["restaurant", "hotel", "harbour views"], website: "https://thepolizzicollection.com/hotel-tresanton/", location: "St Mawes", foodType: "eating" },
   { id: "cafe-mylor", name: "Café Mylor", desc: "A relaxed waterside café at Mylor Yacht Harbour, serving brunch, coffee, and light lunches with views over the boats.", image: imgCafeMylor, tags: ["cafe", "waterside", "brunch"], website: "https://cafemylor.com/", location: "Mylor Harbour", foodType: "eating" },
   { id: "kelp-canteen", name: "Kelp Canteen", desc: "A harbourside food trailer in Falmouth serving oysters, mussels, fish, and seaweed. Simple, fresh, and right by the water.", image: imgKelpCanteen, tags: ["seafood", "oysters", "harbourside"], website: "#", location: "Falmouth", foodType: "eating" },
   { id: "the-meat-counter", name: "The Meat Counter", desc: "Falmouth's finest burger bar. They cater for everyone from the vegan Pumpkin up the Yam to glorious Double Bacon Cheese with chicken and pulled in between. Don't miss their cajun fries.", image: imgMeatCounter, tags: ["burgers", "takeaway", "cajun fries"], website: "https://meatcounterfalmouth.uk/", location: "Falmouth", foodType: "eating" },
   { id: "potager-garden", name: "Potager Garden", desc: "A vegetarian gem sitting the other side of Falmouth serving a range of delicious vege bites. Their pickles are amazing. Open Thursday to Sunday from 10am to 3pm.", image: imgPotagerGarden, tags: ["vegetarian", "cafe", "garden"], website: "https://www.potagergarden.org/", location: "Constantine", foodType: "eating" },
   { id: "teacup-tearoom", name: "Teacup Tearoom", desc: "Quintessentially traditional Cornish tea shop located in the historic fishing village of Mevagissey, Cornwall. Highly rated for its homemade cream teas, welcoming atmosphere, and exceptional allergy-friendly and dog-friendly options.", image: imgTeacupTearoom, tags: ["tearoom", "cake", "cream tea"], website: "http://teacuptearoom.com/", location: "Mevagissey", foodType: "eating" },
-  { id: "cornish-italian", name: "The Cornish Italian", desc: "Just up the road before the petrol station there is a hidden gem in the form of the Cornish Italian. Ugo Massabò started selling jars of tiramisu at local farmers markets and has now created a little corner of Italy with a delicious pasta restaurant. A short but delicious menu tells you that every sauce has been created with fresh seasonal ingredients and they all hit the mark, and for pudding don't miss out on his award winning tiramisu!!", image: imgCornishItalian, tags: ["restaurant", "pasta", "italian"], website: "https://cornishitalian.com/", location: "Tregony", foodType: "eating" },
 ];
 
 const ACTIVITIES = [
@@ -269,11 +266,8 @@ const THANKS_TRADES = [
 const GALLERY_HOUSE = [
   { id: "house-2", url: imgHouseComingSoon, caption: "Coming January 2027…" },
   { id: "house-1", url: imgHousePlans2026, caption: "Coming soon…" },
-  { id: "house-4", url: imgDownstairsBathroom2, caption: "Downstairs bathroom" },
-  { id: "house-6", url: imgFamilyBathroom2, caption: "Family bathroom" },
-  { id: "house-8", url: imgMasterEnsuite2, caption: "Master en-suite bathroom" },
-  { id: "house-11", url: imgKitchen, caption: "Kitchen", linkUrl: "/documents/kitchen-presentation.pdf" },
-  { id: "house-12", url: imgStudy, caption: "Study" },
+  { id: "house-13", url: imgHouseUnderConstruction, caption: "Under construction" },
+  { id: "house-14", url: imgHouseTourPoster, caption: "Construction progress", type: "video", video: "/videos/HouseTour.mp4" },
 ];
 
 const GALLERY_BUILDING_PROJECT = [
@@ -915,6 +909,14 @@ const CSS = `
     letter-spacing:0.03em;
   }
   .ck-gallery-item:hover::after { opacity:1; }
+  .ck-gallery-play {
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:3.2rem; height:3.2rem; border-radius:50%;
+    background:rgba(0,0,0,0.5); color:white;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.1rem; padding-left:0.2rem;
+    pointer-events:none;
+  }
 
   /* ── LIGHTBOX ── */
   .ck-lightbox {
@@ -923,7 +925,7 @@ const CSS = `
     display:flex; align-items:center; justify-content:center;
     padding:2rem;
   }
-  .ck-lightbox img {
+  .ck-lightbox img, .ck-lightbox video {
     max-width:90vw; max-height:85vh;
     object-fit:contain; border-radius:8px;
   }
@@ -1694,6 +1696,7 @@ function GallerySection({ title, images, onSelect, emptyText }) {
               <div key={img.id} className="ck-gallery-item" data-caption={img.caption}
                 onClick={() => onSelect(images, i)}>
                 <img src={img.url} alt={img.caption} loading="lazy" />
+                {img.type === "video" && <span className="ck-gallery-play" aria-hidden="true">▶</span>}
               </div>
             )
           ))}
@@ -1745,7 +1748,12 @@ function GalleryPage({ setPage }) {
               ‹
             </button>
           )}
-          <img src={lightbox.images[lightbox.index].url} alt={lightbox.images[lightbox.index].caption} onClick={e => e.stopPropagation()} />
+          {lightbox.images[lightbox.index].type === "video" ? (
+            <video src={lightbox.images[lightbox.index].video} poster={lightbox.images[lightbox.index].url}
+              controls autoPlay playsInline onClick={e => e.stopPropagation()} />
+          ) : (
+            <img src={lightbox.images[lightbox.index].url} alt={lightbox.images[lightbox.index].caption} onClick={e => e.stopPropagation()} />
+          )}
           {lightbox.images.length > 1 && (
             <button className="ck-lightbox-arrow next" aria-label="Next photo"
               onClick={e => { e.stopPropagation(); setLightbox(lb => ({ ...lb, index: (lb.index + 1) % lb.images.length })); }}>
